@@ -1,6 +1,6 @@
 package org.alan.Model
 
-interface Pessoa {
+interface Pessoa{
 
     String getNome()
 
@@ -17,4 +17,8 @@ interface Pessoa {
     String getDescricao()
 
     void setDescricao(String descricao)
+
+    String getEstado()
+
+    void setEstado(String estado)
 }
