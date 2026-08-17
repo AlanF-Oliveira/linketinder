@@ -1,4 +1,4 @@
-package org.alan.Model
+package org.alan.model
 
 abstract class Usuario implements Pessoa {
     String nome;

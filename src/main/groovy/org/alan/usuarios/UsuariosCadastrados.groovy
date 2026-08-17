@@ -1,7 +1,7 @@
 package org.alan.usuarios
 
-import org.alan.Model.Candidato
-import org.alan.Model.Empresa
+import org.alan.model.Candidato
+import org.alan.model.Empresa
 
 class UsuariosCadastrados {
     List<Candidato> candidatos = [
@@ -59,7 +59,7 @@ class UsuariosCadastrados {
     ]
     List<Empresa> empresas = [
             new Empresa(
-                    nome: "Arroz-Gostoso",
+                    nome: "Arroz Gostoso",
                     email: "contato@arrozgostoso.com",
                     cep: "60175047",
                     estado: "Ceará",
