@@ -59,7 +59,7 @@ class UsuariosCadastrados {
     ]
     List<Empresa> empresas = [
             new Empresa(
-                    nome: "Arroz-Gostoso",
+                    nome: "Arroz Gostoso",
                     email: "contato@arrozgostoso.com",
                     cep: "60175047",
                     estado: "Ceará",
