@@ -1,6 +1,6 @@
 package org.alan.service
 
-import org.alan.Model.Candidato
+import org.alan.model.Candidato
 
 class CandidatoService{
 

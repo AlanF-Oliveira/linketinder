@@ -1,7 +1,7 @@
-package org.alan.Terminal
+package org.alan.terminal
 
-import org.alan.Model.Candidato
-import org.alan.Model.Empresa
+import org.alan.model.Candidato
+import org.alan.model.Empresa
 import org.alan.service.CandidatoService
 import org.alan.service.EmpresaService
 import org.alan.usuarios.UsuariosCadastrados

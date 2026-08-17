@@ -1,4 +1,4 @@
-package org.alan.Model
+package org.alan.model
 
 //import groovy.transform.ToString
 //@ToString(includeSuperProperties = true, includePackage = false,includes = ['nome', 'email', 'cep', 'estado', 'descricao', 'cpf', 'idade', 'competencias'])

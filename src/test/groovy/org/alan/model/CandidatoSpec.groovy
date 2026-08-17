@@ -1,6 +1,6 @@
 package org.alan.model
 
-import org.alan.Model.Candidato
+
 import spock.lang.Specification;
 
 

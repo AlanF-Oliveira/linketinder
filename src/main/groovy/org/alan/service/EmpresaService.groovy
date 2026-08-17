@@ -1,6 +1,6 @@
 package org.alan.service
 
-import org.alan.Model.Empresa
+import org.alan.model.Empresa
 
 class EmpresaService{
 

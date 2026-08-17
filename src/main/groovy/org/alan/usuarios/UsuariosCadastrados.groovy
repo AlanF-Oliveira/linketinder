@@ -1,7 +1,7 @@
 package org.alan.usuarios
 
-import org.alan.Model.Candidato
-import org.alan.Model.Empresa
+import org.alan.model.Candidato
+import org.alan.model.Empresa
 
 class UsuariosCadastrados {
     List<Candidato> candidatos = [

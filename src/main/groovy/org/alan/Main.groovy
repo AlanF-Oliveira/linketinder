@@ -1,8 +1,7 @@
 package org.alan
 
-import org.alan.Model.Candidato
-import org.alan.Model.Empresa
-import org.alan.Terminal.Menu
+
+import org.alan.terminal.Menu
 
 static void main(String[] args) {
 

@@ -1,6 +1,6 @@
 package org.alan.model
 
-import org.alan.Model.Empresa
+
 import spock.lang.Specification
 
 class EmpresaSpec extends Specification {
