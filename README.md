@@ -8,6 +8,7 @@ Aplicação backend de recrutamento inspirada no Linkedin e no Tinder, feita em 
 
 - Groovy 4
 - Gradle
+- Spock Framework (testes unitários)
 
 ## Como executar
 
@@ -19,8 +20,16 @@ cd linketinder
 
 Ou rode a classe `org.alan.Terminal.Menu` diretamente pela IDE.
 
+## Como rodar os testes
+
+```bash
+./gradlew test
+```
+
 ## Sobre a solução
 
-O projeto é organizado em pacotes (`Model`, `usuarios`, `Terminal`). Candidatos e empresas compartilham atributos comuns (nome, e-mail, CEP, estado e descrição) através da interface `Pessoa` e da classe abstrata `Usuario`, da qual `Candidato` e `Empresa` herdam. Cada candidato tem CPF, idade e uma lista de competências; cada empresa tem CNPJ, país e uma lista de competências desejadas.
+O projeto é organizado em pacotes (`Model`, `usuarios`, `Terminal`, `service`). Candidatos e empresas compartilham atributos comuns (nome, e-mail, CEP, estado e descrição) através da interface `Pessoa` e da classe abstrata `Usuario`, da qual `Candidato` e `Empresa` herdam. Cada candidato tem CPF, idade e uma lista de competências; cada empresa tem CNPJ, país e uma lista de competências desejadas.
 
-O sistema mantém 5 candidatos e 5 empresas pré-cadastrados em memória, e o menu no terminal permite listar todos os candidatos e todas as empresas.
+O sistema mantém 5 candidatos e 5 empresas pré-cadastrados em memória. O menu no terminal permite listar candidatos, listar empresas, cadastrar um novo candidato e cadastrar uma nova empresa.
+
+O cadastro é feito pelas classes `CandidatoService` e `EmpresaService`, que inserem novos usuários nas listas de `UsuariosCadastrados`.

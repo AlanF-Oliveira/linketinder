@@ -1,4 +1,4 @@
-package org.alan.Model
+package org.alan.model
 
 class Empresa extends Usuario{
     String cnpj

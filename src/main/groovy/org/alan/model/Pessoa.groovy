@@ -1,4 +1,4 @@
-package org.alan.Model
+package org.alan.model
 
 interface Pessoa{
 
