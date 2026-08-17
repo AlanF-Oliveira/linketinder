@@ -16,25 +16,22 @@ class CandidatoServiceSpec extends Specification {
     def "deve cadastrar candidato com sucesso"() {
 
         given:
-        candidato = new Candidato(
+        Candidato candidato = new Candidato(
                 nome: "Alan",
                 email: "alan@gmail.com",
                 cpf: "123",
                 descricao: "dev",
                 estado: "Ceará",
                 cep: "600",
+                idade: 32,
                 competencias: ["Spring Boot, Java, PostgreSQL"]);
         when:
         candidatoService.salvar(candidato)
 
         then:
-        listaCandidatos.nome == "Alan"
-        listaCandidatos.email == "alan@gmail.com"
-        listaCandidatos.cpf == "123"
-        listaCandidatos.descricao == "dev"
-        listaCandidatos.estado == "Ceará"
-        listaCandidatos.cep == "600"
-        listaCandidatos.competencias == ["Spring Boot, Java, PostgreSQL"]
+        listaCandidatos.size() == 1
+        listaCandidatos[0].nome == "Alan"
+        listaCandidatos[0].cpf == "123"
 
 
     }

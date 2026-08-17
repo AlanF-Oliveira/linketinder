@@ -22,7 +22,7 @@ class CandidatoSpec extends Specification {
 
         when:
         candidato.setNome("Joao")
-        candidato.setIdade("33")
+        candidato.setIdade(33)
         candidato.setEmail("joao@gmail.com")
         candidato.setCpf("2321")
         candidato.setDescricao("Desenvolvedor Pleno")
