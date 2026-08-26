@@ -17,3 +17,9 @@ export class Empresa extends Usuario {
         return `${this.nome}  | ${this.email} | ${this.cnpj} | ${this.pais} |${this.estado} | ${this.cep} | ${this.descricao} | ${this.competenciasDesejadas}`;
     }
 }
+
+export type EmpresaAnonima = Omit<Empresa, 'nome' | 'email' | 'cnpj' | 'cep'>;
+export function anonimizarEmpresa(empresa: Empresa): EmpresaAnonima {
+    const { nome, email, cnpj, cep, ...resto } = empresa;
+    return resto;
+}

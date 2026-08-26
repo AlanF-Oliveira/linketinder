@@ -17,3 +17,10 @@ export class Candidato extends Usuario {
         return `${this.nome} | ${this.idade} | ${this.email} | ${this.cpf} | ${this.descricao} | ${this.estado} | ${this.cep} | ${this.competencias}`;
     }
 }
+
+export type CandidatoAnonimo = Omit<Candidato, 'nome' | 'email' | 'cpf' | 'cep'>;
+
+export function anonimizarCandidato(candidato: Candidato): CandidatoAnonimo {
+    const { nome, email, cpf, cep, ...resto } = candidato;
+    return resto;
+}
