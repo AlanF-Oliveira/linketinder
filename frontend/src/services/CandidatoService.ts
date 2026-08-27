@@ -17,7 +17,7 @@ export class CandidatoService {
         return this.lista;
     }
 
-    listarCandidato(): Candidato[] {
+    listarCandidatos(): Candidato[] {
         return this.lista;
     }
 
@@ -27,14 +27,7 @@ export class CandidatoService {
             throw new Error(`Candidato com o CPF ${cpf} não encontrado `)
         }
 
-        candidatoAtualizado.nome = candidato.nome;
-        candidatoAtualizado.idade = candidato.idade;
-        candidatoAtualizado.cpf = candidato.cpf;
-        candidatoAtualizado.email = candidato.email;
-        candidatoAtualizado.cep = candidato.cep;
-        candidatoAtualizado.estado = candidato.estado;
-        candidatoAtualizado.descricao = candidato.descricao;
-        candidatoAtualizado.competencias = candidato.competencias
+        Object.assign(candidatoAtualizado, candidato);
         return this.lista
     }
 
