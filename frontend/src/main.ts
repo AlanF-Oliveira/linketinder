@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CandidatoService } from './services/CandidatoService';
-import { candidatos } from './data/candidatos';
-import { criarCadastroCandidato } from './views/cadastrarCandidato';
 import { EmpresaService } from './services/EmpresaService';
+import { VagaService } from './services/VagaService';
+import { candidatos } from './data/candidatos';
 import { empresas } from './data/empresas';
-import { criarCadastroEmpresa } from './views/cadastrarEmpresa';
+import { criarTelaInicial } from './views/home';
 
-const candidatoService = new CandidatoService(candidatos); 
+const candidatoService = new CandidatoService(candidatos);
+const empresaService = new EmpresaService(empresas);
+const vagaService = new VagaService([]);
+
 const app = document.getElementById('app') as HTMLElement;
-criarCadastroCandidato(app, candidatoService);
-
-const empresaService = new EmpresaService(empresas)
-criarCadastroEmpresa(app, empresaService);
+criarTelaInicial(app, candidatoService, empresaService, vagaService);
