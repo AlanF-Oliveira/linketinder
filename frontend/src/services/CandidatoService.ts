@@ -14,6 +14,7 @@ export class CandidatoService {
         }
 
         this.lista.push(candidato);
+        console.log(this.lista)
         return this.lista;
     }
 
