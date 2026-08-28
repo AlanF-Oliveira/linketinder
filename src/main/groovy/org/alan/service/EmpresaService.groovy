@@ -14,5 +14,13 @@ class EmpresaService{
         list.add(empresaRequest)
         return list
     }
+
+    void deletarEmpresa(String cnpj){
+       def index =  list.findIndexOf {it.cnpj == cnpj}
+        if(index != -1 ){
+            list.removeAt(index)
+        }
+    }
 }
+
 
