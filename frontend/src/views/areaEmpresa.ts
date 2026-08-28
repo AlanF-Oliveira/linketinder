@@ -9,7 +9,7 @@ import { criarCadastroVaga } from './cadastrarVaga';
 export function criarAreaEmpresa(app: HTMLElement, empresaService: EmpresaService, candidatoService: CandidatoService, vagaService: VagaService) {
     app.innerHTML = `
     <div class="container mt-5 text-center">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Área da Empresa</h2>
       <div class="d-flex justify-content-center gap-3 mt-4">
         <button id="btn-candidatos" class="btn btn-primary btn-lg">Ver candidatos</button>

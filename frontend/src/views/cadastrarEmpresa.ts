@@ -7,7 +7,7 @@ import type { VagaService } from "../services/VagaService";
 export function criarCadastroEmpresa(app: HTMLElement, empresaService: EmpresaService, candidatoService: CandidatoService, vagaService: VagaService) {
   app.innerHTML = `
     <div class="container mt-4">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Cadastro de Empresa</h2>
       <form id="form-empresa">
         <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="nome" name="nome" required></div>
