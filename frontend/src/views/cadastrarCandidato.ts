@@ -7,7 +7,7 @@ import { criarAreaCandidato } from "./areaCandidato";
 export function criarCadastroCandidato(app: HTMLElement, candidatoService: CandidatoService, empresaService: EmpresaService, vagaService: VagaService) {
   app.innerHTML = `
     <div class="container mt-4">
-        <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+        <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
         <h2>Cadastro de Candidato</h2>
         <form id="form-candidato">
         <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="nome" name="nome" required></div>

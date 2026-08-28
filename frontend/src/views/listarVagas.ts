@@ -27,7 +27,7 @@ export function criarListaVagas(app: HTMLElement, vagaService: VagaService, cand
 
   app.innerHTML = `
     <div class="container mt-4">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Vagas Disponíveis</h2>
       ${cardsHtml}
     </div>

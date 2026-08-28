@@ -13,7 +13,7 @@ export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, em
 
     app.innerHTML = `
     <div class="container mt-4">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Cadastro de Vaga</h2>
       <form id="form-vaga">
         <div class="mb-3">
