@@ -11,16 +11,17 @@ export function criarListaCandidatos(app: HTMLElement, candidatoService: Candida
   const linhasHtml = candidatos
     .map(candidato => {
       const candidatoAnonimo = anonimizarCandidato(candidato);
+      const infoTooltip = `Formação: ${candidatoAnonimo.formacao} | Idade: ${candidatoAnonimo.idade} | Estado: ${candidatoAnonimo.estado}`;
       return `
-        <tr>
-          <td>${candidatoAnonimo.formacao}</td>
-          <td>${candidatoAnonimo.idade}</td>
-          <td>${candidatoAnonimo.estado}</td>
-          <td>${candidatoAnonimo.competencias.join(', ')}</td>
-          <td>${candidatoAnonimo.descricao}</td>
-          <td><button class="btn btn-danger btn-sm btn-deletar" data-cpf="${candidato.cpf}">Excluir</button></td>
-        </tr>
-      `;
+      <tr title="${infoTooltip}">
+        <td>${candidatoAnonimo.formacao}</td>
+        <td>${candidatoAnonimo.idade}</td>
+        <td>${candidatoAnonimo.estado}</td>
+        <td>${candidatoAnonimo.competencias.join(', ')}</td>
+        <td>${candidatoAnonimo.descricao}</td>
+        <td><button class="btn btn-danger btn-sm btn-deletar" data-cpf="${candidato.cpf}">Excluir</button></td>
+      </tr>
+    `;
     })
     .join('');
 

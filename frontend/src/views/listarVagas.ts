@@ -10,8 +10,9 @@ export function criarListaVagas(app: HTMLElement, vagaService: VagaService, cand
   const cardsHtml = vagas
     .map(vaga => {
       const empresaAnonima = anonimizarEmpresa(vaga.empresa);
+      const infoTooltip = `Local: ${empresaAnonima.estado}, ${empresaAnonima.pais} | Competências: ${vaga.competenciasExigidas.join(', ')}`;
       return `
-        <div class="card mb-3">
+        <div class="card mb-3" title="${infoTooltip}">
           <div class="card-body">
             <h5 class="card-title">${vaga.titulo}</h5>
             <p class="card-text">${vaga.descricao}</p>
