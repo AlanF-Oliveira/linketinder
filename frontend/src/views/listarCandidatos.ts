@@ -27,7 +27,7 @@ export function criarListaCandidatos(app: HTMLElement, candidatoService: Candida
 
   app.innerHTML = `
     <div class="container mt-4">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Candidatos Cadastrados</h2>
       <table class="table table-striped">
         <thead>

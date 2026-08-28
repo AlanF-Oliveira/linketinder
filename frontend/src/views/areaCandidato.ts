@@ -8,7 +8,7 @@ import { criarTelaInicial } from './home';
 export function criarAreaCandidato(app: HTMLElement, candidatoService: CandidatoService, empresaService: EmpresaService, vagaService: VagaService) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">← Voltar</button>
+      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Área do Candidato</h2>
       <div class="d-flex justify-content-center gap-3 mt-4">
         <button id="btn-vagas" class="btn btn-primary btn-lg">Ver Vagas</button>
