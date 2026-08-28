@@ -17,21 +17,19 @@ export class VagaService {
         return this.lista;
     }
 
-    alterarVaga(vaga: Vaga, titulo: string): Vaga[] {
-        const vagaAtualizada = this.lista.find(vagaAntiga => vagaAntiga.titulo === titulo);
+    alterarVaga(id: number, vaga: Vaga): Vaga[] {
+        const vagaAtualizada = this.lista.find(vagaAntiga => vagaAntiga.id === id);
         if (!vagaAtualizada) {
-            throw new Error(`Vaga não encontrada ${titulo}.`);
+            throw new Error(`Vaga com ID ${id} não encontrada`);
         }
-        vagaAtualizada.titulo = vaga.titulo
-        vagaAtualizada.descricao = vaga.descricao
-        vagaAtualizada.competenciasExigidas = vaga.competenciasExigidas
+        Object.assign(vagaAtualizada, vaga)
         return this.lista
     }
 
-    deletarVaga(titulo: string): Vaga[] {
-        const index = this.lista.findIndex(vaga => vaga.titulo === titulo);
+    deletarVaga(id: number): Vaga[] {
+        const index = this.lista.findIndex(vaga => vaga.id === id);
         if (index === -1) {
-            throw new Error(`Vaga não encontrada ${titulo}`);
+            throw new Error(`Vaga com ID ${id} não encontrada`);
         }
 
         this.lista.splice(index, 1);

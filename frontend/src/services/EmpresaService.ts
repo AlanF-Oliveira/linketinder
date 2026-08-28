@@ -17,7 +17,7 @@ export class EmpresaService {
         return this.lista
     }
 
-    listarEmpresa(): Empresa[] {
+    listarEmpresas(): Empresa[] {
         return this.lista
     }
 
@@ -26,15 +26,7 @@ export class EmpresaService {
         if (!empresaAtualizada) {
             throw new Error(`Empresa com o CNPJ ${cnpj} não encontrada `)
         }
-
-        empresaAtualizada.nome = empresa.nome;
-        empresaAtualizada.cnpj = empresa.cnpj;
-        empresaAtualizada.email = empresa.email;
-        empresaAtualizada.cep = empresa.cep;
-        empresaAtualizada.estado = empresa.estado;
-        empresaAtualizada.pais = empresa.pais;
-        empresaAtualizada.descricao = empresa.descricao;
-        empresaAtualizada.competenciasDesejadas = empresa.competenciasDesejadas
+        Object.assign(empresaAtualizada, empresa)
         return this.lista
     }
 
