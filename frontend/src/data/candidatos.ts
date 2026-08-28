@@ -9,6 +9,7 @@ export const candidatos: Candidato[] = [
         'Desenvolvedor Java',
         '10403796542',
         32,
+        'Bacharel em Ciência da Computação',
         ['Java', 'Spring Boot', 'PostgreSQL']
     ),
     new Candidato(
@@ -19,6 +20,7 @@ export const candidatos: Candidato[] = [
         'Desenvolvedora frontend',
         '11122233344',
         22,
+        'Técnico em Informática',
         ['Angular', 'TypeScript', 'CSS']
     ),
     new Candidato(
@@ -29,6 +31,7 @@ export const candidatos: Candidato[] = [
         'Engenheiro de dados',
         '22233344455',
         35,
+        'Bacharel em Engenharia da Computação',
         ['Python', 'SQL', 'Airflow']
     ),
     new Candidato(
@@ -39,6 +42,7 @@ export const candidatos: Candidato[] = [
         'Desenvolvedora fullstack',
         '33344455566',
         27,
+        'Bacharel em Sistemas de Informação',
         ['React', 'Node.js', 'MongoDB']
     ),
     new Candidato(
@@ -49,6 +53,7 @@ export const candidatos: Candidato[] = [
         'Analista de sistemas',
         '44455566677',
         44,
+        'Pós-graduação em Gestão de TI',
         ['Java', 'Docker', 'Kubernetes']
     ),
 ];

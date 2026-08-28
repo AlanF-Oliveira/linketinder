@@ -24,10 +24,10 @@ export function criarTelaInicial(
     const btnEmpresa = document.getElementById('btn-empresa') as HTMLButtonElement;
 
     btnCandidato.addEventListener('click', () => {
-        criarAreaCandidato(app, candidatoService, vagaService);
+        criarAreaCandidato(app, candidatoService, empresaService, vagaService);
     });
 
     btnEmpresa.addEventListener('click', () => {
-        criarAreaEmpresa(app, empresaService, candidatoService);
+        criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
     });
 }
