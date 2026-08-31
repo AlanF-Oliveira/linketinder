@@ -36,7 +36,6 @@ export function criarAreaEmpresa(app: HTMLElement, empresaService: EmpresaServic
         criarCadastroEmpresa(app, empresaService, candidatoService, vagaService);
     });
 
-
     btnCadastrarVaga.addEventListener('click', () =>
         criarCadastroVaga(app, vagaService, empresaService, candidatoService)
     )

@@ -51,9 +51,13 @@ export function criarListaCandidatos(app: HTMLElement, candidatoService: Candida
   botoesDeletar.forEach(botao => {
     botao.addEventListener('click', () => {
       const cpf = botao.getAttribute('data-cpf');
-      if (cpf) {
-        candidatoService.deletarCandidato(cpf);
-        criarListaCandidatos(app, candidatoService, empresaService, vagaService);
+      try {
+        if (cpf) {
+          candidatoService.deletarCandidato(cpf);
+          criarListaCandidatos(app, candidatoService, empresaService, vagaService);
+        }
+      } catch (error) {
+        alert(error instanceof Error ? error.message : 'Erro ao deletar candidato')
       }
     });
   });
