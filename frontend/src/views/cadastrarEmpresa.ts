@@ -43,7 +43,11 @@ export function criarCadastroEmpresa(app: HTMLElement, empresaService: EmpresaSe
     const competenciasDesejadas = (formData.get('competenciasDesejadas') as string).split(',').map(c => c.trim());
 
     const empresa = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competenciasDesejadas);
-    empresaService.salvarEmpresa(empresa);
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    try {
+      empresaService.salvarEmpresa(empresa);
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    } catch (error) {
+      alert(error instanceof Error ? error.message: 'Erro ao cadastrar empresa')
+    }
   });
 }

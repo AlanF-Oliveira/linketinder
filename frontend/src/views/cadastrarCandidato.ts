@@ -45,7 +45,11 @@ export function criarCadastroCandidato(app: HTMLElement, candidatoService: Candi
     const competencias = (formData.get('competencias') as string).split(',').map(c => c.trim());
 
     const candidato = new Candidato(nome, email, cep, estado, descricao, cpf, idade, formacao, competencias);
-    candidatoService.salvarCandidato(candidato);
-    criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+    try {
+      candidatoService.salvarCandidato(candidato);
+      criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Erro ao salvar candidato.');
+    }
   });
 }

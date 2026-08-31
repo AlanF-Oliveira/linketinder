@@ -5,13 +5,13 @@ import { CandidatoService } from "../services/CandidatoService";
 import { criarAreaEmpresa } from "./areaEmpresa";
 
 export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, empresaService: EmpresaService, candidatoService: CandidatoService) {
-    const empresas = empresaService.listarEmpresas();
+  const empresas = empresaService.listarEmpresas();
 
-    const opcoesEmpresas = empresas
-        .map(empresa => `<option value="${empresa.cnpj}">${empresa.nome} (${empresa.cnpj})</option>`)
-        .join('');
+  const opcoesEmpresas = empresas
+    .map(empresa => `<option value="${empresa.cnpj}">${empresa.nome} (${empresa.cnpj})</option>`)
+    .join('');
 
-    app.innerHTML = `
+  app.innerHTML = `
     <div class="container mt-4">
       <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
       <h2>Cadastro de Vaga</h2>
@@ -39,28 +39,31 @@ export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, em
     </div>
   `;
 
-    const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
-    btnVoltar.addEventListener('click', () => {
-        criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
-    });
+  const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
+  btnVoltar.addEventListener('click', () => {
+    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+  });
 
-    const form = document.getElementById('form-vaga') as HTMLFormElement;
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const formData = new FormData(form);
+  const form = document.getElementById('form-vaga') as HTMLFormElement;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
 
-        const empresaCnpj = formData.get('empresaCnpj') as string;
-        const titulo = formData.get('titulo') as string;
-        const descricao = formData.get('descricao') as string;
-        const competenciasExigidas = (formData.get('competenciasExigidas') as string).split(',').map(c => c.trim());
+    const empresaCnpj = formData.get('empresaCnpj') as string;
+    const titulo = formData.get('titulo') as string;
+    const descricao = formData.get('descricao') as string;
+    const competenciasExigidas = (formData.get('competenciasExigidas') as string).split(',').map(c => c.trim());
 
-        const empresa = empresas.find(e => e.cnpj === empresaCnpj);
-        if (!empresa) {
-            throw new Error(`Empresa com CNPJ ${empresaCnpj} não encontrada.`);
-        }
-
-        const vaga = new Vaga(titulo, descricao, competenciasExigidas, empresa);
-        vagaService.criarVaga(vaga);
-        criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
-    });
+    try {
+      const empresa = empresas.find(e => e.cnpj === empresaCnpj);
+      if (!empresa) {
+        throw new Error(`Empresa com CNPJ ${empresaCnpj} não encontrada.`);
+      }
+      const vaga = new Vaga(titulo, descricao, competenciasExigidas, empresa);
+      vagaService.criarVaga(vaga);
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Erro ao cadastrar vaga')
+    }
+  });
 }
