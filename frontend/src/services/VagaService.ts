@@ -9,6 +9,10 @@ export class VagaService {
     }
 
     criarVaga(vaga: Vaga): Vaga[] {
+        const jaExiste = this.lista.some(v => v.id === vaga.id)
+        if (jaExiste) {
+            throw new Error(`Vaga com ID ${vaga.id}já cadastrada `)
+        }
         this.lista.push(vaga)
         return this.lista;
     }

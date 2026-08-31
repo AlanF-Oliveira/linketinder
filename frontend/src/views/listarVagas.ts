@@ -42,9 +42,13 @@ export function criarListaVagas(app: HTMLElement, vagaService: VagaService, cand
   botoesDeletar.forEach(botao => {
     botao.addEventListener('click', () => {
       const idString = botao.getAttribute('data-id');
-      if (idString) {
-        vagaService.deletarVaga(Number(idString));
-        criarListaVagas(app, vagaService, candidatoService, empresaService);
+      try {
+        if (idString) {
+          vagaService.deletarVaga(Number(idString));
+          criarListaVagas(app, vagaService, candidatoService, empresaService);
+        }
+      } catch (error) {
+        alert(error instanceof Error ? error.message : 'Erro ao deletar vaga')
       }
     });
   });
