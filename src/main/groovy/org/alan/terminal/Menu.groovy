@@ -4,12 +4,16 @@ import org.alan.model.Candidato
 import org.alan.model.Empresa
 import org.alan.service.CandidatoService
 import org.alan.service.EmpresaService
+import org.alan.service.VagaService
 import org.alan.usuarios.UsuariosCadastrados
+import org.alan.usuarios.VagasCadastradas
 
 class Menu {
     UsuariosCadastrados usuariosCadastrados = new UsuariosCadastrados();
+    VagasCadastradas vagasCadastradas = new VagasCadastradas(usuariosCadastrados.empresas);
     CandidatoService candidatoService = new CandidatoService(usuariosCadastrados.candidatos)
     EmpresaService empresaService = new EmpresaService(usuariosCadastrados.empresas)
+    VagaService vagaService = new VagaService(vagasCadastradas.vagas)
     Scanner sc = new Scanner(System.in)
 
     void menu() {
@@ -23,7 +27,8 @@ class Menu {
             println "2) Listar Empresas"
             println "3) Cadastrar candidato"
             println "4) Cadastrar empresa"
-            println "5) Sair"
+            println "5) Listar Vagas"
+            println "6) Sair"
             opcao = sc.nextInt()
             switch (opcao) {
                 case 1:
@@ -39,6 +44,9 @@ class Menu {
                     cadastrarEmpresa()
                     break
                 case 5:
+                    listarVagas()
+                    break
+                case 6:
                     isActive = false;
                     break
             }
@@ -135,6 +143,15 @@ class Menu {
         empresaService.salvar(empresa)
         println "Empresa cadastrada com sucesso"
         println()
+    }
+
+    void listarVagas(){
+        println ""
+        println "Lista de Vagas: "
+        vagaService.listarVagas().each {
+            println(it)
+        }
+        println ""
     }
 }
 
