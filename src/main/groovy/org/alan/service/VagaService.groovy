@@ -22,6 +22,14 @@ class VagaService {
         return new ArrayList<>(list);
     }
 
+    Vaga buscarVagaPorId(id){
+        Vaga vaga = list.find{it.id == id}
+        if (vaga == -1){
+            throw new Exception("Vaga não encontrada")
+        }
+        return vaga
+    }
+
     void deletarVaga(int id) {
         int index = list.findIndexOf { it.id == id }
         if (index == -1) {
