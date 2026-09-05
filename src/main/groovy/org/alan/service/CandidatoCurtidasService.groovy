@@ -6,7 +6,7 @@ import org.alan.model.Vaga
 
 class CandidatoCurtidasService {
 
-    List<CandidatoCurtidas> curtidas = []
+    List<CandidatoCurtidas> curtidas = [];
     VagaService vagaService;
     CandidatoService candidatoService;
 

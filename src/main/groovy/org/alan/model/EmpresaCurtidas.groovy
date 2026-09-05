@@ -2,7 +2,7 @@ package org.alan.model
 
 class EmpresaCurtidas {
 
-    Empresa empresa
-    List<CandidatoCurtido> curtidas = []
+    Empresa empresa;
+    List<CandidatoCurtido> candidatoCurtidos = [];
 
 }
