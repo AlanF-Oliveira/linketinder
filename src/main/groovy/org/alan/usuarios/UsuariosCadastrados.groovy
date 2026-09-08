@@ -2,113 +2,137 @@ package org.alan.usuarios
 
 import org.alan.model.Candidato
 import org.alan.model.Empresa
+import java.time.LocalDate
 
 class UsuariosCadastrados {
     List<Candidato> candidatos = [
             new Candidato(
-                    nome: "Alan Oliveira",
+                    nome: "Alan",
+                    sobrenome: "Oliveira",
+                    nascimento: LocalDate.of(1994, 3, 15),
                     email: "alana@mail.com",
-                    cep: "60450340",
-                    estado: "Ceará",
-                    descricao: "Desenvolvedor Java",
                     cpf: "10403796542",
-                    idade: 32,
+                    descricao: "Desenvolvedor Java",
+                    pais: "Brasil",
+                    estado: "CE",
+                    cidade: "Fortaleza",
+                    cep: "60450-340",
+                    senha: "senha123",
                     competencias: ["Java", "Spring Boot", "PostgreSQL"]
             ),
             new Candidato(
-                    nome: "Beatriz Souza",
+                    nome: "Beatriz",
+                    sobrenome: "Souza",
+                    nascimento: LocalDate.of(2004, 7, 22),
                     email: "beatriz@mail.com",
-                    cep: "01310100",
-                    estado: "São Paulo",
-                    descricao: "Desenvolvedora frontend",
                     cpf: "11122233344",
-                    idade: 22,
+                    descricao: "Desenvolvedora frontend",
+                    pais: "Brasil",
+                    estado: "SP",
+                    cidade: "São Paulo",
+                    cep: "01310-100",
+                    senha: "senha123",
                     competencias: ["Angular", "TypeScript", "CSS"]
             ),
             new Candidato(
-                    nome: "Carlos Mendes",
+                    nome: "Carlos",
+                    sobrenome: "Mendes",
+                    nascimento: LocalDate.of(1991, 1, 10),
                     email: "carlos@mail.com",
-                    cep: "30130010",
-                    estado: "Minas Gerais",
-                    descricao: "Engenheiro de dados",
                     cpf: "22233344455",
-                    idade: 35,
+                    descricao: "Engenheiro de dados",
+                    pais: "Brasil",
+                    estado: "MG",
+                    cidade: "Belo Horizonte",
+                    cep: "30130-010",
+                    senha: "senha123",
                     competencias: ["Python", "SQL", "Airflow"]
             ),
             new Candidato(
-                    nome: "Daniela Ramos",
+                    nome: "Daniela",
+                    sobrenome: "Ramos",
+                    nascimento: LocalDate.of(1999, 11, 5),
                     email: "daniela@mail.com",
-                    cep: "40010000",
-                    estado: "Bahia",
-                    descricao: "Desenvolvedora fullstack",
                     cpf: "33344455566",
-                    idade: 27,
+                    descricao: "Desenvolvedora fullstack",
+                    pais: "Brasil",
+                    estado: "BA",
+                    cidade: "Salvador",
+                    cep: "40010-000",
+                    senha: "senha123",
                     competencias: ["React", "Node.js", "MongoDB"]
             ),
             new Candidato(
-                    nome: "Eduardo Lima",
+                    nome: "Eduardo",
+                    sobrenome: "Lima",
+                    nascimento: LocalDate.of(1982, 6, 30),
                     email: "eduardo@mail.com",
-                    cep: "70040010",
-                    estado: "Distrito Federal",
-                    descricao: "Analista de sistemas",
                     cpf: "44455566677",
-                    idade: 44,
+                    descricao: "Analista de sistemas",
+                    pais: "Brasil",
+                    estado: "DF",
+                    cidade: "Brasília",
+                    cep: "70040-010",
+                    senha: "senha123",
                     competencias: ["Java", "Docker", "Kubernetes"]
             )
-
     ]
+
     List<Empresa> empresas = [
             new Empresa(
                     nome: "Arroz Gostoso",
                     email: "contato@arrozgostoso.com",
-                    cep: "60175047",
-                    estado: "Ceará",
-                    descricao: "Empresa do setor alimentício.",
                     cnpj: "12345678000199",
+                    descricao: "Empresa do setor alimentício.",
                     pais: "Brasil",
-                    competenciasDesejadas: ["Java", "Spring Framework", "SQL"]
+                    estado: "CE",
+                    cidade: "Fortaleza",
+                    cep: "60175-047",
+                    senha: "senha123"
             ),
             new Empresa(
                     nome: "Império do Boliche",
                     email: "rh@imperiodoboliche.com",
-                    cep: "01452000",
-                    estado: "São Paulo",
-                    descricao: "Rede de casas de entretenimento e lazer.",
                     cnpj: "98765432000111",
+                    descricao: "Rede de casas de entretenimento e lazer.",
                     pais: "Brasil",
-                    competenciasDesejadas: ["Angular", "Node.js", "MongoDB"]
+                    estado: "SP",
+                    cidade: "São Paulo",
+                    cep: "01452-000",
+                    senha: "senha123"
             ),
             new Empresa(
                     nome: "TechNova Soluções",
                     email: "contato@technova.com",
-                    cep: "30140071",
-                    estado: "Minas Gerais",
-                    descricao: "Consultoria em transformação digital.",
                     cnpj: "11223344000155",
+                    descricao: "Consultoria em transformação digital.",
                     pais: "Brasil",
-                    competenciasDesejadas: ["Python", "AWS", "Docker"]
+                    estado: "MG",
+                    cidade: "Belo Horizonte",
+                    cep: "30140-071",
+                    senha: "senha123"
             ),
             new Empresa(
                     nome: "Boliche Champions",
                     email: "contato@bolichechampions.com",
-                    cep: "40110010",
-                    estado: "Bahia",
-                    descricao: "Franquia de centros de boliche.",
                     cnpj: "22334455000166",
+                    descricao: "Franquia de centros de boliche.",
                     pais: "Brasil",
-                    competenciasDesejadas: ["React", "Firebase", "UX Design"]
+                    estado: "BA",
+                    cidade: "Salvador",
+                    cep: "40110-010",
+                    senha: "senha123"
             ),
             new Empresa(
                     nome: "DataFlow Analytics",
                     email: "rh@dataflow.com",
-                    cep: "70070100",
-                    estado: "Distrito Federal",
-                    descricao: "Empresa de análise de dados e BI.",
                     cnpj: "33445566000177",
+                    descricao: "Empresa de análise de dados e BI.",
                     pais: "Brasil",
-                    competenciasDesejadas: ["Java", "Kubernetes", "PostgreSQL"]
+                    estado: "DF",
+                    cidade: "Brasília",
+                    cep: "70070-100",
+                    senha: "senha123"
             )
     ]
-
-
 }

@@ -2,12 +2,10 @@ package org.alan.model
 
 class Empresa extends Usuario{
     String cnpj
-    String pais;
-    List<String> competenciasDesejadas = []
 
     @Override
     public String toString() {
-        return "$nome | $email | $cnpj | $pais | $estado | $cep | $descricao | $competenciasDesejadas"
+        return "$nome | $email | $cnpj | $cidade, $estado, $pais | $cep | $descricao"
     }
 }
 

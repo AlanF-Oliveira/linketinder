@@ -7,6 +7,8 @@ import org.alan.service.EmpresaService
 import org.alan.service.VagaService
 import org.alan.usuarios.UsuariosCadastrados
 import org.alan.usuarios.VagasCadastradas
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class Menu {
     UsuariosCadastrados usuariosCadastrados = new UsuariosCadastrados();
@@ -74,34 +76,46 @@ class Menu {
 
     void cadastrarCandidato() {
         println()
-        //  $nome | $idade | $email | $cpf | $descricao | $estado | $cep | $competencias"
         print "Nome: "
         sc.nextLine()
         String nome = sc.nextLine()
-        print "Idade: "
-        int idade = sc.nextInt()
+        print "Sobrenome: "
+        String sobrenome = sc.nextLine()
+        print "Data de nascimento (dd/MM/yyyy): "
+        String nascimentoStr = sc.nextLine()
+        LocalDate nascimento = LocalDate.parse(nascimentoStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
         print "Email: "
-        sc.nextLine()
         String email = sc.nextLine()
-        print "cpf: "
+        print "CPF: "
         String cpf = sc.nextLine()
         print "Descrição: "
         String descricao = sc.nextLine()
+        print "País: "
+        String pais = sc.nextLine()
         print "Estado: "
         String estado = sc.nextLine()
+        print "Cidade: "
+        String cidade = sc.nextLine()
         print "Cep: "
         String cep = sc.nextLine()
+        print "Senha (mínimo 6 caracteres): "
+        String senha = sc.nextLine()
         print "Competências (separadas por vírgula): "
         String competenciasSc = sc.nextLine()
         List<String> competencias = competenciasSc.split(",")*.trim()
+
         Candidato candidato = new Candidato(
                 nome: nome,
-                idade: idade,
+                sobrenome: sobrenome,
+                nascimento: nascimento,
                 email: email,
                 cpf: cpf,
                 descricao: descricao,
+                pais: pais,
                 estado: estado,
+                cidade: cidade,
                 cep: cep,
+                senha: senha,
                 competencias: competencias
         )
         candidatoService.salvar(candidato)
@@ -109,36 +123,38 @@ class Menu {
         println()
     }
 
-    void cadastrarEmpresa(){
+    void cadastrarEmpresa() {
         println()
-        //  "$nome | $email | $cnpj | $pais | $estado | $cep | $descricao | $competenciasDesejadas"
         print "Nome: "
         sc.nextLine()
         String nome = sc.nextLine()
         print "Email: "
         String email = sc.nextLine()
-        print "Cnpj : "
-        String cnpj  = sc.nextLine()
+        print "Cnpj: "
+        String cnpj = sc.nextLine()
         print "Pais: "
         String pais = sc.nextLine()
         print "Estado: "
         String estado = sc.nextLine()
+        print "Cidade: "
+        String cidade = sc.nextLine()
         print "Cep: "
         String cep = sc.nextLine()
         print "Descricao: "
         String descricao = sc.nextLine()
-        print "Competências desejadas (separadas por vírgula): "
-        String competenciasSc = sc.nextLine()
-        List<String> competencias = competenciasSc.split(",")*.trim()
+        print "Senha (mínimo 6 caracteres): "
+        String senha = sc.nextLine()
+
         Empresa empresa = new Empresa(
                 nome: nome,
                 email: email,
                 cnpj: cnpj,
                 pais: pais,
                 estado: estado,
+                cidade: cidade,
                 cep: cep,
                 descricao: descricao,
-                competenciasDesejadas: competencias
+                senha: senha
         )
         empresaService.salvar(empresa)
         println "Empresa cadastrada com sucesso"
