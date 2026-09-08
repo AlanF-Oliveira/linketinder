@@ -5,6 +5,7 @@ import java.time.LocalDate
 //import groovy.transform.ToString
 //@ToString(includeSuperProperties = true, includePackage = false,includes = ['nome', 'email', 'cep', 'estado', 'descricao', 'cpf', 'idade', 'competencias'])
 class Candidato extends Usuario{
+    Integer id;
     String sobrenome;
     String cpf;
     LocalDate nascimento;

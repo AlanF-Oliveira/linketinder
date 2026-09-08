@@ -80,9 +80,9 @@ class UsuariosCadastrados {
 
     List<Empresa> empresas = [
             new Empresa(
-                    nome: "Arroz Gostoso",
+                    nome: "Arroz Gostoso2",
                     email: "contato@arrozgostoso.com",
-                    cnpj: "12345678000199",
+                    cnpj: "312345678000199",
                     descricao: "Empresa do setor alimentício.",
                     pais: "Brasil",
                     estado: "CE",
