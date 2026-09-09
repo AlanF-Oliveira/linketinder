@@ -1,7 +1,7 @@
 package org.alan.model
 
 class Vaga{
-    int id;
+    Integer id;
     String titulo;
     String descricao;
     String estado;

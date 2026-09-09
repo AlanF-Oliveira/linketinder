@@ -232,6 +232,7 @@ class BancoDeDados {
     }
 
     Empresa buscarEmpresaPorCnpj(String cnpjEmpresa) {
+
         Connection connection = conectar()
         String sql = "SELECT * FROM empresa WHERE cnpj = ?"
         PreparedStatement ps = connection.prepareStatement(sql)
@@ -342,7 +343,7 @@ class BancoDeDados {
         Connection connection = conectar()
         String sql = "SELECT * FROM competencias WHERE competencia = ?"
         PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, competencia)
+        ps.setString(1, competencia.toUpperCase())
         ResultSet rs = ps.executeQuery()
         if (rs.next()) {
             connection.close()
@@ -357,7 +358,7 @@ class BancoDeDados {
         Connection connection = conectar()
         String sql = "INSERT INTO competencias (competencia) VALUES(?)"
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ps.setString(1, competencia)
+        ps.setString(1, competencia.toUpperCase())
         ps.executeUpdate()
         ResultSet rs = ps.getGeneratedKeys()
         int idGerado = 0
@@ -394,7 +395,7 @@ class BancoDeDados {
         Connection connection = conectar()
         String sql = "UPDATE competencias SET competencia = ? WHERE id = ?"
         PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, competencia)
+        ps.setString(1, competencia.toUpperCase())
         ps.setInt(2, idCompetencia)
         int linhasAtualizadas = ps.executeUpdate()
         connection.close()
