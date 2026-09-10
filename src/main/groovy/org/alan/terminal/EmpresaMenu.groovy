@@ -40,7 +40,7 @@ class EmpresaMenu {
 
     void listar() {
         println()
-        println "Lista de Candidatos: "
+        println "Lista de Empresas: "
         empresaService.listarEmpresas().each { it ->
             println(it)
         }
