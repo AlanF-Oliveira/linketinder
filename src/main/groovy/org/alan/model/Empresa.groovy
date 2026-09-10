@@ -6,7 +6,7 @@ class Empresa extends Usuario{
 
     @Override
     public String toString() {
-        return "$nome | $email | $cnpj | $cidade, $estado, $pais | $cep | $descricao"
+        return "$id | $nome | $email | $cnpj | $cidade, $estado, $pais | $cep | $descricao"
     }
 }
 

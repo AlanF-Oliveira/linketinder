@@ -13,6 +13,6 @@ class Candidato extends Usuario{
 
     @Override
     public String toString() {
-        return "$nome $sobrenome | $nascimento | $email | $cpf | $descricao | $cidade, $estado, $pais | $cep | $competencias"
+        return "$id | $nome $sobrenome | $nascimento | $email | $cpf | $descricao | $cidade, $estado, $pais | $cep | $competencias"
     }
 }

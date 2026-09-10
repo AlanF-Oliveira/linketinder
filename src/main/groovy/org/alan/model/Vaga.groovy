@@ -11,6 +11,6 @@ class Vaga{
 
     @Override
     public String toString() {
-        return "$titulo | $descricao | $estado | $cidade | $competenciasExigidas"
+        return "$id | $titulo | $descricao | $estado | $cidade | $competenciasExigidas"
     }
 }

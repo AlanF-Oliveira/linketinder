@@ -10,7 +10,7 @@ class BancoDeDados {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/linketinder"
     private static final String USUARIO = "postgres"
-    private static final String SENHA = "2010"
+    private static final String SENHA = System.getenv("DB_SENHA")
 
     Connection conectar() {
         return DriverManager.getConnection(URL, USUARIO, SENHA)
@@ -335,8 +335,6 @@ class BancoDeDados {
         return linhasAtualizadas > 0
     }
 
-
-
     //========================== Competencias ==========================
 
     Integer buscarCompetencia(String competencia) {
@@ -380,12 +378,14 @@ class BancoDeDados {
 
     List<String> listarCompetencias() {
         Connection connection = conectar()
-        String sql = "SELECT competencia FROM competencias"
+        String sql = "SELECT id, competencia FROM competencias"
         PreparedStatement ps = connection.prepareStatement(sql)
         ResultSet rs = ps.executeQuery()
         List<String> competencias = []
         while (rs.next()) {
-            competencias.add(rs.getString("competencia"))
+            int id = rs.getInt("id")
+            String nome = rs.getString("competencia")
+            competencias.add("$id - $nome")
         }
         connection.close()
         return competencias
