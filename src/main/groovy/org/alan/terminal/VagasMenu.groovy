@@ -5,13 +5,13 @@ import org.alan.model.Vaga
 import org.alan.service.EmpresaService
 import org.alan.service.VagaService
 
-class VagaMenu {
+class VagasMenu {
 
     VagaService vagaService
     EmpresaService empresaService
     Scanner sc = new Scanner(System.in)
 
-    VagaMenu(VagaService vagaService, EmpresaService empresaService) {
+    VagasMenu(VagaService vagaService, EmpresaService empresaService) {
         this.vagaService = vagaService
         this.empresaService = empresaService
     }

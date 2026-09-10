@@ -14,7 +14,7 @@ class Menu {
     CompetenciaService competenciaService = new CompetenciaService(bd)
     CandidatoMenu candidatoMenu = new CandidatoMenu(candidatoService)
     EmpresaMenu empresaMenu = new EmpresaMenu(empresaService)
-    VagaMenu vagaMenu = new VagaMenu(vagaService, empresaService)
+    VagasMenu vagasMenu = new VagasMenu(vagaService, empresaService)
     CompetenciaMenu competenciaMenu = new CompetenciaMenu(competenciaService)
     Scanner sc = new Scanner(System.in)
 
@@ -39,7 +39,7 @@ class Menu {
                     empresaMenu.menu()
                     break
                 case 3:
-                    vagaMenu.menu()
+                    vagasMenu.menu()
                     break
                 case 4:
                     competenciaMenu.menu()
