@@ -1,15 +1,10 @@
-CREATE TABLE competencias (
-    id SERIAL PRIMARY KEY,
-    competencia VARCHAR(15) NOT NULL
-);
-
 CREATE TABLE candidatos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     sobrenome VARCHAR(50) NOT NULL,
     nascimento DATE NOT NULL,
     email VARCHAR(50) NOT NULL,
-    cpf VARCHAR(12) NOT NULL,
+    cpf VARCHAR(12) NOT NULL UNIQUE,
     descricao VARCHAR(100) NOT NULL,
     pais VARCHAR(50) NOT NULL,
     estado CHAR(2) NOT NULL,
@@ -22,7 +17,7 @@ CREATE TABLE empresa (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    cnpj VARCHAR(15) NOT NULL,
+    cnpj VARCHAR(15) NOT NULL UNIQUE,
     descricao VARCHAR(100) NOT NULL,
     pais VARCHAR(50) NOT NULL,
     estado CHAR(2) NOT NULL,
@@ -38,6 +33,11 @@ CREATE TABLE vagas (
     estado CHAR(2) NOT NULL,
     cidade VARCHAR(33) NOT NULL,
     id_empresa INT NOT NULL REFERENCES empresa(id)
+);
+
+CREATE TABLE competencias (
+    id SERIAL PRIMARY KEY,
+    competencia VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE candidato_competencia (
@@ -66,7 +66,11 @@ INSERT INTO competencias (competencia) VALUES
 ('Node.js'),
 ('MongoDB'),
 ('Docker'),
-('Kubernetes');
+('Kubernetes'),
+('Spring Framework'),
+('AWS'),
+('Firebase'),
+('UX Design');
 
 INSERT INTO candidatos (nome, sobrenome, nascimento, email, cpf, descricao, pais, estado, cidade, cep, senha) VALUES
 ('Alan', 'Oliveira', '1994-03-15', 'alana@mail.com', '10403796542', 'Desenvolvedor Java', 'BRA', 'CE', 'Fortaleza', '60450-340', 'senha123'),
@@ -97,8 +101,8 @@ INSERT INTO candidato_competencia (id_candidatos, id_competencias) VALUES
 (5, 1), (5, 13), (5, 14);
 
 INSERT INTO vagas_competencias (id_vagas, id_competencias) VALUES
-(1, 1), (1, 2), (1, 8),
+(1, 1), (1, 15), (1, 8),
 (2, 4), (2, 11), (2, 12),
-(3, 7), (3, 3), (3, 13),
-(4, 10), (4, 12), (4, 6),
+(3, 7), (3, 16), (3, 13),
+(4, 10), (4, 17), (4, 18),
 (5, 1), (5, 14), (5, 3);

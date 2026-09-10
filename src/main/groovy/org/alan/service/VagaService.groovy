@@ -1,41 +1,49 @@
 package org.alan.service
 
+import org.alan.database.BancoDeDados
 import org.alan.model.Vaga
 
 class VagaService {
 
-    List<Vaga> list;
+    BancoDeDados bd;
 
-    VagaService(List<Vaga> list) {
-        this.list = list;
+    VagaService(BancoDeDados bd) {
+        this.bd = bd;
     }
 
-    List<Vaga> criarVaga(Vaga vaga) {
-        list.add(vaga);
-        return list;
+    Vaga criarVaga(Vaga vaga, int idEmpresa) {
+       bd.insertVaga(vaga, idEmpresa)
+        if(vaga.id == null){
+            throw new Exception("Falha ao cadastrar vaga")
+        }
+         return vaga
     }
 
     List<Vaga> listarVagas() {
-        if (list.isEmpty()) {
-            return new ArrayList<>()
-        }
-        return new ArrayList<>(list);
+      return bd.listarVagas()
     }
 
-    Vaga buscarVagaPorId(id){
-        Vaga vaga = list.find{it.id == id}
-        if (vaga == -1){
+    Vaga buscarVagaPorId(int idVaga){
+      Vaga vaga = bd.buscarVagaPorId(idVaga)
+        if (vaga == null){
             throw new Exception("Vaga não encontrada")
         }
         return vaga
     }
 
-    void deletarVaga(int id) {
-        int index = list.findIndexOf { it.id == id }
-        if (index == -1) {
-            throw new Exception("ID não encontrado")
+    Vaga atualizarVaga(Vaga vaga){
+       boolean atualizou =  bd.atualizarVaga(vaga)
+        if (!atualizou){
+            throw new Exception("Vaga não encontrada")
         }
-        list.remove(index)
+        return vaga
+    }
+
+    void deletarVaga(int idVaga) {
+        boolean  deletou = bd.deletarVaga(idVaga)
+        if(!deletou){
+            throw new Exception("Vaga não encontrada")
+        }
     }
 
 }

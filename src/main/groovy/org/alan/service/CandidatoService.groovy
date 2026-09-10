@@ -1,28 +1,48 @@
 package org.alan.service
 
+import org.alan.database.BancoDeDados
 import org.alan.model.Candidato
 
 class CandidatoService {
 
-    List<Candidato> list
+    BancoDeDados bd;
 
-
-    CandidatoService(List<Candidato> list) {
-        this.list = list;
+    CandidatoService(BancoDeDados bd) {
+        this.bd = bd;
     }
 
-
-    List<Candidato> salvar(Candidato candidatoRequest) {
-        list.add(candidatoRequest)
-        return list;
+    Candidato salvar(Candidato candidato) {
+        bd.insertCandidato(candidato)
+        if (candidato.id == null) {
+            throw new Exception("Falha ao cadastrar candidato")
+        }
+        return candidato
     }
 
     Candidato buscarPorCpf(String cpf) {
-        Candidato candidato = list.find { it.cpf == cpf }
-        if (candidato == null){
+        Candidato candidato = bd.buscarCandidatoPorCpf(cpf)
+        if (candidato == null) {
             throw new Exception("Candidato não encontrado")
         }
-        return candidato;
+        return candidato
+    }
+
+    List<Candidato> listarCandidatos() {
+        return bd.listarCandidatos()
+    }
+
+    Candidato atualizarCandidato(Candidato candidato) {
+        boolean atualizou = bd.atualizarCandidato(candidato)
+        if (!atualizou) {
+            throw new Exception("Candidato não encontrado")
+        }
+        return candidato
+    }
+
+    void deletarCandidato(String cpf) {
+        boolean deletou = bd.deletarCandidato(cpf)
+        if(!deletou){
+            throw new Exception("Candidato não encontrado")
+        }
     }
 }
-

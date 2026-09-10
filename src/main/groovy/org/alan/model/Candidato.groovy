@@ -1,15 +1,18 @@
 package org.alan.model
 
+import java.time.LocalDate
+
 //import groovy.transform.ToString
 //@ToString(includeSuperProperties = true, includePackage = false,includes = ['nome', 'email', 'cep', 'estado', 'descricao', 'cpf', 'idade', 'competencias'])
 class Candidato extends Usuario{
-
+    Integer id;
+    String sobrenome;
     String cpf;
-    int idade;
+    LocalDate nascimento;
     List<String> competencias = []
 
     @Override
     public String toString() {
-        return "$nome | $idade | $email | $cpf | $descricao | $estado | $cep | $competencias"
+        return "$id | $nome $sobrenome | $nascimento | $email | $cpf | $descricao | $cidade, $estado, $pais | $cep | $competencias"
     }
 }

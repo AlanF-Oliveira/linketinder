@@ -32,7 +32,7 @@ O projeto é organizado em pacotes (`Model`, `usuarios`, `Terminal`, `service`).
 
 O sistema mantém 5 candidatos e 5 empresas pré-cadastrados em memória. O menu no terminal permite listar candidatos, listar empresas, cadastrar um novo candidato e cadastrar uma nova empresa.
 
-O cadastro é feito pelas classes `CandidatoService` e `EmpresaService`, que inserem novos usuários nas listas de `UsuariosCadastrados`.
+O cadastro é feito pelas classes `CandidatoService` e `EmpresaMenu`, que inserem novos usuários nas listas de `UsuariosCadastrados`.
 
 ## Frontend
 
@@ -62,3 +62,13 @@ O sistema é uma SPA (Single Page Application): uma única página HTML, com as 
 - Cadastro de vaga 
 - Perfil da empresa: lista de candidatos anônimos e gráfico de barras com a quantidade de candidatos por competência
 
+## Evolução (Bando de dados)
+
+Backend agora persiste no PostgreSQL via JDBC.
+
+- `BancoDeDados`: classe única com o CRUD das 4 tabelas
+- Services (`CandidatoService`, `EmpresaService`, `VagaService`, `CompetenciaService`) fazem a ponte entre o Menu e o banco
+- Menu dividido em uma classe por entidade, cada uma com seu submenu
+
+
+![Diagrama do banco](./banco/schema.png)
