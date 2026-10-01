@@ -68,7 +68,7 @@ class VagasMenu {
             String cidade = sc.nextLine()
             print "Competências exigidas (separadas por vírgula): "
             String competenciasSc = sc.nextLine()
-            List<String> competencias = competenciasSc.split(",")*.trim()
+            List<String> competencias = competenciasSc.tokenize(",")*.trim()
             Vaga vaga = new Vaga(
                     titulo: titulo,
                     descricao: descricao,
