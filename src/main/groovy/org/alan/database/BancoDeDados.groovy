@@ -8,12 +8,10 @@ import java.sql.*
 
 class BancoDeDados {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/linketinder"
-    private static final String USUARIO = "postgres"
-    private static final String SENHA = System.getenv("DB_SENHA")
+    private final ConnectionFactory connectionFactory = new ConnectionFactory()
 
-    Connection conectar() {
-        return DriverManager.getConnection(URL, USUARIO, SENHA)
+    private Connection conectar() {
+        return connectionFactory.criarConexao()
     }
 
     //========================== Candidatos ==========================
