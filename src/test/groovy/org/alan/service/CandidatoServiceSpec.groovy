@@ -1,39 +1,52 @@
 package org.alan.service
 
+import org.alan.database.BancoDeDados
 import org.alan.model.Candidato
 import spock.lang.Specification
 
 class CandidatoServiceSpec extends Specification {
 
-    List<Candidato> listaCandidatos
-    CandidatoService candidatoService
+    BancoDeDadosFalso bancoDeDados = new BancoDeDadosFalso()
+    CandidatoService candidatoService = new CandidatoService(bancoDeDados)
 
-    def setup() {
-        listaCandidatos = []
-        candidatoService = new CandidatoService(listaCandidatos)
+    def "deve cadastrar candidato e retornar o registro com id"() {
+        given:
+        Candidato candidato = new Candidato(nome: "Alan", cpf: "123")
+        bancoDeDados.idGerado = 10
+
+        when:
+        Candidato resultado = candidatoService.salvar(candidato)
+
+        then:
+        bancoDeDados.chamadas == 1
+        resultado.is(candidato)
+        resultado.id == 10
     }
 
-    def "deve cadastrar candidato com sucesso"() {
-
+    def "deve informar falha quando o cadastro não gerar id"() {
         given:
-        Candidato candidato = new Candidato(
-                nome: "Alan",
-                email: "alan@gmail.com",
-                cpf: "123",
-                descricao: "dev",
-                estado: "Ceará",
-                cep: "600",
-                idade: 32,
-                competencias: ["Spring Boot, Java, PostgreSQL"]);
+        Candidato candidato = new Candidato(nome: "Alan", cpf: "123")
+
         when:
         candidatoService.salvar(candidato)
 
         then:
-        listaCandidatos.size() == 1
-        listaCandidatos[0].nome == "Alan"
-        listaCandidatos[0].cpf == "123"
+        bancoDeDados.chamadas == 1
+        Exception erro = thrown()
+        erro.message == "Falha ao cadastrar candidato"
+    }
 
+    private static class BancoDeDadosFalso extends BancoDeDados {
+        int chamadas
+        int idGerado
 
+        @Override
+        int insertCandidato(Candidato candidato) {
+            chamadas++
+            if (idGerado > 0) {
+                candidato.id = idGerado
+            }
+            return idGerado
+        }
     }
 }
-
