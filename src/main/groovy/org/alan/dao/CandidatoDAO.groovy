@@ -41,23 +41,23 @@ class CandidatoDAO {
         Connection connection = conectar()
         String sql = "INSERT INTO candidatos (nome, sobrenome, nascimento, email, cpf, descricao, pais, estado, cidade, cep, senha) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ps.setString(1, candidato.getNome())
-        ps.setString(2, candidato.getSobrenome())
-        ps.setDate(3, java.sql.Date.valueOf(candidato.getNascimento()))
-        ps.setString(4, candidato.getEmail())
-        ps.setString(5, candidato.getCpf())
-        ps.setString(6, candidato.getDescricao())
-        ps.setString(7, candidato.getPais())
-        ps.setString(8, candidato.getEstado())
-        ps.setString(9, candidato.getCidade())
-        ps.setString(10, candidato.getCep())
-        ps.setString(11, candidato.getSenha())
-        ps.executeUpdate()
-        ResultSet rs = ps.getGeneratedKeys()
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        statement.setString(1, candidato.getNome())
+        statement.setString(2, candidato.getSobrenome())
+        statement.setDate(3, java.sql.Date.valueOf(candidato.getNascimento()))
+        statement.setString(4, candidato.getEmail())
+        statement.setString(5, candidato.getCpf())
+        statement.setString(6, candidato.getDescricao())
+        statement.setString(7, candidato.getPais())
+        statement.setString(8, candidato.getEstado())
+        statement.setString(9, candidato.getCidade())
+        statement.setString(10, candidato.getCep())
+        statement.setString(11, candidato.getSenha())
+        statement.executeUpdate()
+        ResultSet resultado = statement.getGeneratedKeys()
         int idGerado = 0
-        if (rs.next()) {
-            idGerado = rs.getInt(1)
+        if (resultado.next()) {
+            idGerado = resultado.getInt(1)
         }
 
         connection.close()
@@ -68,31 +68,32 @@ class CandidatoDAO {
 
         candidato.competencias.each { nomeCompetencia ->
             int idCompetencia = competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
-            insertCandidatoCompetencia(idGerado, idCompetencia)
+            associarCompetenciaAoCandidato(idGerado, idCompetencia)
         }
         return idGerado
     }
 
 
-    private void insertCandidatoCompetencia(int idCandidato, int idCompetencia) {
+    private void associarCompetenciaAoCandidato(int idCandidato, int idCompetencia) {
         Connection connection = conectar()
         String sql = "INSERT INTO candidato_competencia (id_candidatos, id_competencias) VALUES (?,?)"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idCandidato)
-        ps.setInt(2, idCompetencia)
-        ps.executeUpdate()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setInt(1, idCandidato)
+        statement.setInt(2, idCompetencia)
+        statement.executeUpdate()
         connection.close()
     }
 
     private List<String> buscarCompetenciasDoCandidato(int idCandidato) {
         Connection connection = conectar()
-        String sql = "SELECT c.competencia FROM candidato_competencia cc JOIN competencias c ON cc.id_competencias = c.id WHERE cc.id_candidatos = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idCandidato)
-        ResultSet rs = ps.executeQuery()
+        String sql = "SELECT c.competencia FROM candidato_competencia cc " +
+                "JOIN competencias c ON cc.id_competencias = c.id WHERE cc.id_candidatos = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setInt(1, idCandidato)
+        ResultSet resultado = statement.executeQuery()
         List<String> competencias = []
-        while (rs.next()) {
-            String competencia = rs.getString("competencia")
+        while (resultado.next()) {
+            String competencia = resultado.getString("competencia")
             competencias.add(competencia)
         }
         connection.close()
@@ -102,13 +103,13 @@ class CandidatoDAO {
     Candidato buscarCandidatoPorCpf(String cpf) {
         Connection connection = conectar()
         String sql = "SELECT * FROM candidatos WHERE cpf = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, cpf)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, cpf)
+        ResultSet resultado = statement.executeQuery()
 
         Candidato candidato = null
-        if (rs.next()) {
-            candidato = criarCandidato(rs)
+        if (resultado.next()) {
+            candidato = criarCandidato(resultado)
         }
         connection.close()
         return candidato
@@ -117,60 +118,47 @@ class CandidatoDAO {
     List<Candidato> listarCandidatos() {
         Connection connection = conectar()
         String sql = "SELECT * FROM candidatos"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        ResultSet resultado = statement.executeQuery()
         List<Candidato> candidatos = [];
-        while (rs.next()) {
-            candidatos.add(criarCandidato(rs))
+        while (resultado.next()) {
+            candidatos.add(criarCandidato(resultado))
         }
         connection.close()
         return candidatos
     }
 
     boolean atualizarCandidato(Candidato candidato) {
-
         Connection connection = conectar()
-        String sql = "UPDATE candidatos SET nome = ?, sobrenome = ?, nascimento = ?, email = ?, descricao = ?, pais = ?, estado = ?, cidade = ?, cep = ?, senha = ? WHERE cpf = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, candidato.getNome())
-        ps.setString(2, candidato.getSobrenome())
-        ps.setDate(3, java.sql.Date.valueOf(candidato.getNascimento()))
-        ps.setString(4, candidato.getEmail())
-        ps.setString(5, candidato.getDescricao())
-        ps.setString(6, candidato.getPais())
-        ps.setString(7, candidato.getEstado())
-        ps.setString(8, candidato.getCidade())
-        ps.setString(9, candidato.getCep())
-        ps.setString(10, candidato.getSenha())
-        ps.setString(11, candidato.getCpf())
+        String sql = "UPDATE candidatos SET nome = ?, sobrenome = ?, nascimento = ?, email = ?, descricao = ?, " +
+                "pais = ?, estado = ?, cidade = ?, cep = ?, senha = ? WHERE cpf = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, candidato.getNome())
+        statement.setString(2, candidato.getSobrenome())
+        statement.setDate(3, java.sql.Date.valueOf(candidato.getNascimento()))
+        statement.setString(4, candidato.getEmail())
+        statement.setString(5, candidato.getDescricao())
+        statement.setString(6, candidato.getPais())
+        statement.setString(7, candidato.getEstado())
+        statement.setString(8, candidato.getCidade())
+        statement.setString(9, candidato.getCep())
+        statement.setString(10, candidato.getSenha())
+        statement.setString(11, candidato.getCpf())
 
-        int linhasAtualizadas = ps.executeUpdate()
+        int linhasAtualizadas = statement.executeUpdate()
         connection.close()
         return linhasAtualizadas > 0
     }
 
     boolean deletarCandidato(String cpfCandidato) {
-
         Connection connection = conectar()
-        String sql = "SELECT id FROM candidatos WHERE cpf = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, cpfCandidato)
-        ResultSet rs = ps.executeQuery()
-        if (!rs.next()) {
-            connection.close()
-            return false
-        }
-        int idCandidato = rs.getInt("id")
-        String sqlDelComp = "DELETE FROM candidato_competencia WHERE id_candidatos = ?"
-        PreparedStatement psComp = connection.prepareStatement(sqlDelComp)
-        psComp.setInt(1, idCandidato)
-        psComp.executeUpdate()
-        String sqlDelCandidato = "DELETE FROM candidatos WHERE cpf = ?"
-        PreparedStatement psCandidato = connection.prepareStatement(sqlDelCandidato)
-        psCandidato.setString(1, cpfCandidato)
-        int linhasAtualizadas = psCandidato.executeUpdate()
+        String sql = "DELETE FROM candidatos WHERE cpf = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, cpfCandidato)
+        int linhasAfetadas = statement.executeUpdate()
+        statement.close()
         connection.close()
-        return linhasAtualizadas > 0
+        return linhasAfetadas > 0
     }
 
 }

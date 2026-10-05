@@ -1,7 +1,6 @@
 package org.alan.service
 
 import org.alan.dao.EmpresaDAO
-import org.alan.database.BancoDeDados
 import org.alan.model.Empresa
 
 class EmpresaService {
@@ -13,10 +12,13 @@ class EmpresaService {
     }
 
     Empresa salvar(Empresa empresa) {
-        empresaDAO.insertEmpresa(empresa)
-        if (empresa.id == null) {
-                throw new Exception("Falha ao cadastrar empresa")
+        int idGerado = empresaDAO.insertEmpresa(empresa)
+
+        if (idGerado == 0) {
+            throw new Exception("Falha ao cadastrar empresa")
         }
+
+        empresa.id = idGerado
         return empresa
     }
 
@@ -32,9 +34,9 @@ class EmpresaService {
         return empresaDAO.listarEmpresas()
     }
 
-    Empresa atualizarEmpresa(Empresa empresa){
-       boolean atualizou =  empresaDAO.atualizarEmpresa(empresa)
-        if (!atualizou){
+    Empresa atualizarEmpresa(Empresa empresa) {
+        boolean atualizou = empresaDAO.atualizarEmpresa(empresa)
+        if (!atualizou) {
             throw new Exception("Empresa não encontrada")
         }
         return empresa
