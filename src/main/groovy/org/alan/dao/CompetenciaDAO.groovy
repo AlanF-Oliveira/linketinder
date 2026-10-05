@@ -15,88 +15,98 @@ class CompetenciaDAO {
         return connectionFactory.criarConexao()
     }
 
-    Integer buscarCompetencia(String competencia) {
+    private Integer buscarIdPorNome(String competencia) {
         Connection connection = conectar()
-        String sql = "SELECT * FROM competencias WHERE competencia = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, competencia.toUpperCase())
-        ResultSet rs = ps.executeQuery()
-        if (rs.next()) {
-            connection.close()
-            return rs.getInt("id")
-        } else {
-            connection.close()
-            return null
+        String sql = "SELECT id FROM competencias WHERE competencia = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setString(1, competencia.toUpperCase())
+        ResultSet resultado = statement.executeQuery()
+
+        Integer idCompetencia = null
+
+        if (resultado.next()) {
+            idCompetencia = resultado.getInt("id")
         }
+
+        connection.close()
+        return idCompetencia
     }
 
-    int criarCompetencia(String competencia) {
+    private int inserir(String competencia) {
         Connection connection = conectar()
-        String sql = "INSERT INTO competencias (competencia) VALUES(?)"
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ps.setString(1, competencia.toUpperCase())
-        ps.executeUpdate()
-        ResultSet rs = ps.getGeneratedKeys()
+        String sql = "INSERT INTO competencias (competencia) VALUES (?)"
+        PreparedStatement statement = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+        )
+
+        statement.setString(1, competencia.toUpperCase())
+        statement.executeUpdate()
+
+        ResultSet resultado = statement.getGeneratedKeys()
         int idGerado = 0
-        if (rs.next()) {
-            idGerado = rs.getInt("id")
+
+        if (resultado.next()) {
+            idGerado = resultado.getInt(1)
         }
+
         connection.close()
         return idGerado
     }
 
     int buscarOuCriarCompetencia(String competencia) {
-        Integer busca = buscarCompetencia(competencia)
-        if (busca == null) {
-            return criarCompetencia(competencia)
-        } else {
-            return busca
+        Integer idCompetencia = buscarIdPorNome(competencia)
+
+        if (idCompetencia != null) {
+            return idCompetencia
         }
+
+        return inserir(competencia)
     }
 
     List<String> listarCompetencias() {
         Connection connection = conectar()
         String sql = "SELECT id, competencia FROM competencias"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        ResultSet resultado = statement.executeQuery()
+
         List<String> competencias = []
-        while (rs.next()) {
-            int id = rs.getInt("id")
-            String nome = rs.getString("competencia")
+
+        while (resultado.next()) {
+            int id = resultado.getInt("id")
+            String nome = resultado.getString("competencia")
             competencias.add("$id - $nome")
         }
+
         connection.close()
         return competencias
     }
 
     boolean atualizarCompetencia(String competencia, int idCompetencia) {
         Connection connection = conectar()
-        String sql = "UPDATE competencias SET competencia = ? WHERE id = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, competencia.toUpperCase())
-        ps.setInt(2, idCompetencia)
-        int linhasAtualizadas = ps.executeUpdate()
+        String sql = "UPDATE competencias " +
+                "SET competencia = ? WHERE id = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setString(1, competencia.toUpperCase())
+        statement.setInt(2, idCompetencia)
+
+        int linhasAtualizadas = statement.executeUpdate()
+
         connection.close()
         return linhasAtualizadas > 0
     }
 
     boolean deletarCompetencia(int idCompetencia) {
-
         Connection connection = conectar()
-        String sqlDelCandidatoComp = "DELETE FROM candidato_competencia WHERE id_competencias = ?"
-        PreparedStatement psCandidatoComp = connection.prepareStatement(sqlDelCandidatoComp)
-        psCandidatoComp.setInt(1, idCompetencia)
-        psCandidatoComp.executeUpdate()
-        String sqlDelVagaComp = "DELETE FROM vagas_competencias WHERE id_competencias = ?"
-        PreparedStatement psVagaComp = connection.prepareStatement(sqlDelVagaComp)
-        psVagaComp.setInt(1, idCompetencia)
-        psVagaComp.executeUpdate()
-        String sqlDelCompetencia = "DELETE FROM competencias WHERE id = ?"
-        PreparedStatement psCompetencia = connection.prepareStatement(sqlDelCompetencia)
-        psCompetencia.setInt(1, idCompetencia)
-        int linhasAtualizadas = psCompetencia.executeUpdate()
-        connection.close()
-        return linhasAtualizadas > 0
-    }
+        String sql = "DELETE FROM competencias WHERE id = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
 
+        statement.setInt(1, idCompetencia)
+        int linhasAfetadas = statement.executeUpdate()
+
+        connection.close()
+        return linhasAfetadas > 0
+    }
 }
