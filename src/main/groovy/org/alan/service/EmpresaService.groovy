@@ -12,7 +12,7 @@ class EmpresaService {
     }
 
     Empresa salvar(Empresa empresa) {
-        int idGerado = empresaDAO.insertEmpresa(empresa)
+        int idGerado = empresaDAO.inserir(empresa)
 
         if (idGerado == 0) {
             throw new Exception("Falha ao cadastrar empresa")

@@ -16,28 +16,41 @@ class EmpresaDAO {
         return connectionFactory.criarConexao()
     }
 
+    private Empresa criarEmpresa(ResultSet resultado) {
+        return new Empresa(
+                id: resultado.getInt("id"),
+                nome: resultado.getString("nome"),
+                email: resultado.getString("email"),
+                cnpj: resultado.getString("cnpj"),
+                cidade: resultado.getString("cidade"),
+                estado: resultado.getString("estado"),
+                pais: resultado.getString("pais"),
+                cep: resultado.getString("cep"),
+                descricao: resultado.getString("descricao"),
+                senha: resultado.getString("senha")
+        )
+    }
 
-    int insertEmpresa(Empresa empresa) {
+    int inserir(Empresa empresa) {
         Connection connection = conectar()
         String sql = "INSERT INTO empresa (nome, email, cnpj, descricao, pais, estado, cidade, cep, senha)" +
                 " VALUES(?, ? ,? ,? ,? ,?, ? ,? ,?)"
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ps.setString(1, empresa.nome)
-        ps.setString(2, empresa.email)
-        ps.setString(3, empresa.cnpj)
-        ps.setString(4, empresa.descricao)
-        ps.setString(5, empresa.pais)
-        ps.setString(6, empresa.estado)
-        ps.setString(7, empresa.cidade)
-        ps.setString(8, empresa.cep)
-        ps.setString(9, empresa.senha)
-        ps.executeUpdate()
-        ResultSet rs = ps.getGeneratedKeys()
+        PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        statement.setString(1, empresa.nome)
+        statement.setString(2, empresa.email)
+        statement.setString(3, empresa.cnpj)
+        statement.setString(4, empresa.descricao)
+        statement.setString(5, empresa.pais)
+        statement.setString(6, empresa.estado)
+        statement.setString(7, empresa.cidade)
+        statement.setString(8, empresa.cep)
+        statement.setString(9, empresa.senha)
+        statement.executeUpdate()
+        ResultSet resultado = statement.getGeneratedKeys()
 
         int idGerado = 0
-        if (rs.next()) {
-            idGerado = rs.getInt(1)
-            empresa.id = idGerado
+        if (resultado.next()) {
+            idGerado = resultado.getInt(1)
         }
         connection.close()
         return idGerado
@@ -46,49 +59,26 @@ class EmpresaDAO {
     Empresa buscarEmpresaPorId(int idEmpresa) {
         Connection connection = conectar()
         String sql = "SELECT * FROM empresa WHERE id = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idEmpresa)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setInt(1, idEmpresa)
+        ResultSet resultado = statement.executeQuery()
         Empresa empresa = null
-        if (rs.next()) {
-            empresa = new Empresa(
-                    id: rs.getInt("id"),
-                    nome: rs.getString("nome"),
-                    email: rs.getString("email"),
-                    cnpj: rs.getString("cnpj"),
-                    cidade: rs.getString("cidade"),
-                    estado: rs.getString("estado"),
-                    pais: rs.getString("pais"),
-                    cep: rs.getString("cep"),
-                    descricao: rs.getString("descricao"),
-                    senha: rs.getString("senha")
-            )
+        if (resultado.next()) {
+            empresa = criarEmpresa(resultado)
         }
         connection.close()
         return empresa
     }
 
     Empresa buscarEmpresaPorCnpj(String cnpjEmpresa) {
-
         Connection connection = conectar()
         String sql = "SELECT * FROM empresa WHERE cnpj = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, cnpjEmpresa)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, cnpjEmpresa)
+        ResultSet resultado = statement.executeQuery()
         Empresa empresa = null
-        if (rs.next()) {
-            empresa = new Empresa(
-                    id: rs.getInt("id"),
-                    nome: rs.getString("nome"),
-                    email: rs.getString("email"),
-                    cnpj: rs.getString("cnpj"),
-                    cidade: rs.getString("cidade"),
-                    estado: rs.getString("estado"),
-                    pais: rs.getString("pais"),
-                    cep: rs.getString("cep"),
-                    descricao: rs.getString("descricao"),
-                    senha: rs.getString("senha")
-            )
+        if (resultado.next()) {
+            empresa = criarEmpresa(resultado)
         }
         connection.close()
         return empresa
@@ -97,22 +87,11 @@ class EmpresaDAO {
     List<Empresa> listarEmpresas() {
         Connection connection = conectar()
         String sql = "SELECT * FROM empresa"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        ResultSet resultado = statement.executeQuery()
         List<Empresa> empresas = []
-        while (rs.next()) {
-            Empresa empresa = new Empresa(
-                    id: rs.getInt("id"),
-                    nome: rs.getString("nome"),
-                    email: rs.getString("email"),
-                    cnpj: rs.getString("cnpj"),
-                    cidade: rs.getString("cidade"),
-                    estado: rs.getString("estado"),
-                    pais: rs.getString("pais"),
-                    cep: rs.getString("cep"),
-                    descricao: rs.getString("descricao"),
-                    senha: rs.getString("senha")
-            )
+        while (resultado.next()) {
+            Empresa empresa = criarEmpresa(resultado)
             empresas.add(empresa)
         }
         connection.close()
@@ -122,54 +101,29 @@ class EmpresaDAO {
     boolean atualizarEmpresa(Empresa empresa) {
         Connection connection = conectar()
         String sql = "UPDATE empresa SET nome = ?, email = ?, descricao = ?, pais = ?, estado = ?, cidade = ?, cep = ?, senha = ? WHERE cnpj = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, empresa.getNome())
-        ps.setString(2, empresa.email)
-        ps.setString(3, empresa.descricao)
-        ps.setString(4, empresa.pais)
-        ps.setString(5, empresa.estado)
-        ps.setString(6, empresa.cidade)
-        ps.setString(7, empresa.cep)
-        ps.setString(8, empresa.senha)
-        ps.setString(9, empresa.cnpj)
-        int linhasAtualizadas = ps.executeUpdate()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, empresa.nome)
+        statement.setString(2, empresa.email)
+        statement.setString(3, empresa.descricao)
+        statement.setString(4, empresa.pais)
+        statement.setString(5, empresa.estado)
+        statement.setString(6, empresa.cidade)
+        statement.setString(7, empresa.cep)
+        statement.setString(8, empresa.senha)
+        statement.setString(9, empresa.cnpj)
+        int linhasAtualizadas = statement.executeUpdate()
         connection.close()
         return linhasAtualizadas > 0
     }
 
     boolean deletarEmpresa(String cnpjEmpresa) {
-
         Connection connection = conectar()
-        String sql = "SELECT id FROM empresa WHERE cnpj = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, cnpjEmpresa)
-        ResultSet rs = ps.executeQuery()
-        if (!rs.next()) {
-            connection.close()
-            return false
-        }
-        int idEmpresa = rs.getInt("id")
+        String sql = "DELETE FROM empresa WHERE cnpj = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+        statement.setString(1, cnpjEmpresa)
+        int linhasAfetadas = statement.executeUpdate()
         connection.close()
-        String sqlBuscarVagas = "SELECT id FROM vagas WHERE id_empresa = ?"
-        Connection connectionVagas = conectar()
-        PreparedStatement psVagas = connectionVagas.prepareStatement(sqlBuscarVagas)
-        psVagas.setInt(1, idEmpresa)
-        ResultSet rsVagas = psVagas.executeQuery()
-        List<Integer> idsVagas = []
-        while (rsVagas.next()) {
-            idsVagas.add(rsVagas.getInt("id"))
-        }
-        connectionVagas.close()
-        idsVagas.each { idVaga ->
-            deletarVaga(idVaga)
-        }
-        Connection connectionEmpresa = conectar()
-        String sqlDelEmpresa = "DELETE FROM empresa WHERE cnpj = ?"
-        PreparedStatement psEmpresa = connectionEmpresa.prepareStatement(sqlDelEmpresa)
-        psEmpresa.setString(1, cnpjEmpresa)
-        int linhasAtualizadas = psEmpresa.executeUpdate()
-        connectionEmpresa.close()
-        return linhasAtualizadas > 0
+        return linhasAfetadas > 0
     }
 
 }

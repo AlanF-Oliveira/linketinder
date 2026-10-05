@@ -35,7 +35,7 @@ CREATE TABLE vagas
     descricao  VARCHAR(100) NOT NULL,
     estado     CHAR(2)      NOT NULL,
     cidade     VARCHAR(33)  NOT NULL,
-    id_empresa INT          NOT NULL REFERENCES empresa (id)
+    id_empresa INT NOT NULL REFERENCES empresa (id) ON DELETE CASCADE
 );
 
 CREATE TABLE competencias
@@ -52,8 +52,9 @@ CREATE TABLE candidato_competencia
 );
 CREATE TABLE vagas_competencias
 (
-    id_vagas        INT NOT NULL REFERENCES vagas (id),
+    id_vagas INT NOT NULL REFERENCES vagas (id) ON DELETE CASCADE,
     id_competencias INT NOT NULL REFERENCES competencias (id),
+
     PRIMARY KEY (id_vagas, id_competencias)
 );
 
