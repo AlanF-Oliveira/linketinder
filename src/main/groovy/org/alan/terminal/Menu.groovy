@@ -1,5 +1,9 @@
 package org.alan.terminal
 
+import org.alan.dao.CandidatoDAO
+import org.alan.dao.CompetenciaDAO
+import org.alan.dao.EmpresaDAO
+import org.alan.dao.VagaDAO
 import org.alan.database.BancoDeDados
 import org.alan.service.CandidatoService
 import org.alan.service.CompetenciaService
@@ -8,10 +12,14 @@ import org.alan.service.VagaService
 
 class Menu {
     BancoDeDados bd = new BancoDeDados()
-    CandidatoService candidatoService = new CandidatoService(bd)
-    EmpresaService empresaService = new EmpresaService(bd)
-    VagaService vagaService = new VagaService(bd)
-    CompetenciaService competenciaService = new CompetenciaService(bd)
+    CandidatoDAO candidatoDAO = new CandidatoDAO()
+    CompetenciaDAO competenciaDAO = new CompetenciaDAO()
+    EmpresaDAO empresaDAO = new EmpresaDAO()
+    VagaDAO vagaDAO = new VagaDAO()
+    CandidatoService candidatoService = new CandidatoService(candidatoDAO)
+    EmpresaService empresaService = new EmpresaService(empresaDAO)
+    VagaService vagaService = new VagaService(vagaDAO)
+    CompetenciaService competenciaService = new CompetenciaService(competenciaDAO)
     CandidatoMenu candidatoMenu = new CandidatoMenu(candidatoService)
     EmpresaMenu empresaMenu = new EmpresaMenu(empresaService)
     VagasMenu vagasMenu = new VagasMenu(vagaService, empresaService)

@@ -1,52 +1,124 @@
 package org.alan.service
 
-import org.alan.database.BancoDeDados
+import org.alan.dao.CandidatoDAO
 import org.alan.model.Candidato
 import spock.lang.Specification
 
 class CandidatoServiceSpec extends Specification {
 
-    BancoDeDadosFalso bancoDeDados = new BancoDeDadosFalso()
-    CandidatoService candidatoService = new CandidatoService(bancoDeDados)
+    CandidatoDAO candidatoDAO
+    CandidatoService candidatoService
+    Candidato candidato
 
-    def "deve cadastrar candidato e retornar o registro com id"() {
+    def setup() {
+        candidatoDAO = Stub()
+        candidatoService = new CandidatoService(candidatoDAO)
+        candidato = new Candidato(nome: "Alan", cpf: "123")
+    }
+
+    def "deve cadastrar candidato com sucesso"() {
         given:
-        Candidato candidato = new Candidato(nome: "Alan", cpf: "123")
-        bancoDeDados.idGerado = 10
+        candidatoDAO.inserir(candidato) >> 10
 
         when:
         Candidato resultado = candidatoService.salvar(candidato)
 
         then:
-        bancoDeDados.chamadas == 1
         resultado.is(candidato)
         resultado.id == 10
     }
 
     def "deve informar falha quando o cadastro não gerar id"() {
         given:
-        Candidato candidato = new Candidato(nome: "Alan", cpf: "123")
+        candidatoDAO.inserir(candidato) >> 0
 
         when:
         candidatoService.salvar(candidato)
 
         then:
-        bancoDeDados.chamadas == 1
         Exception erro = thrown()
         erro.message == "Falha ao cadastrar candidato"
     }
 
-    private static class BancoDeDadosFalso extends BancoDeDados {
-        int chamadas
-        int idGerado
+    def "deve buscar candidato por CPF"() {
+        given:
+        candidatoDAO.buscarCandidatoPorCpf("123") >> candidato
 
-        @Override
-        int insertCandidato(Candidato candidato) {
-            chamadas++
-            if (idGerado > 0) {
-                candidato.id = idGerado
-            }
-            return idGerado
-        }
+        when:
+        Candidato resultado = candidatoService.buscarPorCpf("123")
+
+        then:
+        resultado.is(candidato)
+    }
+
+    def "deve informar erro quando candidato não for encontrado"() {
+        given:
+        candidatoDAO.buscarCandidatoPorCpf("123") >> null
+
+        when:
+        candidatoService.buscarPorCpf("123")
+
+        then:
+        Exception erro = thrown()
+        erro.message == "Candidato não encontrado"
+    }
+
+    def "deve listar candidatos"() {
+        given:
+        Candidato outroCandidato = new Candidato(nome: "Maria", cpf: "456")
+        List<Candidato> candidatosEsperados = [candidato, outroCandidato]
+        candidatoDAO.listarCandidatos() >> candidatosEsperados
+
+        when:
+        List<Candidato> resultado = candidatoService.listarCandidatos()
+
+        then:
+        resultado == candidatosEsperados
+    }
+
+    def "deve atualizar candidato com sucesso"() {
+        given:
+        candidatoDAO.atualizarCandidato(candidato) >> true
+
+        when:
+        Candidato resultado = candidatoService.atualizarCandidato(candidato)
+
+        then:
+        resultado.is(candidato)
+    }
+
+    def "deve informar erro ao atualizar candidato inexistente"() {
+        given:
+        candidatoDAO.atualizarCandidato(candidato) >> false
+
+        when:
+        candidatoService.atualizarCandidato(candidato)
+
+        then:
+        Exception erro = thrown()
+        erro.message == "Candidato não encontrado"
+    }
+
+    def "deve deletar candidato com sucesso"() {
+        given:
+        candidatoDAO.deletarCandidato("123") >> true
+
+        when:
+        candidatoService.deletarCandidato("123")
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "deve informar erro ao deletar candidato inexistente"() {
+        given:
+        candidatoDAO.deletarCandidato("123") >> false
+
+        when:
+        candidatoService.deletarCandidato("123")
+
+        then:
+        Exception erro = thrown()
+        erro.message == "Candidato não encontrado"
     }
 }
