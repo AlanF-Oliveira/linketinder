@@ -18,51 +18,95 @@ class VagaDAO {
         return connectionFactory.criarConexao()
     }
 
-    void insertVagasCompetencia(int idVaga, int idCompetencia) {
-        Connection connection = conectar()
-        String sql = "INSERT INTO vagas_competencias (id_vagas, id_competencias) VALUES (?,?)"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idVaga)
-        ps.setInt(2, idCompetencia)
-        ps.executeUpdate()
-        connection.close()
+    private Vaga criarVaga(ResultSet resultado) {
+        int idVaga = resultado.getInt("id")
+
+        return new Vaga(
+                id: idVaga,
+                titulo: resultado.getString("titulo"),
+                descricao: resultado.getString("descricao"),
+                estado: resultado.getString("estado"),
+                cidade: resultado.getString("cidade"),
+                competenciasExigidas: buscarCompetenciasDaVaga(idVaga),
+                empresa: empresaDAO.buscarEmpresaPorId(
+                        resultado.getInt("id_empresa")
+                )
+        )
     }
 
-    int insertVaga(Vaga vaga, int idEmpresa) {
+    int inserir(Vaga vaga, int idEmpresa) {
         Connection connection = conectar()
-        String sql = "INSERT INTO vagas (titulo, descricao, estado, cidade, id_empresa) VALUES(?, ?, ? ,?, ?)"
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ps.setString(1, vaga.titulo)
-        ps.setString(2, vaga.descricao)
-        ps.setString(3, vaga.estado)
-        ps.setString(4, vaga.cidade)
-        ps.setInt(5, idEmpresa)
-        ps.executeUpdate()
-        ResultSet rs = ps.getGeneratedKeys()
-        int idGerado = 0;
-        if (rs.next()) {
-            idGerado = rs.getInt("id")
-            vaga.id = idGerado
+        String sql = "INSERT INTO vagas " +
+                "(titulo, descricao, estado, cidade, id_empresa) " +
+                "VALUES (?, ?, ?, ?, ?)"
+        PreparedStatement statement = connection.prepareStatement(
+                sql,
+                Statement.RETURN_GENERATED_KEYS
+        )
+
+        statement.setString(1, vaga.titulo)
+        statement.setString(2, vaga.descricao)
+        statement.setString(3, vaga.estado)
+        statement.setString(4, vaga.cidade)
+        statement.setInt(5, idEmpresa)
+        statement.executeUpdate()
+
+        ResultSet resultado = statement.getGeneratedKeys()
+        int idGerado = 0
+
+        if (resultado.next()) {
+            idGerado = resultado.getInt(1)
         }
+
         connection.close()
-        vaga.competenciasExigidas.each { nomeCompetencia ->
-            int idCompetencia = competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
-            insertVagasCompetencia(idGerado, idCompetencia)
+
+        if (idGerado == 0) {
+            return 0
         }
+
+        vaga.competenciasExigidas.each { nomeCompetencia ->
+            int idCompetencia =
+                    competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
+
+            associarCompetenciaAVaga(idGerado, idCompetencia)
+        }
+
         return idGerado
     }
 
-    List<String> buscarCompetenciasDaVaga(int idVaga) {
+    private void associarCompetenciaAVaga(
+            int idVaga,
+            int idCompetencia
+    ) {
         Connection connection = conectar()
-        String sql = "SELECT c.competencia FROM vagas_competencias vc JOIN competencias c ON vc.id_competencias = c.id WHERE vc.id_vagas = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idVaga)
-        ResultSet rs = ps.executeQuery()
+        String sql = "INSERT INTO vagas_competencias " +
+                "(id_vagas, id_competencias) VALUES (?, ?)"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setInt(1, idVaga)
+        statement.setInt(2, idCompetencia)
+        statement.executeUpdate()
+
+        connection.close()
+    }
+
+    private List<String> buscarCompetenciasDaVaga(int idVaga) {
+        Connection connection = conectar()
+        String sql = "SELECT c.competencia " +
+                "FROM vagas_competencias vc " +
+                "JOIN competencias c ON vc.id_competencias = c.id " +
+                "WHERE vc.id_vagas = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setInt(1, idVaga)
+        ResultSet resultado = statement.executeQuery()
+
         List<String> competencias = []
-        while (rs.next()) {
-            String competencia = rs.getString("competencia")
-            competencias.add(competencia)
+
+        while (resultado.next()) {
+            competencias.add(resultado.getString("competencia"))
         }
+
         connection.close()
         return competencias
     }
@@ -70,21 +114,17 @@ class VagaDAO {
     Vaga buscarVagaPorId(int idVaga) {
         Connection connection = conectar()
         String sql = "SELECT * FROM vagas WHERE id = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setInt(1, idVaga)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setInt(1, idVaga)
+        ResultSet resultado = statement.executeQuery()
+
         Vaga vaga = null
-        if (rs.next()) {
-            vaga = new Vaga(
-                    id: rs.getInt("id"),
-                    titulo: rs.getString("titulo"),
-                    descricao: rs.getString("descricao"),
-                    estado: rs.getString("estado"),
-                    cidade: rs.getString("cidade"),
-                    competenciasExigidas: buscarCompetenciasDaVaga(rs.getInt("id")),
-                    empresa: empresaDAO.buscarEmpresaPorId(rs.getInt("id_empresa"))
-            )
+
+        if (resultado.next()) {
+            vaga = criarVaga(resultado)
         }
+
         connection.close()
         return vaga
     }
@@ -92,65 +132,73 @@ class VagaDAO {
     List<Vaga> listarVagas() {
         Connection connection = conectar()
         String sql = "SELECT * FROM vagas"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ResultSet rs = ps.executeQuery()
+        PreparedStatement statement = connection.prepareStatement(sql)
+        ResultSet resultado = statement.executeQuery()
+
         List<Vaga> vagas = []
-        while (rs.next()) {
-            Vaga vaga = new Vaga(
-                    id: rs.getInt("id"),
-                    titulo: rs.getString("titulo"),
-                    descricao: rs.getString("descricao"),
-                    estado: rs.getString("estado"),
-                    cidade: rs.getString("cidade"),
-                    competenciasExigidas: buscarCompetenciasDaVaga(rs.getInt("id")),
-                    empresa: empresaDAO.buscarEmpresaPorId(rs.getInt("id_empresa"))
-            )
-            vagas.add(vaga)
+
+        while (resultado.next()) {
+            vagas.add(criarVaga(resultado))
         }
+
         connection.close()
         return vagas
     }
 
     boolean atualizarVaga(Vaga vaga) {
         Connection connection = conectar()
-        String sql = "UPDATE vagas SET titulo = ?, descricao = ?, estado = ?,  cidade = ? WHERE id = ?"
-        PreparedStatement ps = connection.prepareStatement(sql)
-        ps.setString(1, vaga.titulo)
-        ps.setString(2, vaga.descricao)
-        ps.setString(3, vaga.estado)
-        ps.setString(4, vaga.cidade)
-        ps.setInt(5, vaga.id)
-        int linhasAtualizadas = ps.executeUpdate()
-        connection.close()
-        if (linhasAtualizadas > 0) {
-            Connection connectionCompetencias = conectar()
-            String sqlDel = "DELETE FROM vagas_competencias WHERE id_vagas = ?"
-            PreparedStatement psDelete = connectionCompetencias.prepareStatement(sqlDel)
-            psDelete.setInt(1, vaga.id)
-            psDelete.executeUpdate()
+        String sql = "UPDATE vagas SET titulo = ?, descricao = ?, " +
+                "estado = ?, cidade = ? WHERE id = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
 
-            connectionCompetencias.close()
-            vaga.competenciasExigidas.each { nomeCompetencia ->
-                int idCompetencia = competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
-                insertVagasCompetencia(vaga.id, idCompetencia)
-            }
-            return true
+        statement.setString(1, vaga.titulo)
+        statement.setString(2, vaga.descricao)
+        statement.setString(3, vaga.estado)
+        statement.setString(4, vaga.cidade)
+        statement.setInt(5, vaga.id)
+
+        int linhasAtualizadas = statement.executeUpdate()
+        connection.close()
+
+        if (linhasAtualizadas == 0) {
+            return false
         }
-        return false
+
+        atualizarCompetenciasDaVaga(vaga)
+        return true
+    }
+
+    private void atualizarCompetenciasDaVaga(Vaga vaga) {
+        removerCompetenciasDaVaga(vaga.id)
+
+        vaga.competenciasExigidas.each { nomeCompetencia ->
+            int idCompetencia =
+                    competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
+
+            associarCompetenciaAVaga(vaga.id, idCompetencia)
+        }
+    }
+
+    private void removerCompetenciasDaVaga(int idVaga) {
+        Connection connection = conectar()
+        String sql = "DELETE FROM vagas_competencias WHERE id_vagas = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setInt(1, idVaga)
+        statement.executeUpdate()
+
+        connection.close()
     }
 
     boolean deletarVaga(int idVaga) {
         Connection connection = conectar()
-        String sqlDelComp = "DELETE FROM vagas_competencias WHERE id_vagas = ?"
-        PreparedStatement psCompetencias = connection.prepareStatement(sqlDelComp)
-        psCompetencias.setInt(1, idVaga)
-        psCompetencias.executeUpdate()
-        String sqlDelVaga = "DELETE FROM vagas WHERE id = ?"
-        PreparedStatement psVaga = connection.prepareStatement(sqlDelVaga)
-        psVaga.setInt(1, idVaga)
-        int linhasAtualizadas = psVaga.executeUpdate()
+        String sql = "DELETE FROM vagas WHERE id = ?"
+        PreparedStatement statement = connection.prepareStatement(sql)
+
+        statement.setInt(1, idVaga)
+        int linhasAfetadas = statement.executeUpdate()
+
         connection.close()
-        return linhasAtualizadas > 0
+        return linhasAfetadas > 0
     }
 }
-
