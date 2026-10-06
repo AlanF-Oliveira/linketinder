@@ -2,73 +2,102 @@
 
 **Autor:** Alan Ferreira Oliveira
 
-Aplicação backend de recrutamento inspirada no Linkedin e no Tinder, feita em Groovy.
+Aplicação de recrutamento inspirada no LinkedIn e no Tinder, desenvolvida em Groovy. O backend utiliza PostgreSQL para persistência e possui uma interface por terminal.
 
 ## Tecnologias
 
 - Groovy 4
 - Gradle
-- Spock Framework (testes unitários)
+- PostgreSQL
+- JDBC
+- Spock Framework
+- TypeScript no frontend
+
+## Configuração do banco
+
+Crie um banco PostgreSQL chamado `linketinder` e execute o script:
+
+```text
+src/main/groovy/org/alan/database/linketinder.sql
+```
+
+A senha do usuário `postgres` deve ser informada pela variável de ambiente `DB_SENHA`.
+
+No terminal:
+
+```bash
+export DB_SENHA='SUA_SENHA'
+```
+
+Também é possível configurar essa variável nas opções de execução do IntelliJ.
 
 ## Como executar
 
 ```bash
-git clone https://github.com/AlanF-Oliveira/linketinder.git
-cd linketinder
 ./gradlew run
 ```
 
-Ou rode a classe `org.alan.Terminal.Menu` diretamente pela IDE.
+A classe principal da aplicação é:
 
-## Como rodar os testes
+```text
+org.alan.Main
+```
+
+## Como executar os testes
 
 ```bash
 ./gradlew test
 ```
 
-## Sobre a solução
+Os testes unitários utilizam Spock e isolam os services por meio de stubs dos DAOs.
 
-O projeto é organizado em pacotes (`Model`, `usuarios`, `Terminal`, `service`). Candidatos e empresas compartilham atributos comuns (nome, e-mail, CEP, estado e descrição) através da interface `Pessoa` e da classe abstrata `Usuario`, da qual `Candidato` e `Empresa` herdam. Cada candidato tem CPF, idade e uma lista de competências; cada empresa tem CNPJ, país e uma lista de competências desejadas.
+## Organização do backend
 
-O sistema mantém 5 candidatos e 5 empresas pré-cadastrados em memória. O menu no terminal permite listar candidatos, listar empresas, cadastrar um novo candidato e cadastrar uma nova empresa.
+O backend está dividido nas seguintes camadas:
 
-O cadastro é feito pelas classes `CandidatoService` e `EmpresaMenu`, que inserem novos usuários nas listas de `UsuariosCadastrados`.
+- `model`: representa candidatos, empresas e vagas;
+- `dao`: realiza o acesso ao PostgreSQL;
+- `service`: contém as regras da aplicação;
+- `terminal`: controla a interação pelo menu;
+- `database`: contém a criação da conexão e o script SQL.
+
+Cada entidade possui seu próprio DAO:
+
+- `CandidatoDAO`
+- `EmpresaDAO`
+- `VagaDAO`
+- `CompetenciaDAO`
+
+## Refatoração e Clean Code
+
+As principais melhorias realizadas foram:
+
+- separação da antiga classe de banco em DAOs por entidade;
+- criação da `ConnectionFactory`;
+- uso de injeção dos DAOs nos services;
+- nomes mais claros para métodos e variáveis;
+- extração de métodos menores para evitar repetição;
+- remoção de código antigo e não utilizado;
+- uso de `ON DELETE CASCADE` nas tabelas associativas;
+- tratamento de falhas nos services e na configuração da conexão;
+- ampliação dos testes unitários de candidatos, empresas, vagas e competências.
+
+Essas mudanças reduziram duplicações e deixaram as responsabilidades das classes mais claras.
 
 ## Frontend
 
-Versão em TypeScript do frontend do Linketinder. Ainda não se comunica com o backend Groovy, os dados são mantidos em memória, no navegador.
+O frontend foi desenvolvido em TypeScript e mantém seus dados em memória no navegador.
 
-### Tecnologias
-- TypeScript
-- Vite
-- Bootstrap 5
-- Chart.js
+Para executar:
 
-### Como executar
 ```bash
 cd frontend
-npm i
+npm install
 npm run dev
 ```
-Acesse `http://localhost:5173` no navegador.
 
-### Sobre a solução
+Acesse:
 
-O sistema é uma SPA (Single Page Application): uma única página HTML, com as telas trocando de conteúdo via JavaScript, sem recarregar. As telas disponíveis são:
-
-- Tela inicial, com escolha de perfil
-- Cadastro de candidato e cadastro de empresa
-- Lista de vagas disponíveis
-- Cadastro de vaga 
-- Perfil da empresa: lista de candidatos anônimos e gráfico de barras com a quantidade de candidatos por competência
-
-## Evolução (Bando de dados)
-
-Backend agora persiste no PostgreSQL via JDBC.
-
-- `BancoDeDados`: classe única com o CRUD das 4 tabelas
-- Services (`CandidatoService`, `EmpresaService`, `VagaService`, `CompetenciaService`) fazem a ponte entre o Menu e o banco
-- Menu dividido em uma classe por entidade, cada uma com seu submenu
-
-
-![Diagrama do banco](./banco/schema.png)
+```text
+http://localhost:5173
+```
