@@ -4,14 +4,13 @@ import org.alan.dao.CandidatoDAO
 import org.alan.dao.CompetenciaDAO
 import org.alan.dao.EmpresaDAO
 import org.alan.dao.VagaDAO
-import org.alan.database.BancoDeDados
 import org.alan.service.CandidatoService
 import org.alan.service.CompetenciaService
 import org.alan.service.EmpresaService
 import org.alan.service.VagaService
 
 class Menu {
-    BancoDeDados bd = new BancoDeDados()
+
     CandidatoDAO candidatoDAO = new CandidatoDAO()
     CompetenciaDAO competenciaDAO = new CompetenciaDAO()
     EmpresaDAO empresaDAO = new EmpresaDAO()
