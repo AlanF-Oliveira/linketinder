@@ -1,7 +1,6 @@
 package org.alan.service
 
 import org.alan.dao.CompetenciaDAO
-import org.alan.database.BancoDeDados
 
 class CompetenciaService {
     private final CompetenciaDAO competenciaDAO

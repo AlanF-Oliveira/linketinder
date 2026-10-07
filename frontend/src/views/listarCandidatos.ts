@@ -5,7 +5,10 @@ import { criarGraficoCompetencias } from './graficoCompetencias';
 import { criarAreaEmpresa } from './areaEmpresa';
 import { VagaService } from '../services/VagaService';
 
-export function criarListaCandidatos(app: HTMLElement, candidatoService: CandidatoService, empresaService: EmpresaService, vagaService: VagaService) {
+export function criarListaCandidatos(app: HTMLElement,
+  candidatoService: CandidatoService,
+  empresaService: EmpresaService,
+  vagaService: VagaService) {
   const candidatos = candidatoService.listarCandidatos();
 
   const linhasHtml = candidatos

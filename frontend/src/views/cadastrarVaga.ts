@@ -4,7 +4,10 @@ import { EmpresaService } from "../services/EmpresaService";
 import { CandidatoService } from "../services/CandidatoService";
 import { criarAreaEmpresa } from "./areaEmpresa";
 
-export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, empresaService: EmpresaService, candidatoService: CandidatoService) {
+export function criarCadastroVaga(app: HTMLElement,
+  vagaService: VagaService,
+  empresaService: EmpresaService,
+  candidatoService: CandidatoService) {
   const empresas = empresaService.listarEmpresas();
 
   const opcoesEmpresas = empresas
@@ -47,15 +50,15 @@ export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, em
   const form = document.getElementById('form-vaga') as HTMLFormElement;
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
+    const dadosFormulario = new FormData(form);
 
-    const empresaCnpj = formData.get('empresaCnpj') as string;
-    const titulo = formData.get('titulo') as string;
-    const descricao = formData.get('descricao') as string;
-    const competenciasExigidas = (formData.get('competenciasExigidas') as string).split(',').map(c => c.trim());
+    const empresaCnpj = dadosFormulario.get('empresaCnpj') as string;
+    const titulo = dadosFormulario.get('titulo') as string;
+    const descricao = dadosFormulario.get('descricao') as string;
+    const competenciasExigidas = (dadosFormulario.get('competenciasExigidas') as string).split(',').map(competencia => competencia.trim());
 
     try {
-      const empresa = empresas.find(e => e.cnpj === empresaCnpj);
+      const empresa = empresas.find(empresaCadastrada => empresaCadastrada.cnpj === empresaCnpj);
       if (!empresa) {
         throw new Error(`Empresa com CNPJ ${empresaCnpj} não encontrada.`);
       }
@@ -63,7 +66,7 @@ export function criarCadastroVaga(app: HTMLElement, vagaService: VagaService, em
       vagaService.criarVaga(vaga);
       criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Erro ao cadastrar vaga')
+      alert(error instanceof Error ? error.message : 'Erro ao cadastrar vaga');
     }
   });
 }

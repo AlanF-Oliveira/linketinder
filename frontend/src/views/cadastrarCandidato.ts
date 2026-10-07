@@ -4,8 +4,11 @@ import { EmpresaService } from "../services/EmpresaService";
 import { VagaService } from "../services/VagaService";
 import { criarAreaCandidato } from "./areaCandidato";
 
-export function criarCadastroCandidato(app: HTMLElement, candidatoService: CandidatoService, empresaService: EmpresaService, vagaService: VagaService) {
-  app.innerHTML = `
+export function criarCadastroCandidato(app: HTMLElement,
+    candidatoService: CandidatoService,
+    empresaService: EmpresaService,
+    vagaService: VagaService) {
+    app.innerHTML = `
     <div class="container mt-4">
         <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
         <h2>Cadastro de Candidato</h2>
@@ -24,32 +27,44 @@ export function criarCadastroCandidato(app: HTMLElement, candidatoService: Candi
     </div>
   `;
 
-  const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
-  btnVoltar.addEventListener('click', () => {
-    criarAreaCandidato(app, candidatoService, empresaService, vagaService);
-  });
+    const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
+    btnVoltar.addEventListener('click', () => {
+        criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+    });
 
-  const form = document.getElementById('form-candidato') as HTMLFormElement;
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
+    const form = document.getElementById('form-candidato') as HTMLFormElement;
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const dadosFormulario = new FormData(form);
 
-    const nome = formData.get('nome') as string;
-    const email = formData.get('email') as string;
-    const cep = formData.get('cep') as string;
-    const estado = formData.get('estado') as string;
-    const descricao = formData.get('descricao') as string;
-    const cpf = formData.get('cpf') as string;
-    const idade = Number(formData.get('idade'));
-    const formacao = formData.get('formacao') as string
-    const competencias = (formData.get('competencias') as string).split(',').map(c => c.trim());
+        const nome = dadosFormulario.get('nome') as string;
+        const email = dadosFormulario.get('email') as string;
+        const cep = dadosFormulario.get('cep') as string;
+        const estado = dadosFormulario.get('estado') as string;
+        const descricao = dadosFormulario.get('descricao') as string;
+        const cpf = dadosFormulario.get('cpf') as string;
+        const idade = Number(dadosFormulario.get('idade'));
+        const formacao = dadosFormulario.get('formacao') as string;
+        const competencias = (dadosFormulario.get('competencias') as string)
+            .split(',')
+            .map(competencia => competencia.trim());
 
-    const candidato = new Candidato(nome, email, cep, estado, descricao, cpf, idade, formacao, competencias);
-    try {
-      candidatoService.salvarCandidato(candidato);
-      criarAreaCandidato(app, candidatoService, empresaService, vagaService);
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Erro ao salvar candidato.');
-    }
-  });
+        const candidato = new Candidato(
+            nome,
+            email,
+            cep,
+            estado,
+            descricao,
+            cpf,
+            idade,
+            formacao,
+            competencias
+        );
+        try {
+            candidatoService.salvarCandidato(candidato);
+            criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+        } catch (error) {
+            alert(error instanceof Error ? error.message : 'Erro ao salvar candidato.');
+        }
+    });
 }

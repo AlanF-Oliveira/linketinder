@@ -12,6 +12,12 @@ class ConnectionFactory {
 
     Connection criarConexao() {
         String senha = System.getenv("DB_SENHA")
+        if (!senha) {
+            throw new IllegalStateException(
+                    "DB_SENHA não configurada"
+            )
+        }
+
         return DriverManager.getConnection(URL, USUARIO, senha)
     }
 }

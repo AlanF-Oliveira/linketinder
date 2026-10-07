@@ -47,13 +47,13 @@ CREATE TABLE competencias
 CREATE TABLE candidato_competencia
 (
     id_candidatos   INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
-    id_competencias INT NOT NULL REFERENCES competencias (id),
+    id_competencias INT NOT NULL REFERENCES competencias (id) ON DELETE CASCADE,
     PRIMARY KEY (id_candidatos, id_competencias)
 );
 CREATE TABLE vagas_competencias
 (
     id_vagas INT NOT NULL REFERENCES vagas (id) ON DELETE CASCADE,
-    id_competencias INT NOT NULL REFERENCES competencias (id),
+    id_competencias INT NOT NULL REFERENCES competencias (id) ON DELETE CASCADE,
 
     PRIMARY KEY (id_vagas, id_competencias)
 );
