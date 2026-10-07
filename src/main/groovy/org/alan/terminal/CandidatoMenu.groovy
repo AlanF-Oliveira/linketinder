@@ -79,7 +79,7 @@ class CandidatoMenu {
             String senha = sc.nextLine()
             print "Competências (separadas por vírgula): "
             String competenciasSc = sc.nextLine()
-            List<String> competencias = competenciasSc.split(",")*.trim()
+            List<String> competencias = competenciasSc.tokenize(",")*.trim()
 
             Candidato candidato = new Candidato(
                     nome: nome,
@@ -109,8 +109,6 @@ class CandidatoMenu {
         sc.nextLine()
         try {
             String cpf = sc.nextLine()
-            Candidato existente = candidatoService.buscarPorCpf(cpf)
-
             print "Nome: "
             String nome = sc.nextLine()
             print "Sobrenome: "

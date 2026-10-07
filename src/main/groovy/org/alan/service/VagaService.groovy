@@ -1,18 +1,19 @@
 package org.alan.service
 
+import org.alan.dao.VagaDAO
 import org.alan.database.BancoDeDados
 import org.alan.model.Vaga
 
 class VagaService {
 
-    BancoDeDados bd;
+    private final VagaDAO vagaDAO;
 
-    VagaService(BancoDeDados bd) {
-        this.bd = bd;
+    VagaService(VagaDAO vagaDAO) {
+        this.vagaDAO = vagaDAO;
     }
 
     Vaga criarVaga(Vaga vaga, int idEmpresa) {
-       bd.insertVaga(vaga, idEmpresa)
+       vagaDAO.insertVaga(vaga, idEmpresa)
         if(vaga.id == null){
             throw new Exception("Falha ao cadastrar vaga")
         }
@@ -20,11 +21,11 @@ class VagaService {
     }
 
     List<Vaga> listarVagas() {
-      return bd.listarVagas()
+      return vagaDAO.listarVagas()
     }
 
     Vaga buscarVagaPorId(int idVaga){
-      Vaga vaga = bd.buscarVagaPorId(idVaga)
+      Vaga vaga = vagaDAO.buscarVagaPorId(idVaga)
         if (vaga == null){
             throw new Exception("Vaga não encontrada")
         }
@@ -32,7 +33,7 @@ class VagaService {
     }
 
     Vaga atualizarVaga(Vaga vaga){
-       boolean atualizou =  bd.atualizarVaga(vaga)
+       boolean atualizou =  vagaDAO.atualizarVaga(vaga)
         if (!atualizou){
             throw new Exception("Vaga não encontrada")
         }
@@ -40,7 +41,7 @@ class VagaService {
     }
 
     void deletarVaga(int idVaga) {
-        boolean  deletou = bd.deletarVaga(idVaga)
+        boolean  deletou = vagaDAO.deletarVaga(idVaga)
         if(!deletou){
             throw new Exception("Vaga não encontrada")
         }

@@ -140,9 +140,9 @@ class EmpresaMenu {
         try {
             String cnpj = sc.nextLine()
             empresaService.deletarEmpresa(cnpj)
-            println "Empresa deletado com sucesso"
+            println "Empresa deletada com sucesso"
         } catch (Exception e) {
-            println "Erro ao deletar empreeesa: ${e.message}"
+            println "Erro ao deletar empresa: ${e.message}"
         }
         println()
     }

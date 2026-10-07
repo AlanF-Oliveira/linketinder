@@ -1,45 +1,36 @@
 package org.alan.model
 
+import spock.lang.Specification
 
-import spock.lang.Specification;
-
+import java.time.LocalDate
 
 class CandidatoSpec extends Specification {
-    Candidato candidato;
 
-    def "deve atualizar todos os campos do Candidato através dos setters"() {
-
+    def "deve atualizar os dados do candidato"() {
         given:
-        candidato = new Candidato(
-                nome: "Alan",
-                idade: 32,
-                email: "alan@gmail.com",
-                cpf: "123",
-                descricao: "dev",
-                estado: "Ceará",
-                cep: "600",
-                competencias: ["Spring Boot, Java, PostgreSQL"]);
+        Candidato candidato = new Candidato(nome: "Alan", cpf: "123")
+        LocalDate nascimento = LocalDate.of(1993, 5, 12)
 
         when:
-        candidato.setNome("Joao")
-        candidato.setIdade(33)
-        candidato.setEmail("joao@gmail.com")
-        candidato.setCpf("2321")
-        candidato.setDescricao("Desenvolvedor Pleno")
-        candidato.setEstado("Rio de Janeiro")
-        candidato.setCep("6002")
-        candidato.setCompetencias(["Spring Boot, Java, MongoDB"])
+        candidato.nome = "João"
+        candidato.sobrenome = "Silva"
+        candidato.nascimento = nascimento
+        candidato.email = "joao@gmail.com"
+        candidato.cpf = "456"
+        candidato.descricao = "Desenvolvedor"
+        candidato.estado = "Rio de Janeiro"
+        candidato.cep = "6002"
+        candidato.competencias = ["Java", "PostgreSQL"]
 
         then:
-        candidato.nome == "Joao";
-        candidato.idade == 33
+        candidato.nome == "João"
+        candidato.sobrenome == "Silva"
+        candidato.nascimento == nascimento
         candidato.email == "joao@gmail.com"
-        candidato.cpf == "2321"
-        candidato.descricao == "Desenvolvedor Pleno"
+        candidato.cpf == "456"
+        candidato.descricao == "Desenvolvedor"
         candidato.estado == "Rio de Janeiro"
         candidato.cep == "6002"
-        candidato.competencias == ["Spring Boot, Java, MongoDB"]
-
+        candidato.competencias == ["Java", "PostgreSQL"]
     }
-
 }
