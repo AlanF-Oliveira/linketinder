@@ -55,10 +55,10 @@ Os testes unitários utilizam Spock e isolam os services por meio de stubs dos D
 
 O backend está dividido nas seguintes camadas:
 
-- `model`: representa candidatos, empresas e vagas;
-- `dao`: realiza o acesso ao PostgreSQL;
-- `service`: contém as regras da aplicação;
-- `terminal`: controla a interação pelo menu;
+- `model`: representa candidatos, empresas e vagas.
+- `dao`: realiza o acesso ao PostgreSQL.
+- `service`: contém as regras da aplicação.
+- `terminal`: controla a interação pelo menu.
 - `database`: contém a criação da conexão e o script SQL.
 
 Cada entidade possui seu próprio DAO:
@@ -72,15 +72,16 @@ Cada entidade possui seu próprio DAO:
 
 As principais melhorias realizadas foram:
 
-- separação da antiga classe de banco em DAOs por entidade;
-- criação da `ConnectionFactory`;
-- uso de injeção dos DAOs nos services;
-- nomes mais claros para métodos e variáveis;
-- extração de métodos menores para evitar repetição;
-- remoção de código antigo e não utilizado;
-- uso de `ON DELETE CASCADE` nas tabelas associativas;
-- tratamento de falhas nos services e na configuração da conexão;
-- ampliação dos testes unitários de candidatos, empresas, vagas e competências.
+- Separação da antiga classe de banco em DAOs por entidade.
+- Criação da `ConnectionFactory`.
+- Uso de injeção dos DAOs nos services.
+- Uso de nomes mais claros para métodos e variáveis.
+- Extração de métodos menores para evitar repetição.
+- Remoção de código antigo e não utilizado.
+- Uso de `ON DELETE CASCADE` nas tabelas associativas.
+- Tratamento de falhas nos services e na configuração da conexão.
+- Padronização de nomes e formatação no frontend, com remoção de abreviações.
+- Ampliação dos testes unitários de candidatos, empresas, vagas e competências.
 
 Essas mudanças reduziram duplicações e deixaram as responsabilidades das classes mais claras.
 
