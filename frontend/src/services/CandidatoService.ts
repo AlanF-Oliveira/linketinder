@@ -1,46 +1,61 @@
 import { Candidato } from '../models/Candidato';
 
 export class CandidatoService {
-    private lista: Candidato[];
+    private candidatos: Candidato[];
 
-    constructor(lista: Candidato[]) {
-        this.lista = lista;
+    constructor(candidatos: Candidato[]) {
+        this.candidatos = candidatos;
     }
 
     salvarCandidato(candidato: Candidato): Candidato[] {
-        const jaExiste = this.lista.some(cand => cand.cpf === candidato.cpf);
-        if (jaExiste) {
-            throw new Error(`Candidato com o CPF ${candidato.cpf} já está cadastrado.`);
+        const cpfJaCadastrado = this.candidatos.some(
+            candidatoCadastrado => candidatoCadastrado.cpf === candidato.cpf
+        );
+
+        if (cpfJaCadastrado) {
+            throw new Error(
+                `Candidato com o CPF ${candidato.cpf} já está cadastrado.`
+            );
         }
 
-        this.lista.push(candidato);
-        console.log(this.lista)
-        return this.lista;
+        this.candidatos.push(candidato);
+        return this.candidatos;
     }
 
     listarCandidatos(): Candidato[] {
-        return this.lista;
+        return this.candidatos;
     }
 
-    atualizarCandidato(cpf: string, candidato: Candidato): Candidato[] {
-        const candidatoAtualizado = this.lista.find(cand => cand.cpf === cpf);
-        if (!candidatoAtualizado) {
-            throw new Error(`Candidato com o CPF ${cpf} não encontrado `)
+    atualizarCandidato(
+        cpf: string,
+        candidato: Candidato
+    ): Candidato[] {
+        const candidatoEncontrado = this.candidatos.find(
+            candidatoCadastrado => candidatoCadastrado.cpf === cpf
+        );
+
+        if (!candidatoEncontrado) {
+            throw new Error(
+                `Candidato com o CPF ${cpf} não encontrado.`
+            );
         }
 
-        Object.assign(candidatoAtualizado, candidato);
-        return this.lista
+        Object.assign(candidatoEncontrado, candidato);
+        return this.candidatos;
     }
 
     deletarCandidato(cpf: string): Candidato[] {
-        const index = this.lista.findIndex(candidato => candidato.cpf === cpf);
-        if (index === -1) {
-            throw new Error(`Candidato com o CPF ${cpf} não encontrado `)
+        const indiceCandidato = this.candidatos.findIndex(
+            candidato => candidato.cpf === cpf
+        );
+
+        if (indiceCandidato === -1) {
+            throw new Error(
+                `Candidato com o CPF ${cpf} não encontrado.`
+            );
         }
 
-        this.lista.splice(index, 1);
-        return this.lista;
+        this.candidatos.splice(indiceCandidato, 1);
+        return this.candidatos;
     }
-
-
 }

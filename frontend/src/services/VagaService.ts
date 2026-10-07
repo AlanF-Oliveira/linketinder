@@ -1,44 +1,58 @@
-import { Vaga } from "../models/Vaga";
+import { Vaga } from '../models/Vaga';
 
 export class VagaService {
+    private vagas: Vaga[];
 
-    private lista: Vaga[];
-
-    constructor(lista: Vaga[]) {
-        this.lista = lista;
+    constructor(vagas: Vaga[]) {
+        this.vagas = vagas;
     }
 
     criarVaga(vaga: Vaga): Vaga[] {
-        const jaExiste = this.lista.some(v => v.id === vaga.id)
-        if (jaExiste) {
-            throw new Error(`Vaga com ID ${vaga.id}já cadastrada `)
+        const idJaCadastrado = this.vagas.some(
+            vagaCadastrada => vagaCadastrada.id === vaga.id
+        );
+
+        if (idJaCadastrado) {
+            throw new Error(
+                `Vaga com ID ${vaga.id} já cadastrada.`
+            );
         }
-        this.lista.push(vaga)
-        return this.lista;
+
+        this.vagas.push(vaga);
+        return this.vagas;
     }
 
     listarVagas(): Vaga[] {
-        return this.lista;
+        return this.vagas;
     }
 
     alterarVaga(id: number, vaga: Vaga): Vaga[] {
-        const vagaAtualizada = this.lista.find(vagaAntiga => vagaAntiga.id === id);
-        if (!vagaAtualizada) {
-            throw new Error(`Vaga com ID ${id} não encontrada`);
+        const vagaEncontrada = this.vagas.find(
+            vagaCadastrada => vagaCadastrada.id === id
+        );
+
+        if (!vagaEncontrada) {
+            throw new Error(
+                `Vaga com ID ${id} não encontrada.`
+            );
         }
-        Object.assign(vagaAtualizada, vaga)
-        return this.lista
+
+        Object.assign(vagaEncontrada, vaga);
+        return this.vagas;
     }
 
     deletarVaga(id: number): Vaga[] {
-        const index = this.lista.findIndex(vaga => vaga.id === id);
-        if (index === -1) {
-            throw new Error(`Vaga com ID ${id} não encontrada`);
+        const indiceVaga = this.vagas.findIndex(
+            vaga => vaga.id === id
+        );
+
+        if (indiceVaga === -1) {
+            throw new Error(
+                `Vaga com ID ${id} não encontrada.`
+            );
         }
 
-        this.lista.splice(index, 1);
-        return this.lista;
+        this.vagas.splice(indiceVaga, 1);
+        return this.vagas;
     }
-
-
 }

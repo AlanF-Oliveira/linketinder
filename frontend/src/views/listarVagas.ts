@@ -4,7 +4,10 @@ import { anonimizarEmpresa } from '../models/Empresa';
 import { criarAreaCandidato } from './areaCandidato';
 import type { EmpresaService } from '../services/EmpresaService';
 
-export function criarListaVagas(app: HTMLElement, vagaService: VagaService, candidatoService: CandidatoService, empresaService: EmpresaService) {
+export function criarListaVagas(app: HTMLElement,
+  vagaService: VagaService,
+  candidatoService: CandidatoService,
+  empresaService: EmpresaService) {
   const vagas = vagaService.listarVagas();
 
   const cardsHtml = vagas
