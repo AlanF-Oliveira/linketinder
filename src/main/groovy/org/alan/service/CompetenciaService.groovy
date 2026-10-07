@@ -1,20 +1,20 @@
 package org.alan.service
 
-import org.alan.database.BancoDeDados
+import org.alan.dao.CompetenciaDAO
 
 class CompetenciaService {
-    BancoDeDados bd;
+    private final CompetenciaDAO competenciaDAO
 
-    CompetenciaService(BancoDeDados bd) {
-        this.bd = bd
+    CompetenciaService(CompetenciaDAO competenciaDAO) {
+        this.competenciaDAO = competenciaDAO
     }
 
     List<String> listarCompetencias() {
-        return bd.listarCompetencias()
+        return competenciaDAO.listarCompetencias()
     }
 
     boolean atualizarCompetencia(String competencia, int idCompetencia) {
-        boolean atualizou = bd.atualizarCompetencia(competencia, idCompetencia)
+        boolean atualizou = competenciaDAO.atualizarCompetencia(competencia, idCompetencia)
         if (!atualizou) {
             throw new Exception("Competência não encontrada")
         }
@@ -22,7 +22,7 @@ class CompetenciaService {
     }
 
     void deletarCompetencia(int idCompetencia) {
-        boolean deletou = bd.deletarCompetencia(idCompetencia)
+        boolean deletou = competenciaDAO.deletarCompetencia(idCompetencia)
         if (!deletou) {
             throw new Exception("Competência não encontrada")
         }

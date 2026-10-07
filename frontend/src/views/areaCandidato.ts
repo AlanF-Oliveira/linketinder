@@ -5,7 +5,10 @@ import { criarCadastroCandidato } from './cadastrarCandidato';
 import { criarListaVagas } from './listarVagas';
 import { criarTelaInicial } from './home';
 
-export function criarAreaCandidato(app: HTMLElement, candidatoService: CandidatoService, empresaService: EmpresaService, vagaService: VagaService) {
+export function criarAreaCandidato(app: HTMLElement,
+  candidatoService: CandidatoService,
+  empresaService: EmpresaService,
+  vagaService: VagaService) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
       <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>

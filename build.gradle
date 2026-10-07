@@ -1,5 +1,6 @@
 plugins {
     id 'groovy'
+    id 'application'
 }
 
 group = 'org.alan'
@@ -15,11 +16,22 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+application {
+    mainClass = 'org.alan.Main'
+}
+
+tasks.named('run') {
+    standardInput = System.in
+}
+
+
 dependencies {
     implementation 'org.apache.groovy:groovy:4.0.31'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
     implementation 'org.postgresql:postgresql:42.7.13'
+    testImplementation 'net.bytebuddy:byte-buddy:1.14.19'
 }
 test {
     useJUnitPlatform()
 }
+

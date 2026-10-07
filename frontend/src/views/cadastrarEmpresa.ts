@@ -4,7 +4,10 @@ import { CandidatoService } from "../services/CandidatoService";
 import { criarAreaEmpresa } from "./areaEmpresa";
 import type { VagaService } from "../services/VagaService";
 
-export function criarCadastroEmpresa(app: HTMLElement, empresaService: EmpresaService, candidatoService: CandidatoService, vagaService: VagaService) {
+export function criarCadastroEmpresa(app: HTMLElement,
+  empresaService: EmpresaService,
+  candidatoService: CandidatoService,
+  vagaService: VagaService) {
   app.innerHTML = `
     <div class="container mt-4">
       <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
@@ -31,23 +34,24 @@ export function criarCadastroEmpresa(app: HTMLElement, empresaService: EmpresaSe
   const form = document.getElementById('form-empresa') as HTMLFormElement;
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
+    const dadosFormulario = new FormData(form);
 
-    const nome = formData.get('nome') as string;
-    const email = formData.get('email') as string;
-    const cnpj = formData.get('cnpj') as string;
-    const pais = formData.get('pais') as string;
-    const estado = formData.get('estado') as string;
-    const cep = formData.get('cep') as string;
-    const descricao = formData.get('descricao') as string;
-    const competenciasDesejadas = (formData.get('competenciasDesejadas') as string).split(',').map(c => c.trim());
+    const nome = dadosFormulario.get('nome') as string;
+    const email = dadosFormulario.get('email') as string;
+    const cnpj = dadosFormulario.get('cnpj') as string;
+    const pais = dadosFormulario.get('pais') as string;
+    const estado = dadosFormulario.get('estado') as string;
+    const cep = dadosFormulario.get('cep') as string;
+    const descricao = dadosFormulario.get('descricao') as string;
+    const competenciasDesejadas = (dadosFormulario.get('competenciasDesejadas') as string)
+      .split(',').map(competencia => competencia.trim());
 
     const empresa = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competenciasDesejadas);
     try {
       empresaService.salvarEmpresa(empresa);
       criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
     } catch (error) {
-      alert(error instanceof Error ? error.message: 'Erro ao cadastrar empresa')
+      alert(error instanceof Error ? error.message : 'Erro ao cadastrar empresa');
     }
   });
 }
