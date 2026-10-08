@@ -1,6 +1,6 @@
 package org.alan.service
 
-import org.alan.dao.CompetenciaDAO
+
 import org.alan.repository.CompetenciaRepository
 
 class CompetenciaService {
