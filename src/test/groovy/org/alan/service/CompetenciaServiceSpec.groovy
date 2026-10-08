@@ -1,18 +1,19 @@
 package org.alan.service
 
 import org.alan.dao.CompetenciaDAO
+import org.alan.repository.CompetenciaRepository
 import spock.lang.Specification
 
 class CompetenciaServiceSpec extends Specification {
 
-    CompetenciaDAO competenciaDAO = Stub()
+    CompetenciaRepository competenciaRepository = Stub()
     CompetenciaService competenciaService =
-            new CompetenciaService(competenciaDAO)
+            new CompetenciaService(competenciaRepository)
 
     def "deve listar competencias"() {
         given:
         List<String> competencias = ["1 - JAVA", "2 - SQL"]
-        competenciaDAO.listarCompetencias() >> competencias
+        competenciaRepository.listarCompetencias() >> competencias
 
         when:
         List<String> resultado =
@@ -27,7 +28,7 @@ class CompetenciaServiceSpec extends Specification {
         given:
         int idCompetencia = 99
         String novoNome = "GROOVY"
-        competenciaDAO.atualizarCompetencia(novoNome, idCompetencia) >> false
+        competenciaRepository.atualizarCompetencia(novoNome, idCompetencia) >> false
 
         when:
         competenciaService.atualizarCompetencia(novoNome, idCompetencia)
@@ -40,7 +41,7 @@ class CompetenciaServiceSpec extends Specification {
     def "deve deletar competencia"() {
         given:
         int idCompetencia = 1
-        competenciaDAO.deletarCompetencia(idCompetencia) >> true
+        competenciaRepository.deletarCompetencia(idCompetencia) >> true
 
         when:
         competenciaService.deletarCompetencia(idCompetencia)
@@ -52,7 +53,7 @@ class CompetenciaServiceSpec extends Specification {
     def "deve informar falha ao deletar competencia inexistente"() {
         given:
         int idCompetencia = 99
-        competenciaDAO.deletarCompetencia(idCompetencia) >> false
+        competenciaRepository.deletarCompetencia(idCompetencia) >> false
 
         when:
         competenciaService.deletarCompetencia(idCompetencia)
@@ -66,7 +67,7 @@ class CompetenciaServiceSpec extends Specification {
         given:
         int idCompetencia = 1
         String novoNome = "GROOVY"
-        competenciaDAO.atualizarCompetencia(
+        competenciaRepository.atualizarCompetencia(
                 novoNome,
                 idCompetencia
         ) >> true

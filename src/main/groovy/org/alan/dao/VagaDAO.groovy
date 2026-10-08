@@ -2,17 +2,25 @@ package org.alan.dao
 
 import org.alan.database.ConnectionFactory
 import org.alan.model.Vaga
+import org.alan.repository.CompetenciaRepository
+import org.alan.repository.EmpresaRepository
+import org.alan.repository.VagaRepository
 
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class VagaDAO {
+class VagaDAO implements VagaRepository {
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory()
-    private final CompetenciaDAO competenciaDAO = new CompetenciaDAO()
-    private final EmpresaDAO empresaDAO = new EmpresaDAO()
+    private final CompetenciaRepository competenciaRepository
+    private final EmpresaRepository empresaRepository
+
+    VagaDAO(CompetenciaRepository competenciaRepository, EmpresaRepository empresaRepository) {
+        this.competenciaRepository = competenciaRepository
+        this.empresaRepository = empresaRepository
+    }
 
     private Connection conectar() {
         return connectionFactory.criarConexao()
@@ -28,7 +36,7 @@ class VagaDAO {
                 estado: resultado.getString("estado"),
                 cidade: resultado.getString("cidade"),
                 competenciasExigidas: buscarCompetenciasDaVaga(idVaga),
-                empresa: empresaDAO.buscarEmpresaPorId(
+                empresa: empresaRepository.buscarEmpresaPorId(
                         resultado.getInt("id_empresa")
                 )
         )
@@ -66,7 +74,7 @@ class VagaDAO {
 
         vaga.competenciasExigidas.each { nomeCompetencia ->
             int idCompetencia =
-                    competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
+                    competenciaRepository.buscarOuCriarCompetencia(nomeCompetencia)
 
             associarCompetenciaAVaga(idGerado, idCompetencia)
         }
@@ -173,7 +181,7 @@ class VagaDAO {
 
         vaga.competenciasExigidas.each { nomeCompetencia ->
             int idCompetencia =
-                    competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
+                    competenciaRepository.buscarOuCriarCompetencia(nomeCompetencia)
 
             associarCompetenciaAVaga(vaga.id, idCompetencia)
         }

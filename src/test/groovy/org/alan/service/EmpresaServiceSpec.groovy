@@ -1,18 +1,18 @@
 package org.alan.service
 
-import org.alan.dao.EmpresaDAO
 import org.alan.model.Empresa
+import org.alan.repository.EmpresaRepository
 import spock.lang.Specification
 
 class EmpresaServiceSpec extends Specification {
 
-    EmpresaDAO empresaDAO = Stub()
-    EmpresaService empresaService = new EmpresaService(empresaDAO)
+    EmpresaRepository empresaRepository = Stub()
+    EmpresaService empresaService = new EmpresaService(empresaRepository)
 
     def "deve cadastrar empresa e retornar o registro com id"() {
         given:
         Empresa empresa = new Empresa(nome: "Dogão do Ratão", cnpj: "5678")
-        empresaDAO.inserir(empresa) >> 20
+        empresaRepository.inserir(empresa) >> 20
 
         when:
         Empresa resultado = empresaService.salvar(empresa)
@@ -26,7 +26,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve informar falha quando o cadastro não gerar id"() {
         given:
         Empresa empresa = new Empresa(nome: "Dogão do Ratão", cnpj: "5678")
-        empresaDAO.inserir(empresa) >> 0
+        empresaRepository.inserir(empresa) >> 0
 
         when:
         empresaService.salvar(empresa)
@@ -41,7 +41,7 @@ class EmpresaServiceSpec extends Specification {
         given:
         String cnpj = "12345678000199"
         Empresa empresa = new Empresa(nome: "Empresa Teste", cnpj: cnpj)
-        empresaDAO.buscarEmpresaPorCnpj(cnpj) >> empresa
+        empresaRepository.buscarEmpresaPorCnpj(cnpj) >> empresa
 
         when:
         Empresa resultado = empresaService.buscarPorCnpj(cnpj)
@@ -53,7 +53,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve informar quando empresa nao for encontrada"() {
         given:
         String cnpj = "00000000000000"
-        empresaDAO.buscarEmpresaPorCnpj(cnpj) >> null
+        empresaRepository.buscarEmpresaPorCnpj(cnpj) >> null
 
         when:
         empresaService.buscarPorCnpj(cnpj)
@@ -66,7 +66,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve listar empresas"() {
         given:
         List<Empresa> empresas = [new Empresa(nome: "Empresa A", cnpj: "111"), new Empresa(nome: "Empresa B", cnpj: "222")]
-        empresaDAO.listarEmpresas() >> empresas
+        empresaRepository.listarEmpresas() >> empresas
 
         when:
         List<Empresa> resultado = empresaService.listarEmpresas()
@@ -79,7 +79,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve atualizar empresa"() {
         given:
         Empresa empresa = new Empresa(nome: "Empresa Atualizada", cnpj: "123")
-        empresaDAO.atualizarEmpresa(empresa) >> true
+        empresaRepository.atualizarEmpresa(empresa) >> true
 
         when:
         Empresa resultado = empresaService.atualizarEmpresa(empresa)
@@ -91,7 +91,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve informar falha ao atualizar empresa inexistente"() {
         given:
         Empresa empresa = new Empresa(nome: "Empresa Inexistente", cnpj: "000")
-        empresaDAO.atualizarEmpresa(empresa) >> false
+        empresaRepository.atualizarEmpresa(empresa) >> false
 
         when:
         empresaService.atualizarEmpresa(empresa)
@@ -104,7 +104,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve deletar empresa"() {
         given:
         String cnpj = "123"
-        empresaDAO.deletarEmpresa(cnpj) >> true
+        empresaRepository.deletarEmpresa(cnpj) >> true
 
         when:
         empresaService.deletarEmpresa(cnpj)
@@ -116,7 +116,7 @@ class EmpresaServiceSpec extends Specification {
     def "deve informar falha ao deletar empresa inexistente"() {
         given:
         String cnpj = "000"
-        empresaDAO.deletarEmpresa(cnpj) >> false
+        empresaRepository.deletarEmpresa(cnpj) >> false
 
         when:
         empresaService.deletarEmpresa(cnpj)

@@ -1,18 +1,20 @@
 package org.alan.service
 
-import org.alan.dao.EmpresaDAO
+
 import org.alan.model.Empresa
+import org.alan.repository.EmpresaRepository
 
 class EmpresaService {
 
-    private final EmpresaDAO empresaDAO
 
-    EmpresaService(EmpresaDAO empresaDAO) {
-        this.empresaDAO = empresaDAO;
+    private final EmpresaRepository empresaRepository
+
+    EmpresaService(EmpresaRepository empresaRepository) {
+        this.empresaRepository = empresaRepository
     }
 
     Empresa salvar(Empresa empresa) {
-        int idGerado = empresaDAO.inserir(empresa)
+        int idGerado = empresaRepository.inserir(empresa)
 
         if (idGerado == 0) {
             throw new Exception("Falha ao cadastrar empresa")
@@ -23,7 +25,7 @@ class EmpresaService {
     }
 
     Empresa buscarPorCnpj(String cnpj) {
-        Empresa empresa = empresaDAO.buscarEmpresaPorCnpj(cnpj)
+        Empresa empresa = empresaRepository.buscarEmpresaPorCnpj(cnpj)
         if (empresa == null) {
             throw new Exception("Empresa não encontrada")
         }
@@ -31,11 +33,11 @@ class EmpresaService {
     }
 
     List<Empresa> listarEmpresas() {
-        return empresaDAO.listarEmpresas()
+        return empresaRepository.listarEmpresas()
     }
 
     Empresa atualizarEmpresa(Empresa empresa) {
-        boolean atualizou = empresaDAO.atualizarEmpresa(empresa)
+        boolean atualizou = empresaRepository.atualizarEmpresa(empresa)
         if (!atualizou) {
             throw new Exception("Empresa não encontrada")
         }
@@ -43,7 +45,7 @@ class EmpresaService {
     }
 
     void deletarEmpresa(String cnpj) {
-        boolean deletou = empresaDAO.deletarEmpresa(cnpj)
+        boolean deletou = empresaRepository.deletarEmpresa(cnpj)
         if (!deletou) {
             throw new Exception("Empresa não encontrada")
         }

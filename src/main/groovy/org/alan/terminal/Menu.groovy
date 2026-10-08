@@ -11,10 +11,10 @@ import org.alan.service.VagaService
 
 class Menu {
 
-    CandidatoDAO candidatoDAO = new CandidatoDAO()
     CompetenciaDAO competenciaDAO = new CompetenciaDAO()
+    CandidatoDAO candidatoDAO = new CandidatoDAO(competenciaDAO)
     EmpresaDAO empresaDAO = new EmpresaDAO()
-    VagaDAO vagaDAO = new VagaDAO()
+    VagaDAO vagaDAO = new VagaDAO(competenciaDAO, empresaDAO)
     CandidatoService candidatoService = new CandidatoService(candidatoDAO)
     EmpresaService empresaService = new EmpresaService(empresaDAO)
     VagaService vagaService = new VagaService(vagaDAO)

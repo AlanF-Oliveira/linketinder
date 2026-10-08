@@ -2,16 +2,22 @@ package org.alan.dao
 
 import org.alan.database.ConnectionFactory
 import org.alan.model.Candidato
+import org.alan.repository.CandidatoRepository
+import org.alan.repository.CompetenciaRepository
 
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class CandidatoDAO {
+class CandidatoDAO implements CandidatoRepository {
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory()
-    private final CompetenciaDAO competenciaDAO = new CompetenciaDAO()
+    private final CompetenciaRepository competenciaRepository
+
+    CandidatoDAO(CompetenciaRepository competenciaRepository) {
+        this.competenciaRepository = competenciaRepository
+    }
 
     private Connection conectar() {
         return connectionFactory.criarConexao()
@@ -67,7 +73,7 @@ class CandidatoDAO {
         }
 
         candidato.competencias.each { nomeCompetencia ->
-            int idCompetencia = competenciaDAO.buscarOuCriarCompetencia(nomeCompetencia)
+            int idCompetencia = competenciaRepository.buscarOuCriarCompetencia(nomeCompetencia)
             associarCompetenciaAoCandidato(idGerado, idCompetencia)
         }
         return idGerado
