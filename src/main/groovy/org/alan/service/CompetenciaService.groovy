@@ -1,20 +1,21 @@
 package org.alan.service
 
 import org.alan.dao.CompetenciaDAO
+import org.alan.repository.CompetenciaRepository
 
 class CompetenciaService {
-    private final CompetenciaDAO competenciaDAO
+    private final CompetenciaRepository competenciaRepository
 
-    CompetenciaService(CompetenciaDAO competenciaDAO) {
-        this.competenciaDAO = competenciaDAO
+    CompetenciaService(CompetenciaRepository competenciaRepository) {
+        this.competenciaRepository = competenciaRepository
     }
 
     List<String> listarCompetencias() {
-        return competenciaDAO.listarCompetencias()
+        return competenciaRepository.listarCompetencias()
     }
 
     boolean atualizarCompetencia(String competencia, int idCompetencia) {
-        boolean atualizou = competenciaDAO.atualizarCompetencia(competencia, idCompetencia)
+        boolean atualizou = competenciaRepository.atualizarCompetencia(competencia, idCompetencia)
         if (!atualizou) {
             throw new Exception("Competência não encontrada")
         }
@@ -22,7 +23,7 @@ class CompetenciaService {
     }
 
     void deletarCompetencia(int idCompetencia) {
-        boolean deletou = competenciaDAO.deletarCompetencia(idCompetencia)
+        boolean deletou = competenciaRepository.deletarCompetencia(idCompetencia)
         if (!deletou) {
             throw new Exception("Competência não encontrada")
         }

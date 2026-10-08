@@ -1,20 +1,20 @@
 package org.alan.service
 
-import org.alan.dao.CandidatoDAO
+
 import org.alan.model.Candidato
+import org.alan.repository.CandidatoRepository
 
 class CandidatoService {
 
 
-    private final CandidatoDAO candidatoDAO
+    private final CandidatoRepository candidatoRepository
 
-    CandidatoService(CandidatoDAO candidatoDAO) {
-        this.candidatoDAO = candidatoDAO
+    CandidatoService(CandidatoRepository candidatoRepository) {
+        this.candidatoRepository = candidatoRepository
     }
 
     Candidato salvar(Candidato candidato) {
-        int idGerado = candidatoDAO.inserir(candidato)
-
+        int idGerado = candidatoRepository.inserir(candidato)
         if (idGerado == 0) {
             throw new Exception("Falha ao cadastrar candidato")
         }
@@ -24,7 +24,7 @@ class CandidatoService {
     }
 
     Candidato buscarPorCpf(String cpf) {
-        Candidato candidato = candidatoDAO.buscarCandidatoPorCpf(cpf)
+        Candidato candidato = candidatoRepository.buscarCandidatoPorCpf(cpf)
         if (candidato == null) {
             throw new Exception("Candidato não encontrado")
         }
@@ -32,11 +32,11 @@ class CandidatoService {
     }
 
     List<Candidato> listarCandidatos() {
-        return candidatoDAO.listarCandidatos()
+        return candidatoRepository.listarCandidatos()
     }
 
     Candidato atualizarCandidato(Candidato candidato) {
-        boolean atualizou = candidatoDAO.atualizarCandidato(candidato)
+        boolean atualizou = candidatoRepository.atualizarCandidato(candidato)
         if (!atualizou) {
             throw new Exception("Candidato não encontrado")
         }
@@ -44,8 +44,8 @@ class CandidatoService {
     }
 
     void deletarCandidato(String cpf) {
-        boolean deletou = candidatoDAO.deletarCandidato(cpf)
-        if(!deletou){
+        boolean deletou = candidatoRepository.deletarCandidato(cpf)
+        if (!deletou) {
             throw new Exception("Candidato não encontrado")
         }
     }
