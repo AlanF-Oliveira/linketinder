@@ -49,41 +49,45 @@ org.alan.Main
 ./gradlew test
 ```
 
-Os testes unitários utilizam Spock e isolam os services por meio de stubs dos DAOs.
+Os testes unitários utilizam Spock e isolam os services por meio de stubs das interfaces de repositório.
 
 ## Organização do backend
 
 O backend está dividido nas seguintes camadas:
 
 - `model`: representa candidatos, empresas e vagas.
-- `dao`: realiza o acesso ao PostgreSQL.
+- `repository`: define os contratos de acesso aos dados.
+- `dao`: implementa os repositórios e realiza o acesso ao PostgreSQL.
 - `service`: contém as regras da aplicação.
 - `terminal`: controla a interação pelo menu.
 - `database`: contém a criação da conexão e o script SQL.
 
-Cada entidade possui seu próprio DAO:
+Cada entidade possui seu próprio DAO e sua própria interface de repositório:
 
-- `CandidatoDAO`
-- `EmpresaDAO`
-- `VagaDAO`
-- `CompetenciaDAO`
+- `CandidatoDAO` e `CandidatoRepository`.
+- `EmpresaDAO` e `EmpresaRepository`.
+- `VagaDAO` e `VagaRepository`.
+- `CompetenciaDAO` e `CompetenciaRepository`.
 
-## Refatoração e Clean Code
+## Refatoração, Clean Code e SOLID
 
 As principais melhorias realizadas foram:
 
 - Separação da antiga classe de banco em DAOs por entidade.
 - Criação da `ConnectionFactory`.
-- Uso de injeção dos DAOs nos services.
+- Criação de interfaces para os repositórios.
+- Uso de injeção de dependências por meio dos construtores.
+- Services dependendo de interfaces em vez de DAOs concretos.
+- Remoção do acoplamento direto entre os DAOs.
 - Uso de nomes mais claros para métodos e variáveis.
 - Extração de métodos menores para evitar repetição.
 - Remoção de código antigo e não utilizado.
 - Uso de `ON DELETE CASCADE` nas tabelas associativas.
 - Tratamento de falhas nos services e na configuração da conexão.
-- Padronização de nomes e formatação no frontend, com remoção de abreviações.
+- Padronização de nomes e formatação no frontend.
 - Ampliação dos testes unitários de candidatos, empresas, vagas e competências.
 
-Essas mudanças reduziram duplicações e deixaram as responsabilidades das classes mais claras.
+Essas mudanças reduziram duplicações, diminuíram o acoplamento e deixaram as responsabilidades das classes mais claras. O uso de interfaces também facilitou a criação dos stubs utilizados nos testes.
 
 ## Frontend
 

@@ -1,19 +1,19 @@
 package org.alan.service
 
-import org.alan.dao.VagaDAO
 import org.alan.model.Vaga
+import org.alan.repository.VagaRepository
 import spock.lang.Specification
 
 class VagaServiceSpec extends Specification {
 
-    VagaDAO vagaDAO = Stub()
-    VagaService vagaService = new VagaService(vagaDAO)
+    VagaRepository vagaRepository = Stub()
+    VagaService vagaService = new VagaService(vagaRepository)
 
     def "deve cadastrar vaga e retornar o registro com id"() {
         given:
         int idEmpresa = 1
         Vaga vaga = new Vaga(titulo: "Desenvolvedor Java")
-        vagaDAO.inserir(vaga, idEmpresa) >> 10
+        vagaRepository.inserir(vaga, idEmpresa) >> 10
 
         when:
         Vaga resultado = vagaService.criarVaga(vaga, idEmpresa)
@@ -27,7 +27,7 @@ class VagaServiceSpec extends Specification {
         given:
         int idEmpresa = 1
         Vaga vaga = new Vaga(titulo: "Desenvolvedor Java")
-        vagaDAO.inserir(vaga, idEmpresa) >> 0
+        vagaRepository.inserir(vaga, idEmpresa) >> 0
 
         when:
         vagaService.criarVaga(vaga, idEmpresa)
@@ -43,7 +43,7 @@ class VagaServiceSpec extends Specification {
                 new Vaga(id: 1, titulo: "Desenvolvedor Java"),
                 new Vaga(id: 2, titulo: "Desenvolvedor Frontend")
         ]
-        vagaDAO.listarVagas() >> vagas
+        vagaRepository.listarVagas() >> vagas
 
         when:
         List<Vaga> resultado = vagaService.listarVagas()
@@ -57,7 +57,7 @@ class VagaServiceSpec extends Specification {
         given:
         int idVaga = 1
         Vaga vaga = new Vaga(id: idVaga, titulo: "Desenvolvedor Java")
-        vagaDAO.buscarVagaPorId(idVaga) >> vaga
+        vagaRepository.buscarVagaPorId(idVaga) >> vaga
 
         when:
         Vaga resultado = vagaService.buscarVagaPorId(idVaga)
@@ -69,7 +69,7 @@ class VagaServiceSpec extends Specification {
     def "deve informar quando vaga nao for encontrada"() {
         given:
         int idVaga = 99
-        vagaDAO.buscarVagaPorId(idVaga) >> null
+        vagaRepository.buscarVagaPorId(idVaga) >> null
 
         when:
         vagaService.buscarVagaPorId(idVaga)
@@ -82,7 +82,7 @@ class VagaServiceSpec extends Specification {
     def "deve atualizar vaga"() {
         given:
         Vaga vaga = new Vaga(id: 1, titulo: "Desenvolvedor Java Sênior")
-        vagaDAO.atualizarVaga(vaga) >> true
+        vagaRepository.atualizarVaga(vaga) >> true
 
         when:
         Vaga resultado = vagaService.atualizarVaga(vaga)
@@ -94,7 +94,7 @@ class VagaServiceSpec extends Specification {
     def "deve informar falha ao atualizar vaga inexistente"() {
         given:
         Vaga vaga = new Vaga(id: 99, titulo: "Vaga inexistente")
-        vagaDAO.atualizarVaga(vaga) >> false
+        vagaRepository.atualizarVaga(vaga) >> false
 
         when:
         vagaService.atualizarVaga(vaga)
@@ -107,7 +107,7 @@ class VagaServiceSpec extends Specification {
     def "deve deletar vaga"() {
         given:
         int idVaga = 1
-        vagaDAO.deletarVaga(idVaga) >> true
+        vagaRepository.deletarVaga(idVaga) >> true
 
         when:
         vagaService.deletarVaga(idVaga)
@@ -119,7 +119,7 @@ class VagaServiceSpec extends Specification {
     def "deve informar falha ao deletar vaga inexistente"() {
         given:
         int idVaga = 99
-        vagaDAO.deletarVaga(idVaga) >> false
+        vagaRepository.deletarVaga(idVaga) >> false
 
         when:
         vagaService.deletarVaga(idVaga)

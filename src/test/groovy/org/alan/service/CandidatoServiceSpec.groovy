@@ -1,24 +1,24 @@
 package org.alan.service
 
-import org.alan.dao.CandidatoDAO
 import org.alan.model.Candidato
+import org.alan.repository.CandidatoRepository
 import spock.lang.Specification
 
 class CandidatoServiceSpec extends Specification {
 
-    CandidatoDAO candidatoDAO
+    CandidatoRepository candidatoRepository
     CandidatoService candidatoService
     Candidato candidato
 
     def setup() {
-        candidatoDAO = Stub()
-        candidatoService = new CandidatoService(candidatoDAO)
+        candidatoRepository = Stub()
+        candidatoService = new CandidatoService(candidatoRepository)
         candidato = new Candidato(nome: "Alan", cpf: "123")
     }
 
     def "deve cadastrar candidato com sucesso"() {
         given:
-        candidatoDAO.inserir(candidato) >> 10
+        candidatoRepository.inserir(candidato) >> 10
 
         when:
         Candidato resultado = candidatoService.salvar(candidato)
@@ -30,7 +30,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve informar falha quando o cadastro não gerar id"() {
         given:
-        candidatoDAO.inserir(candidato) >> 0
+        candidatoRepository.inserir(candidato) >> 0
 
         when:
         candidatoService.salvar(candidato)
@@ -42,7 +42,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve buscar candidato por CPF"() {
         given:
-        candidatoDAO.buscarCandidatoPorCpf("123") >> candidato
+        candidatoRepository.buscarCandidatoPorCpf("123") >> candidato
 
         when:
         Candidato resultado = candidatoService.buscarPorCpf("123")
@@ -53,7 +53,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve informar erro quando candidato não for encontrado"() {
         given:
-        candidatoDAO.buscarCandidatoPorCpf("123") >> null
+        candidatoRepository.buscarCandidatoPorCpf("123") >> null
 
         when:
         candidatoService.buscarPorCpf("123")
@@ -67,7 +67,7 @@ class CandidatoServiceSpec extends Specification {
         given:
         Candidato outroCandidato = new Candidato(nome: "Maria", cpf: "456")
         List<Candidato> candidatosEsperados = [candidato, outroCandidato]
-        candidatoDAO.listarCandidatos() >> candidatosEsperados
+        candidatoRepository.listarCandidatos() >> candidatosEsperados
 
         when:
         List<Candidato> resultado = candidatoService.listarCandidatos()
@@ -78,7 +78,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve atualizar candidato com sucesso"() {
         given:
-        candidatoDAO.atualizarCandidato(candidato) >> true
+        candidatoRepository.atualizarCandidato(candidato) >> true
 
         when:
         Candidato resultado = candidatoService.atualizarCandidato(candidato)
@@ -89,7 +89,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve informar erro ao atualizar candidato inexistente"() {
         given:
-        candidatoDAO.atualizarCandidato(candidato) >> false
+        candidatoRepository.atualizarCandidato(candidato) >> false
 
         when:
         candidatoService.atualizarCandidato(candidato)
@@ -101,7 +101,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve deletar candidato com sucesso"() {
         given:
-        candidatoDAO.deletarCandidato("123") >> true
+        candidatoRepository.deletarCandidato("123") >> true
 
         when:
         candidatoService.deletarCandidato("123")
@@ -112,7 +112,7 @@ class CandidatoServiceSpec extends Specification {
 
     def "deve informar erro ao deletar candidato inexistente"() {
         given:
-        candidatoDAO.deletarCandidato("123") >> false
+        candidatoRepository.deletarCandidato("123") >> false
 
         when:
         candidatoService.deletarCandidato("123")

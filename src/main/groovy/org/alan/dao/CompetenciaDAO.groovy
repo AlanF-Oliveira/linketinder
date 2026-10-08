@@ -1,13 +1,14 @@
 package org.alan.dao
 
 import org.alan.database.ConnectionFactory
+import org.alan.repository.CompetenciaRepository
 
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class CompetenciaDAO {
+class CompetenciaDAO implements CompetenciaRepository {
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory()
 

@@ -1,18 +1,18 @@
 package org.alan.service
 
-import org.alan.dao.VagaDAO
 import org.alan.model.Vaga
+import org.alan.repository.VagaRepository
 
 class VagaService {
 
-    private final VagaDAO vagaDAO
+    private final VagaRepository vagaRepository
 
-    VagaService(VagaDAO vagaDAO) {
-        this.vagaDAO = vagaDAO
+    VagaService(VagaRepository vagaRepository) {
+        this.vagaRepository = vagaRepository
     }
 
     Vaga criarVaga(Vaga vaga, int idEmpresa) {
-        int idGerado = vagaDAO.inserir(vaga, idEmpresa)
+        int idGerado = vagaRepository.inserir(vaga, idEmpresa)
 
         if (idGerado == 0) {
             throw new Exception("Falha ao cadastrar vaga")
@@ -23,11 +23,11 @@ class VagaService {
     }
 
     List<Vaga> listarVagas() {
-        return vagaDAO.listarVagas()
+        return vagaRepository.listarVagas()
     }
 
     Vaga buscarVagaPorId(int idVaga) {
-        Vaga vaga = vagaDAO.buscarVagaPorId(idVaga)
+        Vaga vaga = vagaRepository.buscarVagaPorId(idVaga)
 
         if (vaga == null) {
             throw new Exception("Vaga não encontrada")
@@ -37,7 +37,7 @@ class VagaService {
     }
 
     Vaga atualizarVaga(Vaga vaga) {
-        boolean atualizou = vagaDAO.atualizarVaga(vaga)
+        boolean atualizou = vagaRepository.atualizarVaga(vaga)
 
         if (!atualizou) {
             throw new Exception("Vaga não encontrada")
@@ -47,7 +47,7 @@ class VagaService {
     }
 
     void deletarVaga(int idVaga) {
-        boolean deletou = vagaDAO.deletarVaga(idVaga)
+        boolean deletou = vagaRepository.deletarVaga(idVaga)
 
         if (!deletou) {
             throw new Exception("Vaga não encontrada")

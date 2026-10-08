@@ -2,13 +2,14 @@ package org.alan.dao
 
 import org.alan.database.ConnectionFactory
 import org.alan.model.Empresa
+import org.alan.repository.EmpresaRepository
 
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
 
-class EmpresaDAO {
+class EmpresaDAO implements EmpresaRepository {
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory()
 
