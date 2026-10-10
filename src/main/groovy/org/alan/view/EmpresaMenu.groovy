@@ -1,15 +1,15 @@
-package org.alan.terminal
+package org.alan.view
 
+import org.alan.controller.EmpresaController
 import org.alan.model.Empresa
-import org.alan.service.EmpresaService
 
 class EmpresaMenu {
 
-    EmpresaService empresaService
+    private final EmpresaController empresaController
     Scanner sc = new Scanner(System.in)
 
-    EmpresaMenu(EmpresaService empresaService) {
-        this.empresaService = empresaService
+    EmpresaMenu(EmpresaController empresaController) {
+        this.empresaController = empresaController
     }
 
     void menu() {
@@ -41,7 +41,7 @@ class EmpresaMenu {
     void listar() {
         println()
         println "Lista de Empresas: "
-        empresaService.listarEmpresas().each { it ->
+        empresaController.listarEmpresas().each { it ->
             println(it)
         }
         println ""
@@ -81,7 +81,7 @@ class EmpresaMenu {
                     descricao: descricao,
                     senha: senha
             )
-            empresaService.salvar(empresa)
+            empresaController.salvar(empresa)
             println "Empresa cadastrada com sucesso"
         } catch (Exception e) {
             println "Erro ao cadastrar empresa: ${e.message}"
@@ -95,7 +95,7 @@ class EmpresaMenu {
         sc.nextLine()
         try {
             String cnpj = sc.nextLine()
-            Empresa existente = empresaService.buscarPorCnpj(cnpj)
+            Empresa existente = empresaController.buscarPorCnpj(cnpj)
 
             print "Nome: "
             String nome = sc.nextLine()
@@ -125,7 +125,7 @@ class EmpresaMenu {
                     descricao: descricao,
                     senha: senha
             )
-            empresaService.atualizarEmpresa(empresa)
+            empresaController.atualizarEmpresa(empresa)
             println "Empresa atualizada com sucesso"
         } catch (Exception e) {
             println "Erro ao atualizar empresa: ${e.message}"
@@ -139,7 +139,7 @@ class EmpresaMenu {
         sc.nextLine()
         try {
             String cnpj = sc.nextLine()
-            empresaService.deletarEmpresa(cnpj)
+            empresaController.deletarEmpresa(cnpj)
             println "Empresa deletada com sucesso"
         } catch (Exception e) {
             println "Erro ao deletar empresa: ${e.message}"

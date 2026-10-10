@@ -59,7 +59,8 @@ O backend está dividido nas seguintes camadas:
 - `repository`: define os contratos de acesso aos dados.
 - `dao`: implementa os repositórios e realiza o acesso ao PostgreSQL.
 - `service`: contém as regras da aplicação.
-- `terminal`: controla a interação pelo menu.
+- `view`: contém os menus e a interação com o usuário.
+- `controller`: recebe as ações dos menus e chama os services.
 - `database`: contém a criação da conexão e o script SQL.
 
 Cada entidade possui seu próprio DAO e sua própria interface de repositório:
@@ -97,6 +98,16 @@ Essas mudanças reduziram duplicações, diminuíram o acoplamento e deixaram as
 A escolha da fábrica fica no `Menu`. Isso reduz o acoplamento dos DAOs à criação de conexões e facilita os testes. A troca de banco ainda pode exigir ajustes no SQL.
 
 Foi adicionado um teste com mocks para verificar se o `CompetenciaDAO` utiliza a fábrica recebida, sem acessar o banco real.
+
+## MVC
+
+O sistema Groovy segue o fluxo:
+
+```text
+Menu (View) → Controller → Service → DAO → Banco
+```
+
+Os menus recebem os dados e exibem os resultados. Os controllers recebem as ações dos menus e chamam os services. Os models representam os dados da aplicação.
 
 ## Frontend
 
