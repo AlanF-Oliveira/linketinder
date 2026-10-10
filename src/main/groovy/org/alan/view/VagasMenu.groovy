@@ -1,19 +1,15 @@
-package org.alan.terminal
+package org.alan.view
 
-import org.alan.model.Empresa
+
+import org.alan.controller.VagaController
 import org.alan.model.Vaga
-import org.alan.service.EmpresaService
-import org.alan.service.VagaService
 
 class VagasMenu {
-
-    VagaService vagaService
-    EmpresaService empresaService
+    private final VagaController vagaController
     Scanner sc = new Scanner(System.in)
 
-    VagasMenu(VagaService vagaService, EmpresaService empresaService) {
-        this.vagaService = vagaService
-        this.empresaService = empresaService
+    VagasMenu(VagaController vagaController) {
+        this.vagaController = vagaController
     }
 
     void menu() {
@@ -45,7 +41,7 @@ class VagasMenu {
     void listar() {
         println()
         println "Lista de Vagas: "
-        vagaService.listarVagas().each {
+        vagaController.listarVagas().each {
             println(it)
         }
         println ""
@@ -57,7 +53,6 @@ class VagasMenu {
         sc.nextLine()
         try {
             String cnpj = sc.nextLine()
-            Empresa empresa = empresaService.buscarPorCnpj(cnpj)
             print "Título da vaga: "
             String titulo = sc.nextLine()
             print "Descrição: "
@@ -76,7 +71,7 @@ class VagasMenu {
                     cidade: cidade,
                     competenciasExigidas: competencias
             )
-            vagaService.criarVaga(vaga, empresa.id)
+            vagaController.criarVaga(vaga, cnpj)
             println "Vaga cadastrada com sucesso"
         } catch (Exception e) {
             println "Erro ao cadastrar vaga: ${e.message}"
@@ -90,7 +85,7 @@ class VagasMenu {
         try {
             int id = sc.nextInt()
             sc.nextLine()
-            Vaga existente = vagaService.buscarVagaPorId(id)
+            Vaga existente = vagaController.buscarVagaPorId(id)
             print "Título: "
             String titulo = sc.nextLine()
             print "Descrição: "
@@ -110,7 +105,7 @@ class VagasMenu {
                     cidade: cidade,
                     competenciasExigidas: competencias
             )
-            vagaService.atualizarVaga(vaga)
+            vagaController.atualizarVaga(vaga)
             println "Vaga atualizada com sucesso"
         } catch (Exception e) {
             println "Erro ao atualizar vaga: ${e.message}"
@@ -123,7 +118,7 @@ class VagasMenu {
         print "Id da vaga: "
         try {
             int id = sc.nextInt()
-            vagaService.deletarVaga(id)
+            vagaController.deletarVaga(id)
             println "Vaga deletada com sucesso"
         } catch (Exception e) {
             println "Erro ao deletar vaga: ${e.message}"
