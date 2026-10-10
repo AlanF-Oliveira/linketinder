@@ -74,7 +74,7 @@ Cada entidade possui seu próprio DAO e sua própria interface de repositório:
 As principais melhorias realizadas foram:
 
 - Separação da antiga classe de banco em DAOs por entidade.
-- Criação da `ConnectionFactory`.
+- Criação da `PostgresConnectionFactory`.
 - Criação de interfaces para os repositórios.
 - Uso de injeção de dependências por meio dos construtores.
 - Services dependendo de interfaces em vez de DAOs concretos.
@@ -88,6 +88,15 @@ As principais melhorias realizadas foram:
 - Ampliação dos testes unitários de candidatos, empresas, vagas e competências.
 
 Essas mudanças reduziram duplicações, diminuíram o acoplamento e deixaram as responsabilidades das classes mais claras. O uso de interfaces também facilitou a criação dos stubs utilizados nos testes.
+
+## Padrões de projeto
+
+- Factory: a interface `ConnectionFactory` define a criação de conexões, implementada pela `PostgresConnectionFactory`. Os DAOs recebem a fábrica pelo construtor, permitindo substituir a implementação sem alterar como solicitam conexões.
+- DAO: concentra as operações de persistência de cada entidade, separando o SQL das regras da aplicação.
+
+A escolha da fábrica fica no `Menu`. Isso reduz o acoplamento dos DAOs à criação de conexões e facilita os testes. A troca de banco ainda pode exigir ajustes no SQL.
+
+Foi adicionado um teste com mocks para verificar se o `CompetenciaDAO` utiliza a fábrica recebida, sem acessar o banco real.
 
 ## Frontend
 
