@@ -1,5 +1,9 @@
-package org.alan.terminal
+package org.alan.view
 
+import org.alan.controller.CandidatoController
+import org.alan.controller.CompetenciaController
+import org.alan.controller.EmpresaController
+import org.alan.controller.VagaController
 import org.alan.dao.CandidatoDAO
 import org.alan.dao.CompetenciaDAO
 import org.alan.dao.EmpresaDAO
@@ -19,13 +23,17 @@ class Menu {
     EmpresaDAO empresaDAO = new EmpresaDAO(connectionFactory)
     VagaDAO vagaDAO = new VagaDAO(connectionFactory, competenciaDAO, empresaDAO)
     CandidatoService candidatoService = new CandidatoService(candidatoDAO)
+    CandidatoController candidatoController = new CandidatoController(candidatoService)
+    CandidatoMenu candidatoMenu = new CandidatoMenu(candidatoController)
     EmpresaService empresaService = new EmpresaService(empresaDAO)
+    EmpresaController empresaController = new EmpresaController(empresaService)
+    EmpresaMenu empresaMenu = new EmpresaMenu(empresaController)
     VagaService vagaService = new VagaService(vagaDAO)
+    VagaController vagaController = new VagaController(vagaService, empresaService)
+    VagasMenu vagasMenu = new VagasMenu(vagaController)
     CompetenciaService competenciaService = new CompetenciaService(competenciaDAO)
-    CandidatoMenu candidatoMenu = new CandidatoMenu(candidatoService)
-    EmpresaMenu empresaMenu = new EmpresaMenu(empresaService)
-    VagasMenu vagasMenu = new VagasMenu(vagaService, empresaService)
-    CompetenciaMenu competenciaMenu = new CompetenciaMenu(competenciaService)
+    CompetenciaController competenciaController = new CompetenciaController(competenciaService)
+    CompetenciaMenu competenciaMenu = new CompetenciaMenu(competenciaController)
     Scanner sc = new Scanner(System.in)
 
     void menu() {

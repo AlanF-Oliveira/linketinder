@@ -1,14 +1,14 @@
-package org.alan.terminal
+package org.alan.view
 
-import org.alan.service.CompetenciaService
+import org.alan.controller.CompetenciaController
 
 class CompetenciaMenu {
 
-    CompetenciaService competenciaService
+    private final CompetenciaController competenciaController
     Scanner sc = new Scanner(System.in)
 
-    CompetenciaMenu(CompetenciaService competenciaService) {
-        this.competenciaService = competenciaService
+    CompetenciaMenu(CompetenciaController competenciaController) {
+        this.competenciaController = competenciaController
     }
 
     void menu() {
@@ -33,7 +33,7 @@ class CompetenciaMenu {
     void listar() {
         println()
         println "Lista de Competências: "
-        competenciaService.listarCompetencias().each {
+        competenciaController.listarCompetencias().each {
             println(it)
         }
         println ""
@@ -47,7 +47,7 @@ class CompetenciaMenu {
             sc.nextLine()
             print "Novo nome: "
             String novoNome = sc.nextLine()
-            competenciaService.atualizarCompetencia(novoNome, id)
+            competenciaController.atualizarCompetencia(novoNome, id)
             println "Competência atualizada com sucesso"
         } catch (Exception e) {
             println "Erro ao atualizar competência: ${e.message}"
@@ -60,7 +60,7 @@ class CompetenciaMenu {
         print "Id da competência a deletar: "
         try {
             int id = sc.nextInt()
-            competenciaService.deletarCompetencia(id)
+            competenciaController.deletarCompetencia(id)
             println "Competência deletada com sucesso"
         } catch (Exception e) {
             println "Erro ao deletar competência: ${e.message}"

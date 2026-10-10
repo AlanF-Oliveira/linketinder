@@ -1,18 +1,17 @@
-package org.alan.terminal
+package org.alan.view
 
+import org.alan.controller.CandidatoController
 import org.alan.model.Candidato
-import org.alan.service.CandidatoService
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class CandidatoMenu {
-    CandidatoService candidatoService
+    private final CandidatoController candidatoController
     Scanner sc = new Scanner(System.in)
 
-    CandidatoMenu(CandidatoService candidatoService) {
-        this.candidatoService = candidatoService
-
+    CandidatoMenu(CandidatoController candidatoController) {
+        this.candidatoController = candidatoController
     }
 
     void menu() {
@@ -44,7 +43,7 @@ class CandidatoMenu {
     void listar() {
         println()
         println "Lista de Candidatos: "
-        candidatoService.listarCandidatos().each { candidato ->
+        candidatoController.listarCandidatos().each { candidato ->
             println(candidato.toString())
         }
         println ""
@@ -95,7 +94,7 @@ class CandidatoMenu {
                     senha: senha,
                     competencias: competencias
             )
-            candidatoService.salvar(candidato)
+            candidatoController.salvar(candidato)
             println "Candidato cadastrado com sucesso"
         } catch (Exception e) {
             println "Erro ao cadastrar candidato: ${e.message}"
@@ -144,7 +143,7 @@ class CandidatoMenu {
                     cep: cep,
                     senha: senha
             )
-            candidatoService.atualizarCandidato(candidato)
+            candidatoController.atualizarCandidato(candidato)
             println "Candidato atualizado com sucesso"
         } catch (Exception e) {
             println "Erro ao atualizar candidato: ${e.message}"
@@ -158,7 +157,7 @@ class CandidatoMenu {
         sc.nextLine()
         try {
             String cpf = sc.nextLine()
-            candidatoService.deletarCandidato(cpf)
+            candidatoController.deletarCandidato(cpf)
             println "Candidato deletado com sucesso"
         } catch (Exception e) {
             println "Erro ao deletar candidato: ${e.message}"
