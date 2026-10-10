@@ -11,7 +11,11 @@ import java.sql.Statement
 
 class EmpresaDAO implements EmpresaRepository {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory()
+    private final ConnectionFactory connectionFactory
+
+    EmpresaDAO(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory
+    }
 
     private Connection conectar() {
         return connectionFactory.criarConexao()

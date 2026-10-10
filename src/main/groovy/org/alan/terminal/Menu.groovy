@@ -4,6 +4,8 @@ import org.alan.dao.CandidatoDAO
 import org.alan.dao.CompetenciaDAO
 import org.alan.dao.EmpresaDAO
 import org.alan.dao.VagaDAO
+import org.alan.database.ConnectionFactory
+import org.alan.database.PostgresConnectionFactory
 import org.alan.service.CandidatoService
 import org.alan.service.CompetenciaService
 import org.alan.service.EmpresaService
@@ -11,10 +13,11 @@ import org.alan.service.VagaService
 
 class Menu {
 
-    CompetenciaDAO competenciaDAO = new CompetenciaDAO()
-    CandidatoDAO candidatoDAO = new CandidatoDAO(competenciaDAO)
-    EmpresaDAO empresaDAO = new EmpresaDAO()
-    VagaDAO vagaDAO = new VagaDAO(competenciaDAO, empresaDAO)
+    ConnectionFactory connectionFactory = new PostgresConnectionFactory()
+    CompetenciaDAO competenciaDAO = new CompetenciaDAO(connectionFactory)
+    CandidatoDAO candidatoDAO = new CandidatoDAO(connectionFactory, competenciaDAO)
+    EmpresaDAO empresaDAO = new EmpresaDAO(connectionFactory)
+    VagaDAO vagaDAO = new VagaDAO(connectionFactory, competenciaDAO, empresaDAO)
     CandidatoService candidatoService = new CandidatoService(candidatoDAO)
     EmpresaService empresaService = new EmpresaService(empresaDAO)
     VagaService vagaService = new VagaService(vagaDAO)
