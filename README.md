@@ -74,7 +74,7 @@ Cada entidade possui seu próprio DAO e sua própria interface de repositório:
 As principais melhorias realizadas foram:
 
 - Separação da antiga classe de banco em DAOs por entidade.
-- Criação da `ConnectionFactory`.
+- Criação da `PostgresConnectionFactory`.
 - Criação de interfaces para os repositórios.
 - Uso de injeção de dependências por meio dos construtores.
 - Services dependendo de interfaces em vez de DAOs concretos.

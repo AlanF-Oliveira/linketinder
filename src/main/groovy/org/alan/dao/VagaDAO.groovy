@@ -13,11 +13,15 @@ import java.sql.Statement
 
 class VagaDAO implements VagaRepository {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory()
+    private final ConnectionFactory connectionFactory
     private final CompetenciaRepository competenciaRepository
     private final EmpresaRepository empresaRepository
 
-    VagaDAO(CompetenciaRepository competenciaRepository, EmpresaRepository empresaRepository) {
+    VagaDAO(ConnectionFactory connectionFactory,
+            CompetenciaRepository competenciaRepository,
+            EmpresaRepository empresaRepository
+    ) {
+        this.connectionFactory = connectionFactory
         this.competenciaRepository = competenciaRepository
         this.empresaRepository = empresaRepository
     }

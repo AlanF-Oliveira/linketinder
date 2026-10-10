@@ -10,7 +10,11 @@ import java.sql.Statement
 
 class CompetenciaDAO implements CompetenciaRepository {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory()
+    private final ConnectionFactory connectionFactory
+
+    CompetenciaDAO(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory
+    }
 
     private Connection conectar() {
         return connectionFactory.criarConexao()

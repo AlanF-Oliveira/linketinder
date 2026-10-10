@@ -12,10 +12,12 @@ import java.sql.Statement
 
 class CandidatoDAO implements CandidatoRepository {
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory()
+    private final ConnectionFactory connectionFactory
     private final CompetenciaRepository competenciaRepository
 
-    CandidatoDAO(CompetenciaRepository competenciaRepository) {
+    CandidatoDAO(ConnectionFactory connectionFactory,
+                 CompetenciaRepository competenciaRepository) {
+        this.connectionFactory = connectionFactory
         this.competenciaRepository = competenciaRepository
     }
 
@@ -25,7 +27,6 @@ class CandidatoDAO implements CandidatoRepository {
 
     private Candidato criarCandidato(ResultSet resultado) {
         int idCandidato = resultado.getInt("id")
-
         return new Candidato(
                 id: idCandidato,
                 nome: resultado.getString("nome"),
