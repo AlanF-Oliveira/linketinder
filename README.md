@@ -2,7 +2,7 @@
 
 **Autor:** Alan Ferreira Oliveira
 
-Aplicação de recrutamento inspirada no LinkedIn e no Tinder, desenvolvida em Groovy. O backend utiliza PostgreSQL para persistência e possui uma interface por terminal.
+Aplicação de recrutamento inspirada no LinkedIn e no Tinder, desenvolvida em Groovy. O backend utiliza PostgreSQL para persistência e possui uma interface por terminal e uma API REST.
 
 ## Tecnologias
 
@@ -33,15 +33,31 @@ Também é possível configurar essa variável nas opções de execução do Int
 
 ## Como executar
 
+Para usar o menu no terminal:
+
 ```bash
 ./gradlew run
 ```
 
-A classe principal da aplicação é:
+A classe principal do menu é `org.alan.Main`.
 
-```text
-org.alan.Main
+## API REST
+
+A API foi criada com o `HttpServer` do Java, sem framework. Ela recebe dados em JSON e utiliza os controllers, services e DAOs existentes para salvar no PostgreSQL.
+
+Com o banco configurado e `DB_SENHA` definida, execute:
+
+```bash
+./gradlew runApi
 ```
+
+A API ficará disponível em `http://localhost:8080`.
+
+- `POST /candidatos`: cadastra um candidato.
+- `POST /empresas`: cadastra uma empresa.
+- `POST /vagas`: cadastra uma vaga usando o CNPJ de uma empresa existente.
+
+Os cadastros bem-sucedidos retornam `201 Created` com o ID gerado.
 
 ## Como executar os testes
 
@@ -60,7 +76,8 @@ O backend está dividido nas seguintes camadas:
 - `dao`: implementa os repositórios e realiza o acesso ao PostgreSQL.
 - `service`: contém as regras da aplicação.
 - `view`: contém os menus e a interação com o usuário.
-- `controller`: recebe as ações dos menus e chama os services.
+- `controller`: recebe as ações dos menus e da API e chama os services.
+- `api`: recebe as requisições HTTP e devolve as respostas em JSON.
 - `database`: contém a criação da conexão e o script SQL.
 
 Cada entidade possui seu próprio DAO e sua própria interface de repositório:
@@ -95,7 +112,7 @@ Essas mudanças reduziram duplicações, diminuíram o acoplamento e deixaram as
 - Factory: a interface `ConnectionFactory` define a criação de conexões, implementada pela `PostgresConnectionFactory`. Os DAOs recebem a fábrica pelo construtor, permitindo substituir a implementação sem alterar como solicitam conexões.
 - DAO: concentra as operações de persistência de cada entidade, separando o SQL das regras da aplicação.
 
-A escolha da fábrica fica no `Menu`. Isso reduz o acoplamento dos DAOs à criação de conexões e facilita os testes. A troca de banco ainda pode exigir ajustes no SQL.
+A escolha da fábrica fica no `Menu` e no `ApiMain`. Isso reduz o acoplamento dos DAOs à criação de conexões e facilita os testes. A troca de banco ainda pode exigir ajustes no SQL.
 
 Foi adicionado um teste com mocks para verificar se o `CompetenciaDAO` utiliza a fábrica recebida, sem acessar o banco real.
 
@@ -107,11 +124,11 @@ O sistema Groovy segue o fluxo:
 Menu (View) → Controller → Service → DAO → Banco
 ```
 
-Os menus recebem os dados e exibem os resultados. Os controllers recebem as ações dos menus e chamam os services. Os models representam os dados da aplicação.
+Na API, os handlers recebem as requisições HTTP e chamam os controllers. Os models representam os dados da aplicação.
 
 ## Frontend
 
-O frontend foi desenvolvido em TypeScript e mantém seus dados em memória no navegador.
+O frontend foi desenvolvido em TypeScript e mantém seus dados em memória no navegador. Ele ainda não está integrado à API.
 
 Para executar:
 

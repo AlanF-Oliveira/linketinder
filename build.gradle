@@ -24,11 +24,17 @@ tasks.named('run') {
     standardInput = System.in
 }
 
+tasks.register('runApi', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.alan.ApiMain'
+}
+
 
 dependencies {
     implementation 'org.apache.groovy:groovy:4.0.31'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
     implementation 'org.postgresql:postgresql:42.7.13'
+    implementation 'org.apache.groovy:groovy-json:4.0.31'
 }
 test {
     useJUnitPlatform()
