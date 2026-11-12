@@ -19,6 +19,14 @@ class MatchController {
         return matchService.curtirCandidato(idEmpresa, idCandidato)
     }
 
+    List<Match> curtirCandidatoComoRecrutador(
+            int idEmpresa, int idCandidato, int idRecrutador, String cpf, String cnpj
+    ) {
+        return matchService.curtirCandidatoComoRecrutador(
+                idEmpresa, idCandidato, idRecrutador, cpf, cnpj
+        )
+    }
+
     List<Match> listarPorCandidato(int idCandidato) {
         return matchService.listarPorCandidato(idCandidato)
     }

@@ -34,11 +34,11 @@ class Menu {
     CandidatoController candidatoController = new CandidatoController(candidatoService)
     EmpresaService empresaService = new EmpresaService(empresaDAO)
     EmpresaController empresaController = new EmpresaController(empresaService)
-    RecrutadorDAO recrutadorDAO = new RecrutadorDAO(connectionFactory)
+    RecrutadorDAO recrutadorDAO = new RecrutadorDAO(connectionFactory, empresaDAO)
     RecrutadorService recrutadorService = new RecrutadorService(recrutadorDAO, empresaDAO)
     RecrutadorController recrutadorController = new RecrutadorController(recrutadorService)
     MatchDAO matchDAO = new MatchDAO(connectionFactory)
-    MatchService matchService = new MatchService(matchDAO)
+    MatchService matchService = new MatchService(matchDAO, recrutadorDAO)
     MatchController matchController = new MatchController(matchService)
     MatchMenu matchMenu = new MatchMenu(matchController)
     CandidatoMenu candidatoMenu = new CandidatoMenu(candidatoController, matchMenu)
@@ -103,7 +103,9 @@ class Menu {
                 break
             case "EMPRESA":
                 empresaMenu.menu()
-                new RecrutadorMenu(recrutadorController, sessao, vagaController).menu()
+                new RecrutadorMenu(
+                        recrutadorController, sessao, vagaController, matchController
+                ).menu()
                 break
             case "RECRUTADOR":
                 new VagasMenu(vagaController, sessao.usuario.empresa.cnpj).menu()

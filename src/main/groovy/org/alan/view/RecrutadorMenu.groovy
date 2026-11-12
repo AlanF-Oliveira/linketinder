@@ -2,6 +2,7 @@ package org.alan.view
 
 import org.alan.controller.RecrutadorController
 import org.alan.controller.VagaController
+import org.alan.controller.MatchController
 import org.alan.model.Recrutador
 import org.alan.service.SessaoAutenticada
 
@@ -12,17 +13,20 @@ class RecrutadorMenu {
 
     private final RecrutadorController recrutadorController
     private final VagasMenu vagasMenu
+    private final MatchMenu matchMenu
     private final SessaoAutenticada sessaoEmpresa
     private final Scanner sc = new Scanner(System.in)
 
     RecrutadorMenu(
             RecrutadorController recrutadorController,
             SessaoAutenticada sessaoEmpresa,
-            VagaController vagaController
+            VagaController vagaController,
+            MatchController matchController
     ) {
         this.recrutadorController = recrutadorController
         this.sessaoEmpresa = sessaoEmpresa
         this.vagasMenu = new VagasMenu(vagaController, sessaoEmpresa.usuario.cnpj)
+        this.matchMenu = new MatchMenu(matchController, sessaoEmpresa)
     }
 
     void menu() {
@@ -40,7 +44,9 @@ class RecrutadorMenu {
             println "3) Atualizar"
             println "4) Remover"
             println "5) Gerenciar vagas"
-            println "6) Voltar"
+            println "6) Curtir candidato"
+            println "7) Visualizar matches"
+            println "8) Voltar"
             int opcao = sc.nextInt()
             switch (opcao) {
                 case 1: listar(); break
@@ -48,7 +54,9 @@ class RecrutadorMenu {
                 case 3: atualizar(); break
                 case 4: remover(); break
                 case 5: vagasMenu.menu(); break
-                case 6: voltar = true; break
+                case 6: matchMenu.curtirCandidatoComoRecrutador(); break
+                case 7: matchMenu.listarMatchesDaEmpresaAutenticada(); break
+                case 8: voltar = true; break
             }
         }
     }

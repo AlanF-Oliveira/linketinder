@@ -58,6 +58,58 @@ class MatchDAO implements MatchRepository {
         }
     }
 
+    List<Match> curtirCandidatoComoRecrutador(
+            int idEmpresa, int idCandidato, int idRecrutador
+    ) {
+        Connection connection = conectar()
+        try {
+            connection.autoCommit = false
+            executar(connection,
+                    "INSERT INTO curtidas_empresa_candidato (id_empresa, id_candidato) " +
+                            "VALUES (?, ?) ON CONFLICT DO NOTHING",
+                    idEmpresa, idCandidato)
+            int idResponsavel = inserirResponsavelHistorico(
+                    connection, idEmpresa, idRecrutador
+            )
+            executar(connection,
+                    "INSERT INTO curtida_empresa_responsavel " +
+                            "(id_empresa, id_candidato, id_responsavel_historico) " +
+                            "VALUES (?, ?, ?) ON CONFLICT DO NOTHING",
+                    idEmpresa, idCandidato, idResponsavel)
+            List<Match> matches = criarMatchesDoCandidato(
+                    connection, idEmpresa, idCandidato
+            )
+            connection.commit()
+            return matches
+        } catch (Exception erro) {
+            connection.rollback()
+            throw erro
+        } finally {
+            connection.close()
+        }
+    }
+
+    private int inserirResponsavelHistorico(
+            Connection connection, int idEmpresa, int idRecrutador
+    ) {
+        PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO recrutador_responsavel_historico " +
+                        "(id_recrutador_origem, nome, area_atuacao, removido) " +
+                        "SELECT r.id, r.nome, r.area_atuacao, FALSE " +
+                        "FROM recrutadores r " +
+                        "JOIN recrutador_empresa re ON re.id_recrutador = r.id " +
+                        "WHERE r.id = ? AND re.id_empresa = ? AND re.status = 'ATIVO' " +
+                        "RETURNING id"
+        )
+        statement.setInt(1, idRecrutador)
+        statement.setInt(2, idEmpresa)
+        ResultSet resultado = statement.executeQuery()
+        if (!resultado.next()) {
+            throw new Exception("Recrutador sem vínculo ativo com esta empresa")
+        }
+        return resultado.getInt("id")
+    }
+
     private List<Match> criarMatchesDaVaga(
             Connection connection, int idCandidato, int idVaga
     ) {

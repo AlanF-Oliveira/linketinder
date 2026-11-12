@@ -2,14 +2,22 @@ package org.alan.view
 
 import org.alan.controller.MatchController
 import org.alan.model.Match
+import org.alan.service.SessaoAutenticada
 
 class MatchMenu {
 
     private final MatchController matchController
+    private final SessaoAutenticada sessao
     Scanner sc = new Scanner(System.in)
 
     MatchMenu(MatchController matchController) {
         this.matchController = matchController
+        this.sessao = null
+    }
+
+    MatchMenu(MatchController matchController, SessaoAutenticada sessao) {
+        this.matchController = matchController
+        this.sessao = sessao
     }
 
     void curtirVaga() {
@@ -43,6 +51,29 @@ class MatchMenu {
         }
     }
 
+    void curtirCandidatoComoRecrutador() {
+            if (!sessao?.ehRecrutador()) {
+                println "Apenas recrutadores autenticados podem usar esta operação."
+                return
+            }
+            println()
+            print "Id do candidato: "
+            int idCandidato = sc.nextInt()
+            try {
+                List<Match> matches = matchController.curtirCandidatoComoRecrutador(
+                        sessao.usuario.empresa.id,
+                        idCandidato,
+                        sessao.usuario.id,
+                        sessao.usuario.cpf,
+                        sessao.usuario.empresa.cnpj
+                )
+                println "Curtida registrada em nome da empresa."
+                exibirMatchesCriados(matches)
+            } catch (Exception erro) {
+                println "Erro ao curtir candidato: ${erro.message}"
+        }
+    }
+
     void listarMatchesDoCandidato() {
         println()
         print "Id do candidato: "
@@ -55,6 +86,14 @@ class MatchMenu {
         print "Id da empresa: "
         int idEmpresa = sc.nextInt()
         exibir(matchController.listarPorEmpresa(idEmpresa))
+    }
+
+    void listarMatchesDaEmpresaAutenticada() {
+        if (!sessao?.ehRecrutador()) {
+            println "Apenas recrutadores autenticados podem consultar esta operação."
+            return
+        }
+        exibir(matchController.listarPorEmpresa(sessao.usuario.empresa.id))
     }
 
     private static void exibir(List<Match> matches) {
