@@ -168,3 +168,13 @@ VALUES (1, 1),
        (5, 1),
        (5, 14),
        (5, 3);
+
+
+INSERT INTO curtidas_candidato_vaga (id_candidato, id_vaga)
+VALUES (1, 1);
+
+INSERT INTO curtidas_empresa_candidato (id_empresa, id_candidato)
+VALUES (1, 1);
+
+INSERT INTO matches (id_vaga, id_candidato, id_empresa)
+VALUES (1, 1, 1);
