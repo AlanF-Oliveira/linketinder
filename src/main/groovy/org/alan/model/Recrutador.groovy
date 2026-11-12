@@ -12,6 +12,6 @@ class Recrutador extends Usuario {
 
     @Override
     String toString() {
-        return "$id | $nome | $areaAtuacao | $email | $empresa?.nome | $status"
+        return "$id | $nome | $areaAtuacao | $email | ${empresa?.nome} | $status"
     }
 }

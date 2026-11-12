@@ -27,7 +27,10 @@ class RecrutadorMenu {
     ) {
         this.recrutadorController = recrutadorController
         this.sessaoEmpresa = sessaoEmpresa
-        this.vagasMenu = new VagasMenu(vagaController, sessaoEmpresa.usuario.cnpj)
+        String cnpjEmpresa = sessaoEmpresa.ehEmpresa()
+                ? sessaoEmpresa.usuario.cnpj
+                : sessaoEmpresa.usuario.empresa.cnpj
+        this.vagasMenu = new VagasMenu(vagaController, cnpjEmpresa)
         this.matchMenu = new MatchMenu(matchController, sessaoEmpresa)
     }
 

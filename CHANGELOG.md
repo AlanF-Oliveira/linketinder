@@ -44,6 +44,8 @@ publicada.
   passaram a exibir o ID público do candidato para permitir curtidas.
 - O frontend também exibe o ID público dos candidatos e usa esse identificador
   na ação de curtir, sem revelar CPF ou outros dados pessoais.
+- Corrigido o acesso de recrutadores autenticados à área da empresa, usando o
+  CNPJ da empresa vinculada ao recrutador para carregar suas vagas.
 
 ### Security
 
