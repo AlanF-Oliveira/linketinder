@@ -76,7 +76,7 @@ class CandidatoMenu {
             String descricao = sc.nextLine()
             print "País: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -129,7 +129,7 @@ class CandidatoMenu {
             String descricao = sc.nextLine()
             print "País: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()

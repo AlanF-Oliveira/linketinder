@@ -40,6 +40,18 @@ class CandidatoServiceSpec extends Specification {
         erro.message == "Falha ao cadastrar candidato"
     }
 
+    def "deve rejeitar estado fora do formato de UF"() {
+        given:
+        candidato.estado = "CEARA"
+
+        when:
+        candidatoService.salvar(candidato)
+
+        then:
+        def erro = thrown(Exception)
+        erro.message == "Estado inválido: informe a UF com 2 letras, por exemplo CE"
+    }
+
     def "deve buscar candidato por CPF"() {
         given:
         candidatoRepository.buscarCandidatoPorCpf("123") >> candidato

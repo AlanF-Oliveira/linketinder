@@ -67,7 +67,7 @@ class EmpresaMenu {
             String cnpj = sc.nextLine()
             print "Pais: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -111,7 +111,7 @@ class EmpresaMenu {
             String email = sc.nextLine()
             print "Pais: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()

@@ -12,6 +12,7 @@ class VagaService {
     }
 
     Vaga criarVaga(Vaga vaga, int idEmpresa) {
+        validarEstado(vaga.estado)
         int idGerado = vagaRepository.inserir(vaga, idEmpresa)
 
         if (idGerado == 0) {
@@ -41,6 +42,7 @@ class VagaService {
     }
 
     Vaga atualizarVaga(Vaga vaga) {
+        validarEstado(vaga.estado)
         boolean atualizou = vagaRepository.atualizarVaga(vaga)
 
         if (!atualizou) {
@@ -51,10 +53,17 @@ class VagaService {
     }
 
     Vaga atualizarVagaDaEmpresa(Vaga vaga, int idEmpresa) {
+        validarEstado(vaga.estado)
         if (!vagaRepository.atualizarVagaDaEmpresa(vaga, idEmpresa)) {
             throw new Exception("Vaga não encontrada para esta empresa")
         }
         return vaga
+    }
+
+    private static void validarEstado(String estado) {
+        if (estado && estado.trim().size() != 2) {
+            throw new Exception("Estado inválido: informe a UF com 2 letras, por exemplo CE")
+        }
     }
 
     void deletarVaga(int idVaga) {
