@@ -8,6 +8,8 @@ import { criarTelaInicial } from './home';
 import { criarAreaCandidato } from './areaCandidato';
 import { criarAreaEmpresa } from './areaEmpresa';
 import { criarAreaRecrutador } from './areaRecrutador';
+import { criarCadastroCandidato } from './cadastrarCandidato';
+import { criarCadastroEmpresa } from './cadastrarEmpresa';
 
 export function criarLogin(
     app: HTMLElement,
@@ -36,12 +38,27 @@ export function criarLogin(
           <div id="login-erro" class="alert alert-danger d-none" role="alert"></div>
           <button class="btn btn-primary w-100" type="submit">Entrar</button>
         </form>
+        <div class="mt-4 text-center">
+          <p class="text-muted mb-2">Ainda não possui cadastro?</p>
+          ${tipo === 'candidato'
+            ? '<button id="btn-cadastro" class="btn btn-outline-primary">Cadastrar candidato</button>'
+            : tipo === 'empresa'
+                ? '<button id="btn-cadastro" class="btn btn-outline-success">Cadastrar empresa</button>'
+                : '<p class="small text-muted mb-0">O cadastro de recrutador é realizado pela empresa após o login.</p>'}
       </div>
     `;
 
     document.getElementById('btn-voltar')?.addEventListener('click', () =>
         criarTelaInicial(app, candidatoService, empresaService, vagaService, authService, recrutadorService)
     );
+
+    document.getElementById('btn-cadastro')?.addEventListener('click', () => {
+        if (tipo === 'candidato') {
+            criarCadastroCandidato(app, candidatoService, empresaService, vagaService);
+        } else if (tipo === 'empresa') {
+            criarCadastroEmpresa(app, empresaService, candidatoService, vagaService);
+        }
+    });
 
     document.getElementById('form-login')?.addEventListener('submit', event => {
         event.preventDefault();
