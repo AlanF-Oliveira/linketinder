@@ -36,6 +36,8 @@ publicada.
 - O cadastro local de candidato e empresa agora encaminha diretamente para o
   login e normaliza CPF/CNPJ para permitir o acesso imediato com a credencial
   recém-criada.
+- As áreas autenticadas de candidato e empresa agora exibem um botão explícito
+  de logout, preservando a sessão ao navegar pelas telas internas.
 
 ### Security
 

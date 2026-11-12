@@ -3,11 +3,15 @@ import { CandidatoService } from '../services/CandidatoService';
 import { anonimizarEmpresa } from '../models/Empresa';
 import { criarAreaCandidato } from './areaCandidato';
 import type { EmpresaService } from '../services/EmpresaService';
+import type { AuthService } from '../services/AuthService';
+import type { RecrutadorService } from '../services/RecrutadorService';
 
 export function criarListaVagas(app: HTMLElement,
   vagaService: VagaService,
   candidatoService: CandidatoService,
-  empresaService: EmpresaService) {
+  empresaService: EmpresaService,
+  authService?: AuthService,
+  recrutadorService?: RecrutadorService) {
   const vagas = vagaService.listarVagas();
 
   const cardsHtml = vagas
@@ -37,7 +41,7 @@ export function criarListaVagas(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+    criarAreaCandidato(app, candidatoService, empresaService, vagaService, authService, recrutadorService);
   });
 
 }

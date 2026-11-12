@@ -72,7 +72,7 @@ export function criarCadastroVaga(app: HTMLElement,
       }
       const vaga = new Vaga(titulo, descricao, competenciasExigidas, empresa);
       vagaService.criarVaga(vaga);
-      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService, recrutadorService, authService);
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Erro ao cadastrar vaga');
     }

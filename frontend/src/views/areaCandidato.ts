@@ -14,7 +14,7 @@ export function criarAreaCandidato(app: HTMLElement,
   recrutadorService?: RecrutadorService) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
+      <button id="btn-sair" class="btn btn-outline-secondary mb-3">Sair</button>
       <h2>Área do Candidato</h2>
       <div class="d-flex justify-content-center gap-3 mt-4">
         <button id="btn-vagas" class="btn btn-primary btn-lg">Ver Vagas</button>
@@ -22,8 +22,8 @@ export function criarAreaCandidato(app: HTMLElement,
     </div>
   `;
 
-  const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
-  btnVoltar.addEventListener('click', () => {
+  const btnSair = document.getElementById('btn-sair') as HTMLButtonElement;
+  btnSair.addEventListener('click', () => {
     authService?.logout();
     criarTelaInicial(app, candidatoService, empresaService, vagaService, authService, recrutadorService);
   });
@@ -31,7 +31,7 @@ export function criarAreaCandidato(app: HTMLElement,
   const btnVagas = document.getElementById('btn-vagas') as HTMLButtonElement;
 
   btnVagas.addEventListener('click', () => {
-    criarListaVagas(app, vagaService, candidatoService, empresaService);
+    criarListaVagas(app, vagaService, candidatoService, empresaService, authService, recrutadorService);
   });
 
 }

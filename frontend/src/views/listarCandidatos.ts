@@ -4,11 +4,15 @@ import { anonimizarCandidato } from '../models/Candidato';
 import { criarGraficoCompetencias } from './graficoCompetencias';
 import { criarAreaEmpresa } from './areaEmpresa';
 import { VagaService } from '../services/VagaService';
+import type { AuthService } from '../services/AuthService';
+import type { RecrutadorService } from '../services/RecrutadorService';
 
 export function criarListaCandidatos(app: HTMLElement,
   candidatoService: CandidatoService,
   empresaService: EmpresaService,
-  vagaService: VagaService) {
+  vagaService: VagaService,
+  recrutadorService?: RecrutadorService,
+  authService?: AuthService) {
   const candidatos = candidatoService.listarCandidatos();
 
   const linhasHtml = candidatos
@@ -46,7 +50,7 @@ export function criarListaCandidatos(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    criarAreaEmpresa(app, empresaService, candidatoService, vagaService, recrutadorService, authService);
   });
 
 }

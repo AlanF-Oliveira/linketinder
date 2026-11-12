@@ -16,7 +16,7 @@ export function criarAreaEmpresa(app: HTMLElement,
   authService?: AuthService) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
-      <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
+      <button id="btn-sair" class="btn btn-outline-secondary mb-3">Sair</button>
       <h2>Área da Empresa</h2>
       <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
         <button id="btn-candidatos" class="btn btn-primary btn-lg">Ver candidatos</button>
@@ -26,8 +26,8 @@ export function criarAreaEmpresa(app: HTMLElement,
     </div>
   `;
 
-  const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
-  btnVoltar.addEventListener('click', () => {
+  const btnSair = document.getElementById('btn-sair') as HTMLButtonElement;
+  btnSair.addEventListener('click', () => {
     authService?.logout();
     criarTelaInicial(app, candidatoService, empresaService, vagaService, authService, recrutadorService);
   });
@@ -36,7 +36,7 @@ export function criarAreaEmpresa(app: HTMLElement,
   const btnCadastrarVaga = document.getElementById('btn-cadastro-vaga') as HTMLButtonElement;
 
   btnCandidatos.addEventListener('click', () => {
-    criarListaCandidatos(app, candidatoService, empresaService, vagaService);
+    criarListaCandidatos(app, candidatoService, empresaService, vagaService, recrutadorService, authService);
   });
 
   btnCadastrarVaga.addEventListener('click', () =>
