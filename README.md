@@ -70,6 +70,33 @@ As combinações repetidas não são duplicadas.
 
 Senhas, CPF e CNPJ não são exibidos.
 
+## Modelo do Match
+
+O sistema utiliza duas tabelas para registrar as curtidas:
+
+- `curtidas_candidato_vaga`: relaciona o candidato à vaga curtida.
+- `curtidas_empresa_candidato`: relaciona a empresa ao candidato curtido.
+
+Quando o candidato curte uma vaga, o sistema registra o relacionamento entre
+`id_candidato` e `id_vaga`.
+
+Quando a empresa curte esse candidato, o sistema verifica se existe alguma
+curtida do candidato em uma vaga pertencente à empresa. Se existir, um registro
+é criado na tabela `matches`.
+
+A tabela `matches` relaciona:
+
+- `id_vaga`
+- `id_candidato`
+- `id_empresa`
+
+As chaves estrangeiras garantem a integridade dos dados e o `ON DELETE CASCADE`
+remove as curtidas e matches relacionados quando um candidato, empresa ou vaga
+é excluído.
+
+As chaves primárias e a restrição `UNIQUE (id_vaga, id_candidato)` impedem
+registros duplicados.
+
 ## API REST
 
 A API foi criada com o `HttpServer` do Java, sem framework. Ela recebe dados em JSON e utiliza os controllers, services e DAOs existentes para salvar no PostgreSQL.
