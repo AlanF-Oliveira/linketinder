@@ -2,12 +2,17 @@ import { Empresa } from "../models/Empresa";
 import { EmpresaService } from "../services/EmpresaService";
 import { CandidatoService } from "../services/CandidatoService";
 import { criarAreaEmpresa } from "./areaEmpresa";
+import { AuthService } from "../services/AuthService";
+import { RecrutadorService } from "../services/RecrutadorService";
+import { criarLogin } from "./login";
 import type { VagaService } from "../services/VagaService";
 
 export function criarCadastroEmpresa(app: HTMLElement,
   empresaService: EmpresaService,
   candidatoService: CandidatoService,
-  vagaService: VagaService) {
+  vagaService: VagaService,
+  authService?: AuthService,
+  recrutadorService?: RecrutadorService) {
   app.innerHTML = `
     <div class="container mt-4">
       <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
@@ -29,7 +34,14 @@ export function criarCadastroEmpresa(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    if (authService && recrutadorService) {
+      criarLogin(
+        app, authService, candidatoService, empresaService,
+        recrutadorService, vagaService
+      );
+    } else {
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    }
   });
 
   const form = document.getElementById('form-empresa') as HTMLFormElement;

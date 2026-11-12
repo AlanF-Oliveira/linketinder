@@ -33,6 +33,9 @@ publicada.
 - As áreas autenticadas foram ajustadas por perfil: candidatos consultam
   vagas e empresas consultam candidatos anonimizados, sem ações administrativas
   de exclusão nas telas de análise.
+- O cadastro local de candidato e empresa agora encaminha diretamente para o
+  login e normaliza CPF/CNPJ para permitir o acesso imediato com a credencial
+  recém-criada.
 
 ### Security
 

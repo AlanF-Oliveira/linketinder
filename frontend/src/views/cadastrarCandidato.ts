@@ -3,11 +3,16 @@ import { CandidatoService } from "../services/CandidatoService";
 import { EmpresaService } from "../services/EmpresaService";
 import { VagaService } from "../services/VagaService";
 import { criarAreaCandidato } from "./areaCandidato";
+import { AuthService } from "../services/AuthService";
+import { RecrutadorService } from "../services/RecrutadorService";
+import { criarLogin } from "./login";
 
 export function criarCadastroCandidato(app: HTMLElement,
     candidatoService: CandidatoService,
     empresaService: EmpresaService,
-    vagaService: VagaService) {
+    vagaService: VagaService,
+    authService?: AuthService,
+    recrutadorService?: RecrutadorService) {
     app.innerHTML = `
     <div class="container mt-4">
         <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
@@ -30,7 +35,14 @@ export function criarCadastroCandidato(app: HTMLElement,
 
     const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
     btnVoltar.addEventListener('click', () => {
-        criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+        if (authService && recrutadorService) {
+            criarLogin(
+                app, authService, candidatoService, empresaService,
+                recrutadorService, vagaService
+            );
+        } else {
+            criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+        }
     });
 
     const form = document.getElementById('form-candidato') as HTMLFormElement;

@@ -25,8 +25,13 @@ export class AuthService {
     }
 
     login(identificador: string, senha: string): SessaoLocal {
-        const candidatoCadastrado = this.candidatos.find(item => item.cpf === identificador);
-        const recrutadorCadastrado = this.recrutadores.find(item => item.cpf === identificador);
+        const identificadorNormalizado = identificador.trim();
+        const candidatoCadastrado = this.candidatos.find(item =>
+            item.cpf.trim() === identificadorNormalizado
+        );
+        const recrutadorCadastrado = this.recrutadores.find(item =>
+            item.cpf.trim() === identificadorNormalizado
+        );
         if (candidatoCadastrado && recrutadorCadastrado) {
             throw new Error('CPF cadastrado para mais de um tipo de usuário.');
         }
@@ -34,7 +39,7 @@ export class AuthService {
         const candidato = candidatoCadastrado?.senha === senha ? candidatoCadastrado : undefined;
         const recrutador = recrutadorCadastrado?.senha === senha ? recrutadorCadastrado : undefined;
         const empresa = this.empresas.find(item =>
-            item.cnpj === identificador && item.senha === senha
+            item.cnpj.trim() === identificadorNormalizado && item.senha === senha
         );
 
         if (recrutador && recrutador.status !== 'ATIVO') {

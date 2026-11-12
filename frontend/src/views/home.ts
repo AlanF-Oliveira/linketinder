@@ -33,10 +33,14 @@ export function criarTelaInicial(
   });
 
   document.getElementById('btn-cadastro-candidato')?.addEventListener('click', () => {
-    criarCadastroCandidato(app, candidatoService, empresaService, vagaService);
+    criarCadastroCandidato(
+      app, candidatoService, empresaService, vagaService, authService, recrutadorService
+    );
   });
 
   document.getElementById('btn-cadastro-empresa')?.addEventListener('click', () => {
-    criarCadastroEmpresa(app, empresaService, candidatoService, vagaService);
+    criarCadastroEmpresa(
+      app, empresaService, candidatoService, vagaService, authService, recrutadorService
+    );
   });
 }
