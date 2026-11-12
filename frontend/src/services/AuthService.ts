@@ -25,19 +25,18 @@ export class AuthService {
     }
 
     login(identificador: string, senha: string): SessaoLocal {
-        const candidato = this.candidatos.find(item =>
-            item.cpf === identificador && item.senha === senha
-        );
-        const recrutador = this.recrutadores.find(item =>
-            item.cpf === identificador && item.senha === senha
-        );
+        const candidatoCadastrado = this.candidatos.find(item => item.cpf === identificador);
+        const recrutadorCadastrado = this.recrutadores.find(item => item.cpf === identificador);
+        if (candidatoCadastrado && recrutadorCadastrado) {
+            throw new Error('CPF cadastrado para mais de um tipo de usuário.');
+        }
+
+        const candidato = candidatoCadastrado?.senha === senha ? candidatoCadastrado : undefined;
+        const recrutador = recrutadorCadastrado?.senha === senha ? recrutadorCadastrado : undefined;
         const empresa = this.empresas.find(item =>
             item.cnpj === identificador && item.senha === senha
         );
 
-        if (candidato && recrutador) {
-            throw new Error('CPF cadastrado para mais de um tipo de usuário.');
-        }
         if (recrutador && recrutador.status !== 'ATIVO') {
             throw new Error('O recrutador não possui vínculo ativo.');
         }

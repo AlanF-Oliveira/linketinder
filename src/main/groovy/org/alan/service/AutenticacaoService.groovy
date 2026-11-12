@@ -26,6 +26,10 @@ class AutenticacaoService {
         Empresa empresa = localizarEmpresa(identificador)
         Recrutador recrutador = localizarRecrutador(identificador)
 
+        if (candidato && recrutador) {
+            throw new Exception("CPF cadastrado para mais de um tipo de usuário")
+        }
+
         List<SessaoAutenticada> correspondencias = []
         if (candidato?.senha == senha) {
             correspondencias.add(new SessaoAutenticada("CANDIDATO", candidato, identificador))

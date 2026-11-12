@@ -50,11 +50,17 @@ class AutenticacaoServiceSpec extends Specification {
                 cpf: "222", senha: "segredo", status: "INATIVO"
         )
         AutenticacaoService autenticacao = new AutenticacaoService(
-                    new CandidatoService(Stub(CandidatoRepository)),
-                    new EmpresaService(Stub(EmpresaRepository)),
+                    new CandidatoService(Stub(CandidatoRepository) {
+                        buscarCandidatoPorCpf(_) >> { throw new Exception("não encontrado") }
+                    }),
+                    new EmpresaService(Stub(EmpresaRepository) {
+                        buscarEmpresaPorCnpj(_) >> { throw new Exception("não encontrado") }
+                    }),
                     new RecrutadorService(Stub(RecrutadorRepository) {
-                    buscarPorCpf("222") >> recrutador
-                    }, Stub(EmpresaRepository))
+                        buscarPorCpf("222") >> recrutador
+                    }, Stub(EmpresaRepository) {
+                        buscarEmpresaPorCnpj(_) >> { throw new Exception("não encontrado") }
+                    })
         )
 
         when:
@@ -68,9 +74,17 @@ class AutenticacaoServiceSpec extends Specification {
     def "recusa credenciais inválidas"() {
         given:
         AutenticacaoService autenticacao = new AutenticacaoService(
-                new CandidatoService(Stub(CandidatoRepository)),
-                new EmpresaService(Stub(EmpresaRepository)),
-                new RecrutadorService(Stub(RecrutadorRepository), Stub(EmpresaRepository))
+                new CandidatoService(Stub(CandidatoRepository) {
+                    buscarCandidatoPorCpf(_) >> { throw new Exception("não encontrado") }
+                }),
+                new EmpresaService(Stub(EmpresaRepository) {
+                    buscarEmpresaPorCnpj(_) >> { throw new Exception("não encontrado") }
+                }),
+                new RecrutadorService(Stub(RecrutadorRepository) {
+                    buscarPorCpf(_) >> { throw new Exception("não encontrado") }
+                }, Stub(EmpresaRepository) {
+                    buscarEmpresaPorCnpj(_) >> { throw new Exception("não encontrado") }
+                })
         )
 
         when:
@@ -79,5 +93,29 @@ class AutenticacaoServiceSpec extends Specification {
         then:
         def erro = thrown(Exception)
         erro.message == "Credenciais inválidas"
+    }
+
+    def "recusa CPF cadastrado como candidato e recrutador mesmo com senhas diferentes"() {
+        given:
+        Candidato candidato = new Candidato(cpf: "999", senha: "candidato")
+        Recrutador recrutador = new Recrutador(
+                cpf: "999", senha: "recrutador", status: "ATIVO"
+        )
+        AutenticacaoService autenticacao = new AutenticacaoService(
+                new CandidatoService(Stub(CandidatoRepository) {
+                    buscarCandidatoPorCpf("999") >> candidato
+                }),
+                new EmpresaService(Stub(EmpresaRepository)),
+                new RecrutadorService(Stub(RecrutadorRepository) {
+                    buscarPorCpf("999") >> recrutador
+                }, Stub(EmpresaRepository))
+        )
+
+        when:
+        autenticacao.entrar("999", "candidato")
+
+        then:
+        def erro = thrown(Exception)
+        erro.message == "CPF cadastrado para mais de um tipo de usuário"
     }
 }
