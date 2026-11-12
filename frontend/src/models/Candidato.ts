@@ -5,6 +5,7 @@ export class Candidato extends Usuario {
     idade: number;
     formacao: string;
     competencias: string[];
+    senha: string;
 
     constructor(
         nome: string,
@@ -15,7 +16,8 @@ export class Candidato extends Usuario {
         cpf: string,
         idade: number,
         formacao: string,
-        competencias: string[] = []
+        competencias: string[] = [],
+        senha: string = ''
     ) {
         super(nome, email, cep, estado, descricao);
 
@@ -23,6 +25,7 @@ export class Candidato extends Usuario {
         this.idade = idade;
         this.formacao = formacao;
         this.competencias = competencias;
+        this.senha = senha;
     }
 
     toString(): string {

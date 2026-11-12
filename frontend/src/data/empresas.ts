@@ -9,7 +9,8 @@ export const empresas: Empresa[] = [
         'Ceará',
         '60175047',
         'Empresa do setor alimentício.',
-        ['Java', 'Spring Framework', 'SQL']
+        ['Java', 'Spring Framework', 'SQL'],
+        'empresa123'
     ),
     new Empresa(
         'Império do Boliche',
@@ -19,7 +20,8 @@ export const empresas: Empresa[] = [
         'São Paulo',
         '01452000',
         'Rede de casas de entretenimento e lazer.',
-        ['Angular', 'Node.js', 'MongoDB']
+        ['Angular', 'Node.js', 'MongoDB'],
+        'empresa123'
     ),
     new Empresa(
         'TechNova Soluções',
@@ -29,7 +31,8 @@ export const empresas: Empresa[] = [
         'Minas Gerais',
         '30140071',
         'Consultoria em transformação digital.',
-        ['Python', 'AWS', 'Docker']
+        ['Python', 'AWS', 'Docker'],
+        'empresa123'
     ),
     new Empresa(
         'Boliche Champions',
@@ -39,7 +42,8 @@ export const empresas: Empresa[] = [
         'Bahia',
         '40110010',
         'Franquia de centros de boliche.',
-        ['React', 'Firebase', 'UX Design']
+        ['React', 'Firebase', 'UX Design'],
+        'empresa123'
     ),
     new Empresa(
         'DataFlow Analytics',
@@ -49,6 +53,7 @@ export const empresas: Empresa[] = [
         'Distrito Federal',
         '70070100',
         'Empresa de análise de dados e BI.',
-        ['Java', 'Kubernetes', 'PostgreSQL']
+        ['Java', 'Kubernetes', 'PostgreSQL'],
+        'empresa123'
     ),
 ];

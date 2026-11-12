@@ -16,6 +16,7 @@ export function criarCadastroEmpresa(app: HTMLElement,
         <div class="mb-3"><label class="form-label">Nome</label><input type="text" class="form-control" id="nome" name="nome" required></div>
         <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="email" name="email" required></div>
         <div class="mb-3"><label class="form-label">CNPJ</label><input type="text" class="form-control" id="cnpj" name="cnpj" required></div>
+        <div class="mb-3"><label class="form-label">Senha</label><input type="password" class="form-control" id="senha" name="senha" required></div>
         <div class="mb-3"><label class="form-label">País</label><input type="text" class="form-control" id="pais" name="pais" required></div>
         <div class="mb-3"><label class="form-label">Estado</label><input type="text" class="form-control" id="estado" name="estado" required></div>
         <div class="mb-3"><label class="form-label">CEP</label><input type="text" class="form-control" id="cep" name="cep" required></div>
@@ -39,6 +40,7 @@ export function criarCadastroEmpresa(app: HTMLElement,
     const nome = dadosFormulario.get('nome') as string;
     const email = dadosFormulario.get('email') as string;
     const cnpj = dadosFormulario.get('cnpj') as string;
+    const senha = dadosFormulario.get('senha') as string;
     const pais = dadosFormulario.get('pais') as string;
     const estado = dadosFormulario.get('estado') as string;
     const cep = dadosFormulario.get('cep') as string;
@@ -46,7 +48,7 @@ export function criarCadastroEmpresa(app: HTMLElement,
     const competenciasDesejadas = (dadosFormulario.get('competenciasDesejadas') as string)
       .split(',').map(competencia => competencia.trim());
 
-    const empresa = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competenciasDesejadas);
+    const empresa = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competenciasDesejadas, senha);
     try {
       empresaService.salvarEmpresa(empresa);
       criarAreaEmpresa(app, empresaService, candidatoService, vagaService);

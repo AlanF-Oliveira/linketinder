@@ -4,11 +4,15 @@ import { VagaService } from '../services/VagaService';
 import { criarCadastroCandidato } from './cadastrarCandidato';
 import { criarListaVagas } from './listarVagas';
 import { criarTelaInicial } from './home';
+import { AuthService } from '../services/AuthService';
+import { RecrutadorService } from '../services/RecrutadorService';
 
 export function criarAreaCandidato(app: HTMLElement,
   candidatoService: CandidatoService,
   empresaService: EmpresaService,
-  vagaService: VagaService) {
+  vagaService: VagaService,
+  authService?: AuthService,
+  recrutadorService?: RecrutadorService) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
       <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
@@ -22,7 +26,8 @@ export function criarAreaCandidato(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarTelaInicial(app, candidatoService, empresaService, vagaService);
+    authService?.logout();
+    criarTelaInicial(app, candidatoService, empresaService, vagaService, authService, recrutadorService);
   });
 
   const btnVagas = document.getElementById('btn-vagas') as HTMLButtonElement;

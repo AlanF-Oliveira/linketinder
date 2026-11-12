@@ -4,6 +4,7 @@ export class Empresa extends Usuario {
     cnpj: string;
     pais: string;
     competenciasDesejadas: string[];
+    senha: string;
 
     constructor(
         nome: string,
@@ -13,13 +14,15 @@ export class Empresa extends Usuario {
         estado: string,
         cep: string,
         descricao: string,
-        competenciasDesejadas: string[] = []
+        competenciasDesejadas: string[] = [],
+        senha: string = ''
     ) {
         super(nome, email, cep, estado, descricao);
 
         this.cnpj = cnpj;
         this.pais = pais;
         this.competenciasDesejadas = competenciasDesejadas;
+        this.senha = senha;
     }
 
     toString(): string {
