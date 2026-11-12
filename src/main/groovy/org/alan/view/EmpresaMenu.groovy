@@ -1,7 +1,10 @@
 package org.alan.view
 
 import org.alan.controller.EmpresaController
+import org.alan.controller.CandidatoController
 import org.alan.model.Empresa
+import org.alan.model.Candidato
+import org.alan.service.SessaoAutenticada
 
 class EmpresaMenu {
 
@@ -43,6 +46,38 @@ class EmpresaMenu {
                 case 7: voltar = true
                     break
             }
+        }
+    }
+
+    void menuAutenticado(
+                    SessaoAutenticada sessao, CandidatoController candidatoController
+            ) {
+                boolean voltar = false
+                while (!voltar) {
+                    println()
+                    println "-- Área da empresa --"
+                    println "1) Visualizar candidatos"
+                    println "2) Curtir candidato"
+                    println "3) Visualizar matches"
+                    println "4) Voltar"
+                    int opcao = sc.nextInt()
+                    switch (opcao) {
+                        case 1: listarCandidatosAnonimos(candidatoController); break
+                        case 2: matchMenu.curtirCandidatoAutenticado(sessao.usuario.id); break
+                        case 3: matchMenu.listarMatchesDaEmpresaAutenticada(sessao.usuario.id); break
+                        case 4: voltar = true; break
+                    }
+                }
+    }
+
+    private void listarCandidatosAnonimos(CandidatoController candidatoController) {
+                println()
+                println "Candidatos disponíveis:"
+                candidatoController.listarCandidatos().each { Candidato candidato ->
+                    println "Competências: ${candidato.competencias}"
+                    println "Descrição: ${candidato.descricao}"
+                    println "Local: ${candidato.cidade}, ${candidato.estado}, ${candidato.pais}"
+                    println()
         }
     }
 

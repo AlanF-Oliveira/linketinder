@@ -21,7 +21,6 @@ export function criarListaVagas(app: HTMLElement,
             <p class="card-text">${vaga.descricao}</p>
             <p class="card-text"><small class="text-muted">Competências: ${vaga.competenciasExigidas.join(', ')}</small></p>
             <p class="card-text"><small class="text-muted">Empresa em: ${empresaAnonima.estado}, ${empresaAnonima.pais}</small></p>
-            <button class="btn btn-danger btn-sm btn-deletar-vaga" data-id="${vaga.id}">Excluir</button>
           </div>
         </div>
       `;
@@ -41,18 +40,4 @@ export function criarListaVagas(app: HTMLElement,
     criarAreaCandidato(app, candidatoService, empresaService, vagaService);
   });
 
-  const botoesDeletar = document.querySelectorAll('.btn-deletar-vaga');
-  botoesDeletar.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const idString = botao.getAttribute('data-id');
-      try {
-        if (idString) {
-          vagaService.deletarVaga(Number(idString));
-          criarListaVagas(app, vagaService, candidatoService, empresaService);
-        }
-      } catch (error) {
-        alert(error instanceof Error ? error.message : 'Erro ao deletar vaga')
-      }
-    });
-  });
 }

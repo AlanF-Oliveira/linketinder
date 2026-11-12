@@ -22,7 +22,6 @@ export function criarListaCandidatos(app: HTMLElement,
         <td>${candidatoAnonimo.estado}</td>
         <td>${candidatoAnonimo.competencias.join(', ')}</td>
         <td>${candidatoAnonimo.descricao}</td>
-        <td><button class="btn btn-danger btn-sm btn-deletar" data-cpf="${candidato.cpf}">Excluir</button></td>
       </tr>
     `;
     })
@@ -34,7 +33,7 @@ export function criarListaCandidatos(app: HTMLElement,
       <h2>Candidatos Cadastrados</h2>
       <table class="table table-striped">
         <thead>
-          <tr><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th><th>Ações</th></tr>
+          <tr><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th></tr>
         </thead>
         <tbody>${linhasHtml}</tbody>
       </table>
@@ -50,18 +49,4 @@ export function criarListaCandidatos(app: HTMLElement,
     criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
   });
 
-  const botoesDeletar = document.querySelectorAll('.btn-deletar');
-  botoesDeletar.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const cpf = botao.getAttribute('data-cpf');
-      try {
-        if (cpf) {
-          candidatoService.deletarCandidato(cpf);
-          criarListaCandidatos(app, candidatoService, empresaService, vagaService);
-        }
-      } catch (error) {
-        alert(error instanceof Error ? error.message : 'Erro ao deletar candidato')
-      }
-    });
-  });
 }

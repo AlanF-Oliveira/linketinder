@@ -57,6 +57,16 @@ class VagasMenu {
         println ""
     }
 
+    void listarSomente() {
+        println()
+        println "Vagas disponíveis:"
+        List<Vaga> vagas = empresaCnpj
+                ? vagaController.listarVagasDaEmpresa(empresaCnpj)
+                : vagaController.listarVagas()
+        vagas.each { println(it) }
+        println ""
+    }
+
     void cadastrar() {
         println()
         try {

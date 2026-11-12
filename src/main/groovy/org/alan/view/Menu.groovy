@@ -99,10 +99,10 @@ class Menu {
     private void areaAutenticada(SessaoAutenticada sessao) {
         switch (sessao.tipo) {
             case "CANDIDATO":
-                candidatoMenu.menu()
+                candidatoMenu.menuAutenticado(sessao, vagaController)
                 break
             case "EMPRESA":
-                empresaMenu.menu()
+                empresaMenu.menuAutenticado(sessao, candidatoController)
                 new RecrutadorMenu(
                         recrutadorController, sessao, vagaController, matchController
                 ).menu()

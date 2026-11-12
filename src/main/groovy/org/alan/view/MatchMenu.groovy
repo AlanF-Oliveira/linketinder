@@ -27,9 +27,18 @@ class MatchMenu {
         print "Id da vaga: "
         int idVaga = sc.nextInt()
         try {
-            List<Match> matches = matchController.curtirVaga(idCandidato, idVaga)
-            println "Curtida registrada."
-            exibirMatchesCriados(matches)
+            exibirMatchesCriados(matchController.curtirVaga(idCandidato, idVaga))
+        } catch (Exception erro) {
+            println "Erro ao curtir vaga: ${erro.message}"
+        }
+    }
+
+    void curtirVagaComoCandidato(int idCandidato) {
+        println()
+        print "Id da vaga: "
+        int idVaga = sc.nextInt()
+        try {
+            exibirMatchesCriados(matchController.curtirVaga(idCandidato, idVaga))
         } catch (Exception erro) {
             println "Erro ao curtir vaga: ${erro.message}"
         }
@@ -39,52 +48,60 @@ class MatchMenu {
         println()
         print "Id da empresa: "
         int idEmpresa = sc.nextInt()
+        curtirCandidatoAutenticado(idEmpresa)
+    }
+
+    void curtirCandidatoAutenticado(int idEmpresa) {
+        println()
         print "Id do candidato: "
         int idCandidato = sc.nextInt()
         try {
-            List<Match> matches =
+            exibirMatchesCriados(
                     matchController.curtirCandidato(idEmpresa, idCandidato)
-            println "Curtida registrada."
-            exibirMatchesCriados(matches)
+            )
         } catch (Exception erro) {
             println "Erro ao curtir candidato: ${erro.message}"
         }
     }
 
     void curtirCandidatoComoRecrutador() {
-            if (!sessao?.ehRecrutador()) {
-                println "Apenas recrutadores autenticados podem usar esta operação."
-                return
-            }
-            println()
-            print "Id do candidato: "
-            int idCandidato = sc.nextInt()
-            try {
-                List<Match> matches = matchController.curtirCandidatoComoRecrutador(
-                        sessao.usuario.empresa.id,
-                        idCandidato,
-                        sessao.usuario.id,
-                        sessao.usuario.cpf,
-                        sessao.usuario.empresa.cnpj
-                )
-                println "Curtida registrada em nome da empresa."
-                exibirMatchesCriados(matches)
-            } catch (Exception erro) {
-                println "Erro ao curtir candidato: ${erro.message}"
+        if (!sessao?.ehRecrutador()) {
+            println "Apenas recrutadores autenticados podem usar esta operação."
+            return
+        }
+        println()
+        print "Id do candidato: "
+        int idCandidato = sc.nextInt()
+        try {
+            exibirMatchesCriados(matchController.curtirCandidatoComoRecrutador(
+                    sessao.usuario.empresa.id,
+                    idCandidato,
+                    sessao.usuario.id,
+                    sessao.usuario.cpf,
+                    sessao.usuario.empresa.cnpj
+            ))
+        } catch (Exception erro) {
+            println "Erro ao curtir candidato: ${erro.message}"
         }
     }
 
     void listarMatchesDoCandidato() {
         println()
         print "Id do candidato: "
-        int idCandidato = sc.nextInt()
+        exibir(matchController.listarPorCandidato(sc.nextInt()))
+    }
+
+    void listarMatchesDoCandidatoAutenticado(int idCandidato) {
         exibir(matchController.listarPorCandidato(idCandidato))
     }
 
     void listarMatchesDaEmpresa() {
         println()
         print "Id da empresa: "
-        int idEmpresa = sc.nextInt()
+        exibir(matchController.listarPorEmpresa(sc.nextInt()))
+    }
+
+    void listarMatchesDaEmpresaAutenticada(int idEmpresa) {
         exibir(matchController.listarPorEmpresa(idEmpresa))
     }
 
@@ -93,7 +110,7 @@ class MatchMenu {
             println "Apenas recrutadores autenticados podem consultar esta operação."
             return
         }
-        exibir(matchController.listarPorEmpresa(sessao.usuario.empresa.id))
+        listarMatchesDaEmpresaAutenticada(sessao.usuario.empresa.id)
     }
 
     private static void exibir(List<Match> matches) {
@@ -122,6 +139,7 @@ class MatchMenu {
     }
 
     private static void exibirMatchesCriados(List<Match> matches) {
+        println "Curtida registrada."
         if (matches.isEmpty()) {
             println "Ainda não existe match para essa curtida."
         } else {

@@ -30,6 +30,9 @@ publicada.
 - A documentação da feature foi consolidada na SPEC e no plano executável.
 - O menu de cadastros do terminal foi separado do menu de gestão, permitindo
   cadastrar candidato ou empresa e retornar ao menu principal para login.
+- As áreas autenticadas foram ajustadas por perfil: candidatos consultam
+  vagas e empresas consultam candidatos anonimizados, sem ações administrativas
+  de exclusão nas telas de análise.
 
 ### Security
 
