@@ -42,7 +42,7 @@ hash do commit quando a tarefa for concluída e commitada.
 | Tarefa | Status | Data da confirmação | Hash do commit | Observações |
 |---|---|---|---|---|
 | 1. Fechando contratos pendentes da feature | Confirmada | 2026-11-12 | — | Decisões aprovadas e registradas na SPEC; nenhum commit criado. |
-| 2. Implementando a experiência completa do recrutador no frontend local | Em andamento | — | — | Implementação concluída; aguardando commit e registro do hash. |
+| 2. Implementando a experiência completa do recrutador no frontend local | Confirmada | 2026-11-12 | 9abf64b | Frontend local implementado; build TypeScript/Vite aprovado. |
 | 3. Modelando recrutador, vínculo e histórico no banco | Pendente | — | — | Depende da tarefa 1. |
 | 4. Implementando modelo e persistência de recrutadores | Pendente | — | — | Depende da tarefa 3. |
 | 5. Integrando login simples e permissões no terminal | Pendente | — | — | Depende da tarefa 4. |
