@@ -58,6 +58,75 @@ CREATE TABLE vagas_competencias
     PRIMARY KEY (id_vagas, id_competencias)
 );
 
+CREATE TABLE recrutadores
+(
+    id              SERIAL PRIMARY KEY,
+    nome            VARCHAR(50)  NOT NULL,
+    area_atuacao    VARCHAR(50)  NOT NULL,
+    descricao       VARCHAR(100) NOT NULL,
+    email           VARCHAR(50)  NOT NULL,
+    cpf             VARCHAR(12)  NOT NULL UNIQUE,
+    nascimento      DATE         NOT NULL,
+    senha           VARCHAR(50)  NOT NULL CHECK (length(senha) >= 6)
+);
+
+CREATE TABLE recrutador_empresa
+(
+    id_recrutador INT PRIMARY KEY REFERENCES recrutadores (id) ON DELETE CASCADE,
+    id_empresa    INT NOT NULL REFERENCES empresa (id) ON DELETE CASCADE,
+    status        VARCHAR(8) NOT NULL CHECK (status IN ('ATIVO', 'INATIVO')),
+    data_inicio   DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE historico_vinculo_recrutador
+(
+    id                  SERIAL PRIMARY KEY,
+    id_recrutador       INT NOT NULL,
+    status_anterior     VARCHAR(8) NOT NULL CHECK (status_anterior IN ('ATIVO', 'INATIVO')),
+    novo_status         VARCHAR(8) NOT NULL CHECK (novo_status IN ('ATIVO', 'INATIVO')),
+    data_evento         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    responsavel         VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE recrutador_responsavel_historico
+(
+    id                   SERIAL PRIMARY KEY,
+    id_recrutador_origem INT NOT NULL,
+    nome                 VARCHAR(50) NOT NULL,
+    area_atuacao         VARCHAR(50) NOT NULL,
+    removido             BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE OR REPLACE FUNCTION validar_cpf_recrutador()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    IF EXISTS (SELECT 1 FROM candidatos WHERE cpf = NEW.cpf) THEN
+        RAISE EXCEPTION 'CPF já cadastrado como candidato';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION validar_cpf_candidato()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    IF EXISTS (SELECT 1 FROM recrutadores WHERE cpf = NEW.cpf) THEN
+        RAISE EXCEPTION 'CPF já cadastrado como recrutador';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER candidato_cpf_exclusivo
+BEFORE INSERT OR UPDATE OF cpf ON candidatos
+FOR EACH ROW EXECUTE FUNCTION validar_cpf_candidato();
+
+CREATE TRIGGER recrutador_cpf_exclusivo
+BEFORE INSERT OR UPDATE OF cpf ON recrutadores
+FOR EACH ROW EXECUTE FUNCTION validar_cpf_recrutador();
+
 CREATE TABLE curtidas_candidato_vaga
 (
     id_candidato INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
@@ -70,6 +139,18 @@ CREATE TABLE curtidas_empresa_candidato
     id_empresa   INT NOT NULL REFERENCES empresa (id) ON DELETE CASCADE,
     id_candidato INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
     PRIMARY KEY (id_empresa, id_candidato)
+);
+
+CREATE TABLE curtida_empresa_responsavel
+(
+    id_empresa              INT NOT NULL,
+    id_candidato            INT NOT NULL,
+    id_responsavel_historico INT NOT NULL
+        REFERENCES recrutador_responsavel_historico (id),
+    PRIMARY KEY (id_empresa, id_candidato, id_responsavel_historico),
+    FOREIGN KEY (id_empresa, id_candidato)
+        REFERENCES curtidas_empresa_candidato (id_empresa, id_candidato)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE matches
