@@ -1,7 +1,7 @@
 # Plano executável — Feature Recrutador
 
 **Especificação:** [`docs/specs/recrutador/spec.md`](./spec.md)  
-**Status:** Tasks 1 a 5 confirmadas; aguardando início da Task 6
+**Status:** Tasks 1 a 6 confirmadas; aguardando início da Task 7
 **Branch:** `feature/recrutador`
 
 ## Regras de execução
@@ -46,7 +46,7 @@ hash do commit quando a tarefa for concluída e commitada.
 | 3. Modelando recrutador, vínculo e histórico no banco | Confirmada | 2026-11-12 | f047844 | Schema executado em PostgreSQL temporário; CPF exclusivo e preservação histórica validados. |
 | 4. Implementando modelo e persistência de recrutadores | Confirmada | 2026-11-12 | eeb3ab4 | CRUD, autorização por empresa, vínculo ativo, histórico e validações testados. |
 | 5. Integrando login simples e permissões no terminal | Confirmada | 2026-11-12 | 48003bb | Login por CPF/CNPJ + senha, sessão em memória, vínculo ativo e gestão contextual de recrutadores no terminal testados. |
-| 6. Integrando recrutadores ao gerenciamento de vagas | Pendente | — | — | Depende das tarefas 4 e 5. |
+| 6. Integrando recrutadores ao gerenciamento de vagas | Confirmada | 2026-11-12 | bd30c9a | Listagem, criação, edição e exclusão contextualizadas pela empresa autenticada; testes de autorização e regressão aprovados. |
 | 7. Integrando curtidas, responsáveis e matches | Pendente | — | — | Depende das tarefas 3, 4 e 5. |
 | 8. Validando segurança, privacidade e regressões da feature | Pendente | — | — | Depende das tarefas 2 a 7. |
 | 9. Verificando a fronteira de integração sem conectá-la | Pendente | — | — | Depende da tarefa 8. |
