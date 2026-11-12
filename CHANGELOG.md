@@ -46,6 +46,9 @@ publicada.
   na ação de curtir, sem revelar CPF ou outros dados pessoais.
 - Corrigido o acesso de recrutadores autenticados à área da empresa, usando o
   CNPJ da empresa vinculada ao recrutador para carregar suas vagas.
+- A cobertura de testes do backend foi ampliada para autenticação de empresas e
+  recrutadores, ambiguidade de credenciais, autorização de curtidas por
+  recrutadores e operações de atualização e remoção de recrutadores.
 
 ### Security
 

@@ -119,6 +119,45 @@ class RecrutadorServiceSpec extends Specification {
         recrutadorService.possuiVinculoAtivo("555", "123")
     }
 
+    def "deve atualizar recrutador da empresa"() {
+        given:
+        Recrutador recrutador = novoRecrutador()
+        recrutadorRepository.buscarPorCpfNaEmpresa("555", "123") >> recrutador
+        recrutadorRepository.atualizar(recrutador, "123") >> true
+
+        when:
+        Recrutador resultado = recrutadorService.atualizar(recrutador, "123")
+
+        then:
+        resultado.is(recrutador)
+    }
+
+    def "deve remover recrutador da empresa"() {
+        given:
+        Recrutador recrutador = novoRecrutador()
+        recrutadorRepository.buscarPorCpfNaEmpresa("555", "123") >> recrutador
+        recrutadorRepository.deletar("555", "123") >> true
+
+        when:
+        recrutadorService.deletar("555", "123")
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "deve rejeitar campos obrigatórios ausentes"() {
+        given:
+        Recrutador recrutador = novoRecrutador()
+        recrutador.email = null
+
+        when:
+        recrutadorService.salvar(recrutador, "123")
+
+        then:
+        Exception erro = thrown()
+        erro.message == "Dados do recrutador inválidos"
+    }
+
     private static Recrutador novoRecrutador() {
         new Recrutador(
                 nome: "Marina",

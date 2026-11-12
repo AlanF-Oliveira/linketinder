@@ -1,6 +1,7 @@
 package org.alan.service
 
 import org.alan.model.Candidato
+import org.alan.model.Empresa
 import org.alan.model.Recrutador
 import org.alan.repository.CandidatoRepository
 import org.alan.repository.EmpresaRepository
@@ -117,5 +118,77 @@ class AutenticacaoServiceSpec extends Specification {
         then:
         def erro = thrown(Exception)
         erro.message == "CPF cadastrado para mais de um tipo de usuário"
+    }
+
+    def "autentica empresa por CNPJ"() {
+        given:
+        Empresa empresa = new Empresa(cnpj: "123", senha: "senha123")
+        AutenticacaoService autenticacao = new AutenticacaoService(
+                new CandidatoService(Stub(CandidatoRepository) {
+                    buscarCandidatoPorCpf(_) >> { throw new Exception("não encontrado") }
+                }),
+                new EmpresaService(Stub(EmpresaRepository) {
+                    buscarEmpresaPorCnpj("123") >> empresa
+                }),
+                new RecrutadorService(Stub(RecrutadorRepository) {
+                    buscarPorCpf(_) >> { throw new Exception("não encontrado") }
+                }, Stub(EmpresaRepository))
+        )
+
+        when:
+        SessaoAutenticada sessao = autenticacao.entrar("123", "senha123")
+
+        then:
+        sessao.tipo == "EMPRESA"
+        sessao.usuario.is(empresa)
+    }
+
+    def "autentica recrutador com vínculo ativo"() {
+        given:
+        Recrutador recrutador = new Recrutador(
+                cpf: "555", senha: "senha123", status: "ATIVO"
+        )
+        AutenticacaoService autenticacao = new AutenticacaoService(
+                new CandidatoService(Stub(CandidatoRepository) {
+                    buscarCandidatoPorCpf(_) >> { throw new Exception("não encontrado") }
+                }),
+                new EmpresaService(Stub(EmpresaRepository) {
+                    buscarEmpresaPorCnpj(_) >> { throw new Exception("não encontrado") }
+                }),
+                new RecrutadorService(Stub(RecrutadorRepository) {
+                    buscarPorCpf("555") >> recrutador
+                }, Stub(EmpresaRepository))
+        )
+
+        when:
+        SessaoAutenticada sessao = autenticacao.entrar("555", "senha123")
+
+        then:
+        sessao.tipo == "RECRUTADOR"
+        sessao.usuario.is(recrutador)
+    }
+
+    def "recusa credenciais ambíguas com a mesma senha"() {
+        given:
+        Candidato candidato = new Candidato(cpf: "999", senha: "senha123")
+        Empresa empresa = new Empresa(cnpj: "999", senha: "senha123")
+        AutenticacaoService autenticacao = new AutenticacaoService(
+                new CandidatoService(Stub(CandidatoRepository) {
+                    buscarCandidatoPorCpf("999") >> candidato
+                }),
+                new EmpresaService(Stub(EmpresaRepository) {
+                    buscarEmpresaPorCnpj("999") >> empresa
+                }),
+                new RecrutadorService(Stub(RecrutadorRepository) {
+                    buscarPorCpf(_) >> { throw new Exception("não encontrado") }
+                }, Stub(EmpresaRepository))
+        )
+
+        when:
+        autenticacao.entrar("999", "senha123")
+
+        then:
+        Exception erro = thrown()
+        erro.message == "Credenciais ambíguas para mais de um tipo de usuário"
     }
 }

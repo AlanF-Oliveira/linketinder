@@ -67,4 +67,34 @@ class MatchServiceSpec extends Specification {
         def erro = thrown(Exception)
         erro.message == "Recrutador sem vínculo ativo com esta empresa"
     }
+
+    def "deve encaminhar a curtida do recrutador com todos os identificadores"() {
+        given:
+        RecrutadorRepository recrutadores = Mock()
+        MatchRepository matches = Mock()
+        recrutadores.possuiVinculoAtivo("555", "123") >> true
+        MatchService service = new MatchService(matches, recrutadores)
+
+        when:
+        service.curtirCandidatoComoRecrutador(7, 9, 12, "555", "123")
+
+        then:
+        1 * matches.curtirCandidatoComoRecrutador(7, 9, 12) >> []
+    }
+
+    def "deve validar o vínculo antes de acessar o repositório de matches"() {
+        given:
+        RecrutadorRepository recrutadores = Mock()
+        MatchRepository matches = Mock()
+        MatchService service = new MatchService(matches, recrutadores)
+
+        when:
+        service.curtirCandidatoComoRecrutador(7, 9, 12, "555", "123")
+
+        then:
+        1 * recrutadores.possuiVinculoAtivo("555", "123") >> false
+        0 * matches._
+        Exception erro = thrown()
+        erro.message == "Recrutador sem vínculo ativo com esta empresa"
+    }
 }
