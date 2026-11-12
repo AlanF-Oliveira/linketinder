@@ -8,10 +8,12 @@ import java.time.format.DateTimeFormatter
 
 class CandidatoMenu {
     private final CandidatoController candidatoController
+    private final MatchMenu matchMenu
     Scanner sc = new Scanner(System.in)
 
-    CandidatoMenu(CandidatoController candidatoController) {
+    CandidatoMenu(CandidatoController candidatoController, MatchMenu matchMenu) {
         this.candidatoController = candidatoController
+        this.matchMenu = matchMenu
     }
 
     void menu() {
@@ -23,7 +25,9 @@ class CandidatoMenu {
             println "2) Cadastrar"
             println "3) Atualizar"
             println "4) Deletar"
-            println "5) Voltar"
+            println "5) Visualizar matches"
+            println "6) Curtir vaga"
+            println "7) Voltar"
             int opcao = sc.nextInt()
             switch (opcao) {
                 case 1: listar()
@@ -34,7 +38,11 @@ class CandidatoMenu {
                     break
                 case 4: deletar()
                     break
-                case 5: voltar = true
+                case 5: matchMenu.listarMatchesDoCandidato()
+                    break
+                case 6: matchMenu.curtirVaga()
+                    break
+                case 7: voltar = true
                     break
             }
         }

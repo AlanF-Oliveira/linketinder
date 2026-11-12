@@ -58,6 +58,29 @@ CREATE TABLE vagas_competencias
     PRIMARY KEY (id_vagas, id_competencias)
 );
 
+CREATE TABLE curtidas_candidato_vaga
+(
+    id_candidato INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
+    id_vaga      INT NOT NULL REFERENCES vagas (id) ON DELETE CASCADE,
+    PRIMARY KEY (id_candidato, id_vaga)
+);
+
+CREATE TABLE curtidas_empresa_candidato
+(
+    id_empresa   INT NOT NULL REFERENCES empresa (id) ON DELETE CASCADE,
+    id_candidato INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
+    PRIMARY KEY (id_empresa, id_candidato)
+);
+
+CREATE TABLE matches
+(
+    id           SERIAL PRIMARY KEY,
+    id_vaga      INT NOT NULL REFERENCES vagas (id) ON DELETE CASCADE,
+    id_candidato INT NOT NULL REFERENCES candidatos (id) ON DELETE CASCADE,
+    id_empresa   INT NOT NULL REFERENCES empresa (id) ON DELETE CASCADE,
+    UNIQUE (id_vaga, id_candidato)
+);
+
 INSERT INTO competencias (competencia)
 VALUES ('Java'),
        ('Spring Boot'),
