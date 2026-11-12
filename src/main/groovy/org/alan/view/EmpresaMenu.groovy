@@ -6,10 +6,12 @@ import org.alan.model.Empresa
 class EmpresaMenu {
 
     private final EmpresaController empresaController
+    private final MatchMenu matchMenu
     Scanner sc = new Scanner(System.in)
 
-    EmpresaMenu(EmpresaController empresaController) {
+    EmpresaMenu(EmpresaController empresaController, MatchMenu matchMenu) {
         this.empresaController = empresaController
+        this.matchMenu = matchMenu
     }
 
     void menu() {
@@ -21,7 +23,9 @@ class EmpresaMenu {
             println "2) Cadastrar"
             println "3) Atualizar"
             println "4) Deletar"
-            println "5) Voltar"
+            println "5) Visualizar matches"
+            println "6) Curtir candidato"
+            println "7) Voltar"
             int opcao = sc.nextInt()
             switch (opcao) {
                 case 1: listar()
@@ -32,7 +36,11 @@ class EmpresaMenu {
                     break
                 case 4: deletar()
                     break
-                case 5: voltar = true
+                case 5: matchMenu.listarMatchesDaEmpresa()
+                    break
+                case 6: matchMenu.curtirCandidato()
+                    break
+                case 7: voltar = true
                     break
             }
         }
@@ -147,5 +155,3 @@ class EmpresaMenu {
         println()
     }
 }
-
-

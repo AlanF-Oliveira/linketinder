@@ -41,6 +41,35 @@ Para usar o menu no terminal:
 
 A classe principal do menu é `org.alan.Main`.
 
+## Curtidas e matches
+
+O sistema permite que candidatos e empresas demonstrem interesse sem revelar
+os dados completos uns dos outros antes do match.
+
+### Fluxo
+
+1. Na área do candidato, escolha `Curtir vaga` e informe o ID do candidato e
+   da vaga.
+2. Na área da empresa, escolha `Curtir candidato` e informe o ID da empresa e
+   do candidato.
+3. O match é criado automaticamente quando:
+   - o candidato curtiu uma vaga da empresa; e
+   - a empresa curtiu esse candidato.
+4. Depois do match, ambos podem escolher `Visualizar matches` para consultar
+   os dados liberados.
+
+As curtidas são armazenadas nas tabelas `curtidas_candidato_vaga` e
+`curtidas_empresa_candidato`. Os matches são armazenados na tabela `matches`.
+As combinações repetidas não são duplicadas.
+
+### Informações liberadas após o match
+
+- Nome, e-mail, descrição e localização do candidato.
+- Nome, e-mail, descrição e localização da empresa.
+- Nome, descrição e localização da vaga.
+
+Senhas, CPF e CNPJ não são exibidos.
+
 ## API REST
 
 A API foi criada com o `HttpServer` do Java, sem framework. Ela recebe dados em JSON e utiliza os controllers, services e DAOs existentes para salvar no PostgreSQL.
@@ -56,7 +85,6 @@ A API ficará disponível em `http://localhost:8080`.
 - `POST /candidatos`: cadastra um candidato.
 - `POST /empresas`: cadastra uma empresa.
 - `POST /vagas`: cadastra uma vaga usando o CNPJ de uma empresa existente.
-
 Os cadastros bem-sucedidos retornam `201 Created` com o ID gerado.
 
 ## Como executar os testes
