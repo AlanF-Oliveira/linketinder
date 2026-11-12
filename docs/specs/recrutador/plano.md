@@ -44,7 +44,7 @@ hash do commit quando a tarefa for concluída e commitada.
 | 1. Fechando contratos pendentes da feature | Confirmada | 2026-11-12 | b528f3a | Decisões aprovadas e registradas na SPEC. |
 | 2. Implementando a experiência completa do recrutador no frontend local | Confirmada | 2026-11-12 | 9abf64b | Frontend local implementado; build TypeScript/Vite aprovado. |
 | 3. Modelando recrutador, vínculo e histórico no banco | Confirmada | 2026-11-12 | f047844 | Schema executado em PostgreSQL temporário; CPF exclusivo e preservação histórica validados. |
-| 4. Implementando modelo e persistência de recrutadores | Pendente | — | — | Depende da tarefa 3. |
+| 4. Implementando modelo e persistência de recrutadores | Confirmada | 2026-11-12 | eeb3ab4 | CRUD, autorização por empresa, vínculo ativo, histórico e validações testados. |
 | 5. Integrando login simples e permissões no terminal | Pendente | — | — | Depende da tarefa 4. |
 | 6. Integrando recrutadores ao gerenciamento de vagas | Pendente | — | — | Depende das tarefas 4 e 5. |
 | 7. Integrando curtidas, responsáveis e matches | Pendente | — | — | Depende das tarefas 3, 4 e 5. |
