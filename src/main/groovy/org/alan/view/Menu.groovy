@@ -114,13 +114,19 @@ class Menu {
     }
 
     private void cadastros() {
-        println "1) Candidatos"
-        println "2) Empresas"
+        println()
+        println "-- Cadastros --"
+        println "1) Cadastrar candidato"
+        println "2) Cadastrar empresa"
         println "3) Voltar"
         int opcao = sc.nextInt()
         switch (opcao) {
-            case 1: candidatoMenu.menu(); break
-            case 2: empresaMenu.menu(); break
+            case 1:
+                candidatoMenu.cadastrar()
+                break
+            case 2:
+                empresaMenu.cadastrar()
+                break
         }
     }
 }

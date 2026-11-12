@@ -28,6 +28,8 @@ publicada.
 - O backend passou a preservar responsáveis históricos após a remoção de
   recrutadores.
 - A documentação da feature foi consolidada na SPEC e no plano executável.
+- O menu de cadastros do terminal foi separado do menu de gestão, permitindo
+  cadastrar candidato ou empresa e retornar ao menu principal para login.
 
 ### Security
 
