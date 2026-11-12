@@ -1,6 +1,7 @@
 import { Usuario } from './Usuario';
 
 export class Candidato extends Usuario {
+    id: number;
     cpf: string;
     idade: number;
     formacao: string;
@@ -21,6 +22,7 @@ export class Candidato extends Usuario {
     ) {
         super(nome, email, cep, estado, descricao);
 
+        this.id = 0;
         this.cpf = cpf;
         this.idade = idade;
         this.formacao = formacao;

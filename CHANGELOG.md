@@ -38,6 +38,12 @@ publicada.
   recém-criada.
 - As áreas autenticadas de candidato e empresa agora exibem um botão explícito
   de logout, preservando a sessão ao navegar pelas telas internas.
+- O fluxo de recrutadores no backend foi reorganizado: empresas gerenciam seus
+  recrutadores dentro da própria área, enquanto recrutadores autenticados
+  acessam candidatos, curtidas, matches e vagas. As listagens anonimizadas
+  passaram a exibir o ID público do candidato para permitir curtidas.
+- O frontend também exibe o ID público dos candidatos e usa esse identificador
+  na ação de curtir, sem revelar CPF ou outros dados pessoais.
 
 ### Security
 

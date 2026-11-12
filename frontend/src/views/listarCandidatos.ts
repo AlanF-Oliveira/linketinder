@@ -21,6 +21,7 @@ export function criarListaCandidatos(app: HTMLElement,
       const infoTooltip = `Formação: ${candidatoAnonimo.formacao} | Idade: ${candidatoAnonimo.idade} | Estado: ${candidatoAnonimo.estado}`;
       return `
       <tr title="${infoTooltip}">
+        <td>${candidatoAnonimo.id}</td>
         <td>${candidatoAnonimo.formacao}</td>
         <td>${candidatoAnonimo.idade}</td>
         <td>${candidatoAnonimo.estado}</td>
@@ -37,7 +38,7 @@ export function criarListaCandidatos(app: HTMLElement,
       <h2>Candidatos Cadastrados</h2>
       <table class="table table-striped">
         <thead>
-          <tr><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th></tr>
+          <tr><th>ID</th><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th></tr>
         </thead>
         <tbody>${linhasHtml}</tbody>
       </table>

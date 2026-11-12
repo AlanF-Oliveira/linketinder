@@ -3,6 +3,8 @@ package org.alan.view
 import org.alan.controller.RecrutadorController
 import org.alan.controller.VagaController
 import org.alan.controller.MatchController
+import org.alan.controller.CandidatoController
+import org.alan.model.Candidato
 import org.alan.model.Recrutador
 import org.alan.service.SessaoAutenticada
 
@@ -43,21 +45,49 @@ class RecrutadorMenu {
             println "2) Cadastrar"
             println "3) Atualizar"
             println "4) Remover"
-            println "5) Gerenciar vagas"
-            println "6) Curtir candidato"
-            println "7) Visualizar matches"
-            println "8) Voltar"
+            println "5) Voltar"
             int opcao = sc.nextInt()
             switch (opcao) {
                 case 1: listar(); break
                 case 2: cadastrar(); break
                 case 3: atualizar(); break
                 case 4: remover(); break
-                case 5: vagasMenu.menu(); break
-                case 6: matchMenu.curtirCandidatoComoRecrutador(); break
-                case 7: matchMenu.listarMatchesDaEmpresaAutenticada(); break
-                case 8: voltar = true; break
+                case 5: voltar = true; break
             }
+        }
+
+    }
+
+    void menuAutenticado(SessaoAutenticada sessao, CandidatoController candidatoController) {
+            boolean voltar = false
+            while (!voltar) {
+                println()
+                println "-- Área do recrutador --"
+                println "1) Visualizar candidatos"
+                println "2) Curtir candidato"
+                println "3) Visualizar matches"
+                println "4) Gerenciar vagas"
+                println "5) Sair"
+                int opcao = sc.nextInt()
+                switch (opcao) {
+                    case 1: listarCandidatosAnonimos(candidatoController); break
+                    case 2: matchMenu.curtirCandidatoComoRecrutador(); break
+                    case 3: matchMenu.listarMatchesDaEmpresaAutenticada(); break
+                    case 4: vagasMenu.menu(); break
+                    case 5: voltar = true; break
+                }
+            }
+        }
+
+    private void listarCandidatosAnonimos(CandidatoController candidatoController) {
+        println()
+        println "Candidatos disponíveis:"
+        candidatoController.listarCandidatos().each { Candidato candidato ->
+            println "Id: ${candidato.id}"
+            println "Competências: ${candidato.competencias}"
+            println "Descrição: ${candidato.descricao}"
+            println "Local: ${candidato.cidade}, ${candidato.estado}, ${candidato.pais}"
+            println()
         }
     }
 

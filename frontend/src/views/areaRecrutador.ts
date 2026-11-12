@@ -133,12 +133,14 @@ function renderizarCandidatos(
     const painel = document.getElementById('painel-recrutador') as HTMLElement;
     painel.innerHTML = `<h3>Candidatos anônimos</h3><div class="row g-3">${candidatoService.listarCandidatos().map(candidato => `
       <div class="col-md-6"><div class="card h-100"><div class="card-body">
-        <h5>${candidato.formacao}</h5><p>${candidato.descricao}</p>
+        <h5>ID ${candidato.id} · ${candidato.formacao}</h5><p>${candidato.descricao}</p>
         <small>${candidato.estado} · ${candidato.competencias.join(', ')}</small>
-        <button class="btn btn-sm btn-primary mt-3 btn-curtir" data-cpf="${candidato.cpf}">Curtir em nome da empresa</button>
+        <button class="btn btn-sm btn-primary mt-3 btn-curtir" data-id="${candidato.id}">Curtir em nome da empresa</button>
       </div></div></div>`).join('')}</div>`;
     painel.querySelectorAll('.btn-curtir').forEach(button => button.addEventListener('click', () => {
-        const candidato = candidatoService.listarCandidatos().find(item => item.cpf === (button as HTMLElement).dataset.cpf);
+        const candidato = candidatoService.listarCandidatos().find(item =>
+            item.id === Number((button as HTMLElement).dataset.id)
+        );
         if (candidato) {
             recrutadorService.curtir(recrutador.cpf, candidato);
             (button as HTMLButtonElement).disabled = true;

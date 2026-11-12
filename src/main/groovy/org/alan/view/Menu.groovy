@@ -102,13 +102,16 @@ class Menu {
                 candidatoMenu.menuAutenticado(sessao, vagaController)
                 break
             case "EMPRESA":
-                empresaMenu.menuAutenticado(sessao, candidatoController)
-                new RecrutadorMenu(
+                RecrutadorMenu recrutadorMenuEmpresa = new RecrutadorMenu(
                         recrutadorController, sessao, vagaController, matchController
-                ).menu()
+                )
+                empresaMenu.menuAutenticado(sessao, candidatoController, recrutadorMenuEmpresa)
                 break
             case "RECRUTADOR":
-                new VagasMenu(vagaController, sessao.usuario.empresa.cnpj).menu()
+                RecrutadorMenu recrutadorMenu = new RecrutadorMenu(
+                        recrutadorController, sessao, vagaController, matchController
+                )
+                recrutadorMenu.menuAutenticado(sessao, candidatoController)
                 break
         }
     }
