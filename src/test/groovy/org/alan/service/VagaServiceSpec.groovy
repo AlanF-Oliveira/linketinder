@@ -53,6 +53,18 @@ class VagaServiceSpec extends Specification {
         resultado.size() == 2
     }
 
+    def "deve listar somente vagas da empresa"() {
+        given:
+        List<Vaga> vagas = [new Vaga(id: 1, titulo: "Vaga da empresa")]
+        vagaRepository.listarVagasDaEmpresa(7) >> vagas
+
+        when:
+        List<Vaga> resultado = vagaService.listarVagasDaEmpresa(7)
+
+        then:
+        resultado == vagas
+    }
+
     def "deve buscar vaga por id"() {
         given:
         int idVaga = 1
@@ -104,6 +116,31 @@ class VagaServiceSpec extends Specification {
         erro.message == "Vaga não encontrada"
     }
 
+    def "deve atualizar vaga somente no contexto da empresa"() {
+        given:
+        Vaga vaga = new Vaga(id: 1, titulo: "Atualizada")
+        vagaRepository.atualizarVagaDaEmpresa(vaga, 7) >> true
+
+        when:
+        Vaga resultado = vagaService.atualizarVagaDaEmpresa(vaga, 7)
+
+        then:
+        resultado.is(vaga)
+    }
+
+    def "deve rejeitar atualizacao de vaga de outra empresa"() {
+        given:
+        Vaga vaga = new Vaga(id: 1, titulo: "Outra empresa")
+        vagaRepository.atualizarVagaDaEmpresa(vaga, 7) >> false
+
+        when:
+        vagaService.atualizarVagaDaEmpresa(vaga, 7)
+
+        then:
+        def erro = thrown(Exception)
+        erro.message == "Vaga não encontrada para esta empresa"
+    }
+
     def "deve deletar vaga"() {
         given:
         int idVaga = 1
@@ -127,5 +164,28 @@ class VagaServiceSpec extends Specification {
         then:
         Exception erro = thrown()
         erro.message == "Vaga não encontrada"
+    }
+
+    def "deve deletar vaga somente no contexto da empresa"() {
+        given:
+        vagaRepository.deletarVagaDaEmpresa(1, 7) >> true
+
+        when:
+        vagaService.deletarVagaDaEmpresa(1, 7)
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "deve rejeitar exclusao de vaga de outra empresa"() {
+        given:
+        vagaRepository.deletarVagaDaEmpresa(1, 7) >> false
+
+        when:
+        vagaService.deletarVagaDaEmpresa(1, 7)
+
+        then:
+        def erro = thrown(Exception)
+        erro.message == "Vaga não encontrada para esta empresa"
     }
 }

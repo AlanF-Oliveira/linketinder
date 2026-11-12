@@ -1,6 +1,7 @@
 package org.alan.view
 
 import org.alan.controller.RecrutadorController
+import org.alan.controller.VagaController
 import org.alan.model.Recrutador
 import org.alan.service.SessaoAutenticada
 
@@ -10,15 +11,18 @@ import java.time.format.DateTimeFormatter
 class RecrutadorMenu {
 
     private final RecrutadorController recrutadorController
+    private final VagasMenu vagasMenu
     private final SessaoAutenticada sessaoEmpresa
     private final Scanner sc = new Scanner(System.in)
 
     RecrutadorMenu(
             RecrutadorController recrutadorController,
-            SessaoAutenticada sessaoEmpresa
+            SessaoAutenticada sessaoEmpresa,
+            VagaController vagaController
     ) {
         this.recrutadorController = recrutadorController
         this.sessaoEmpresa = sessaoEmpresa
+        this.vagasMenu = new VagasMenu(vagaController, sessaoEmpresa.usuario.cnpj)
     }
 
     void menu() {
@@ -35,14 +39,16 @@ class RecrutadorMenu {
             println "2) Cadastrar"
             println "3) Atualizar"
             println "4) Remover"
-            println "5) Voltar"
+            println "5) Gerenciar vagas"
+            println "6) Voltar"
             int opcao = sc.nextInt()
             switch (opcao) {
                 case 1: listar(); break
                 case 2: cadastrar(); break
                 case 3: atualizar(); break
                 case 4: remover(); break
-                case 5: voltar = true; break
+                case 5: vagasMenu.menu(); break
+                case 6: voltar = true; break
             }
         }
     }

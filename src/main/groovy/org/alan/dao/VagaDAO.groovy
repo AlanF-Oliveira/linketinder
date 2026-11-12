@@ -157,6 +157,21 @@ class VagaDAO implements VagaRepository {
         return vagas
     }
 
+    List<Vaga> listarVagasDaEmpresa(int idEmpresa) {
+        Connection connection = conectar()
+        PreparedStatement statement = connection.prepareStatement(
+                "SELECT * FROM vagas WHERE id_empresa = ?"
+        )
+        statement.setInt(1, idEmpresa)
+        ResultSet resultado = statement.executeQuery()
+        List<Vaga> vagas = []
+        while (resultado.next()) {
+            vagas.add(criarVaga(resultado))
+        }
+        connection.close()
+        return vagas
+    }
+
     boolean atualizarVaga(Vaga vaga) {
         Connection connection = conectar()
         String sql = "UPDATE vagas SET titulo = ?, descricao = ?, " +
@@ -176,6 +191,27 @@ class VagaDAO implements VagaRepository {
             return false
         }
 
+        atualizarCompetenciasDaVaga(vaga)
+        return true
+    }
+
+    boolean atualizarVagaDaEmpresa(Vaga vaga, int idEmpresa) {
+        Connection connection = conectar()
+        PreparedStatement statement = connection.prepareStatement(
+                "UPDATE vagas SET titulo = ?, descricao = ?, estado = ?, cidade = ? " +
+                        "WHERE id = ? AND id_empresa = ?"
+        )
+        statement.setString(1, vaga.titulo)
+        statement.setString(2, vaga.descricao)
+        statement.setString(3, vaga.estado)
+        statement.setString(4, vaga.cidade)
+        statement.setInt(5, vaga.id)
+        statement.setInt(6, idEmpresa)
+        int linhasAtualizadas = statement.executeUpdate()
+        connection.close()
+        if (linhasAtualizadas == 0) {
+            return false
+        }
         atualizarCompetenciasDaVaga(vaga)
         return true
     }
@@ -210,6 +246,18 @@ class VagaDAO implements VagaRepository {
         statement.setInt(1, idVaga)
         int linhasAfetadas = statement.executeUpdate()
 
+        connection.close()
+        return linhasAfetadas > 0
+    }
+
+    boolean deletarVagaDaEmpresa(int idVaga, int idEmpresa) {
+        Connection connection = conectar()
+        PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM vagas WHERE id = ? AND id_empresa = ?"
+        )
+        statement.setInt(1, idVaga)
+        statement.setInt(2, idEmpresa)
+        int linhasAfetadas = statement.executeUpdate()
         connection.close()
         return linhasAfetadas > 0
     }

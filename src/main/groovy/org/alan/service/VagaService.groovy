@@ -26,6 +26,10 @@ class VagaService {
         return vagaRepository.listarVagas()
     }
 
+    List<Vaga> listarVagasDaEmpresa(int idEmpresa) {
+        return vagaRepository.listarVagasDaEmpresa(idEmpresa)
+    }
+
     Vaga buscarVagaPorId(int idVaga) {
         Vaga vaga = vagaRepository.buscarVagaPorId(idVaga)
 
@@ -46,11 +50,24 @@ class VagaService {
         return vaga
     }
 
+    Vaga atualizarVagaDaEmpresa(Vaga vaga, int idEmpresa) {
+        if (!vagaRepository.atualizarVagaDaEmpresa(vaga, idEmpresa)) {
+            throw new Exception("Vaga não encontrada para esta empresa")
+        }
+        return vaga
+    }
+
     void deletarVaga(int idVaga) {
         boolean deletou = vagaRepository.deletarVaga(idVaga)
 
         if (!deletou) {
             throw new Exception("Vaga não encontrada")
+        }
+    }
+
+    void deletarVagaDaEmpresa(int idVaga, int idEmpresa) {
+        if (!vagaRepository.deletarVagaDaEmpresa(idVaga, idEmpresa)) {
+            throw new Exception("Vaga não encontrada para esta empresa")
         }
     }
 }

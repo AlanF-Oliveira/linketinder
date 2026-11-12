@@ -103,10 +103,10 @@ class Menu {
                 break
             case "EMPRESA":
                 empresaMenu.menu()
-                new RecrutadorMenu(recrutadorController, sessao).menu()
+                new RecrutadorMenu(recrutadorController, sessao, vagaController).menu()
                 break
             case "RECRUTADOR":
-                println "Área de vagas do recrutador será habilitada na próxima etapa."
+                new VagasMenu(vagaController, sessao.usuario.empresa.cnpj).menu()
                 break
         }
     }
