@@ -1,7 +1,7 @@
 # Plano executável — Feature Recrutador
 
 **Especificação:** [`docs/specs/recrutador/spec.md`](./spec.md)  
-**Status:** Tasks 1 a 8 confirmadas; aguardando início da Task 9
+**Status:** Tasks 1 a 9 confirmadas; feature concluída
 **Branch:** `feature/recrutador`
 
 ## Regras de execução
@@ -49,7 +49,7 @@ hash do commit quando a tarefa for concluída e commitada.
 | 6. Integrando recrutadores ao gerenciamento de vagas | Confirmada | 2026-11-12 | bd30c9a | Listagem, criação, edição e exclusão contextualizadas pela empresa autenticada; testes de autorização e regressão aprovados. |
 | 7. Integrando curtidas, responsáveis e matches | Confirmada | 2026-11-12 | 4dd9a54 | Curtidas de recrutadores validadas pelo vínculo ativo, autoria histórica registrada e matches mantidos como decisão empresarial única. |
 | 8. Validando segurança, privacidade e regressões da feature | Confirmada | 2026-11-12 | fb43f5e | Backend e frontend validados; login identifica o tipo pelas credenciais, CPF ambíguo é bloqueado, ausência de HTTP confirmada e suíte/build aprovados. |
-| 9. Verificando a fronteira de integração sem conectá-la | Pendente | — | — | Depende da tarefa 8. |
+| 9. Verificando a fronteira de integração sem conectá-la | Confirmada | 2026-11-12 | pendente | Frontend local validado sem cliente HTTP; ApiMain mantém somente endpoints existentes e os dados não são compartilhados com PostgreSQL. |
 
 ## Tarefas
 
