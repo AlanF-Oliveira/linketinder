@@ -14,6 +14,7 @@ class CandidatoService {
     }
 
     Candidato salvar(Candidato candidato) {
+        validarLocalizacao(candidato.estado, candidato.cep)
         int idGerado = candidatoRepository.inserir(candidato)
         if (idGerado == 0) {
             throw new Exception("Falha ao cadastrar candidato")
@@ -36,11 +37,21 @@ class CandidatoService {
     }
 
     Candidato atualizarCandidato(Candidato candidato) {
+        validarLocalizacao(candidato.estado, candidato.cep)
         boolean atualizou = candidatoRepository.atualizarCandidato(candidato)
         if (!atualizou) {
             throw new Exception("Candidato não encontrado")
         }
         return candidato
+    }
+
+    private static void validarLocalizacao(String estado, String cep) {
+        if (estado && estado.trim().size() != 2) {
+            throw new Exception("Estado inválido: informe a UF com 2 letras, por exemplo CE")
+        }
+        if (cep && cep.size() > 9) {
+            throw new Exception("CEP inválido: informe no máximo 9 caracteres")
+        }
     }
 
     void deletarCandidato(String cpf) {

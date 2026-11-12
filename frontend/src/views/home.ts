@@ -1,33 +1,46 @@
 import { CandidatoService } from '../services/CandidatoService';
 import { EmpresaService } from '../services/EmpresaService';
 import { VagaService } from '../services/VagaService';
-import { criarAreaCandidato } from './areaCandidato';
-import { criarAreaEmpresa } from './areaEmpresa';
+import { RecrutadorService } from '../services/RecrutadorService';
+import { AuthService } from '../services/AuthService';
+import { criarLogin } from './login';
+import { criarCadastroCandidato } from './cadastrarCandidato';
+import { criarCadastroEmpresa } from './cadastrarEmpresa';
 
 export function criarTelaInicial(
   app: HTMLElement,
   candidatoService: CandidatoService,
   empresaService: EmpresaService,
-  vagaService: VagaService
+  vagaService: VagaService,
+  authService?: AuthService,
+  recrutadorService?: RecrutadorService
 ) {
   app.innerHTML = `
     <div class="container mt-5 text-center">
       <h1>Linketinder</h1>
       <div class="d-flex justify-content-center gap-3 mt-4">
-        <button id="btn-candidato" class="btn btn-primary btn-lg">Sou Candidato</button>
-        <button id="btn-empresa" class="btn btn-success btn-lg">Sou Empresa</button>
+        <button id="btn-login" class="btn btn-primary btn-lg">Entrar</button>
+        <button id="btn-cadastro-candidato" class="btn btn-outline-primary btn-lg">Cadastrar candidato</button>
+        <button id="btn-cadastro-empresa" class="btn btn-outline-success btn-lg">Cadastrar empresa</button>
       </div>
     </div>
   `;
 
-  const btnCandidato = document.getElementById('btn-candidato') as HTMLButtonElement;
-  const btnEmpresa = document.getElementById('btn-empresa') as HTMLButtonElement;
-
-  btnCandidato.addEventListener('click', () => {
-    criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+  document.getElementById('btn-login')?.addEventListener('click', () => {
+    if (authService && recrutadorService) {
+      criarLogin(app, authService, candidatoService, empresaService, recrutadorService, vagaService);
+    }
   });
 
-  btnEmpresa.addEventListener('click', () => {
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+  document.getElementById('btn-cadastro-candidato')?.addEventListener('click', () => {
+    criarCadastroCandidato(
+      app, candidatoService, empresaService, vagaService, authService, recrutadorService
+    );
+  });
+
+  document.getElementById('btn-cadastro-empresa')?.addEventListener('click', () => {
+    criarCadastroEmpresa(
+      app, empresaService, candidatoService, vagaService, authService, recrutadorService
+    );
   });
 }

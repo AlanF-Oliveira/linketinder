@@ -19,6 +19,11 @@ class VagaController {
         return vagaService.listarVagas()
     }
 
+    List<Vaga> listarVagasDaEmpresa(String cnpj) {
+        Empresa empresa = empresaService.buscarPorCnpj(cnpj)
+        return vagaService.listarVagasDaEmpresa(empresa.id)
+    }
+
     Vaga criarVaga(Vaga vaga, String cnpj) {
         Empresa empresa = empresaService.buscarPorCnpj(cnpj)
         return vagaService.criarVaga(vaga, empresa.id)
@@ -32,7 +37,17 @@ class VagaController {
         return vagaService.atualizarVaga(vaga)
     }
 
+    Vaga atualizarVagaDaEmpresa(Vaga vaga, String cnpj) {
+        Empresa empresa = empresaService.buscarPorCnpj(cnpj)
+        return vagaService.atualizarVagaDaEmpresa(vaga, empresa.id)
+    }
+
     void deletarVaga(int id) {
         vagaService.deletarVaga(id)
+    }
+
+    void deletarVagaDaEmpresa(int id, String cnpj) {
+        Empresa empresa = empresaService.buscarPorCnpj(cnpj)
+        vagaService.deletarVagaDaEmpresa(id, empresa.id)
     }
 }

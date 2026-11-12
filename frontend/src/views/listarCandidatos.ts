@@ -4,11 +4,15 @@ import { anonimizarCandidato } from '../models/Candidato';
 import { criarGraficoCompetencias } from './graficoCompetencias';
 import { criarAreaEmpresa } from './areaEmpresa';
 import { VagaService } from '../services/VagaService';
+import type { AuthService } from '../services/AuthService';
+import type { RecrutadorService } from '../services/RecrutadorService';
 
 export function criarListaCandidatos(app: HTMLElement,
   candidatoService: CandidatoService,
   empresaService: EmpresaService,
-  vagaService: VagaService) {
+  vagaService: VagaService,
+  recrutadorService?: RecrutadorService,
+  authService?: AuthService) {
   const candidatos = candidatoService.listarCandidatos();
 
   const linhasHtml = candidatos
@@ -17,12 +21,12 @@ export function criarListaCandidatos(app: HTMLElement,
       const infoTooltip = `Formação: ${candidatoAnonimo.formacao} | Idade: ${candidatoAnonimo.idade} | Estado: ${candidatoAnonimo.estado}`;
       return `
       <tr title="${infoTooltip}">
+        <td>${candidatoAnonimo.id}</td>
         <td>${candidatoAnonimo.formacao}</td>
         <td>${candidatoAnonimo.idade}</td>
         <td>${candidatoAnonimo.estado}</td>
         <td>${candidatoAnonimo.competencias.join(', ')}</td>
         <td>${candidatoAnonimo.descricao}</td>
-        <td><button class="btn btn-danger btn-sm btn-deletar" data-cpf="${candidato.cpf}">Excluir</button></td>
       </tr>
     `;
     })
@@ -34,7 +38,7 @@ export function criarListaCandidatos(app: HTMLElement,
       <h2>Candidatos Cadastrados</h2>
       <table class="table table-striped">
         <thead>
-          <tr><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th><th>Ações</th></tr>
+          <tr><th>ID</th><th>Formação</th><th>Idade</th><th>Estado</th><th>Competências</th><th>Descrição</th></tr>
         </thead>
         <tbody>${linhasHtml}</tbody>
       </table>
@@ -47,21 +51,7 @@ export function criarListaCandidatos(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    criarAreaEmpresa(app, empresaService, candidatoService, vagaService, recrutadorService, authService);
   });
 
-  const botoesDeletar = document.querySelectorAll('.btn-deletar');
-  botoesDeletar.forEach(botao => {
-    botao.addEventListener('click', () => {
-      const cpf = botao.getAttribute('data-cpf');
-      try {
-        if (cpf) {
-          candidatoService.deletarCandidato(cpf);
-          criarListaCandidatos(app, candidatoService, empresaService, vagaService);
-        }
-      } catch (error) {
-        alert(error instanceof Error ? error.message : 'Erro ao deletar candidato')
-      }
-    });
-  });
 }

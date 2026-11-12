@@ -10,7 +10,8 @@ export const candidatos: Candidato[] = [
         '10403796542',
         32,
         'Bacharel em Ciência da Computação',
-        ['Java', 'Spring Boot', 'PostgreSQL']
+        ['Java', 'Spring Boot', 'PostgreSQL'],
+        'candidato123'
     ),
     new Candidato(
         'Beatriz Souza',
@@ -21,7 +22,8 @@ export const candidatos: Candidato[] = [
         '11122233344',
         22,
         'Técnico em Informática',
-        ['Angular', 'TypeScript', 'CSS']
+        ['Angular', 'TypeScript', 'CSS'],
+        'candidato123'
     ),
     new Candidato(
         'Carlos Mendes',
@@ -32,7 +34,8 @@ export const candidatos: Candidato[] = [
         '22233344455',
         35,
         'Bacharel em Engenharia da Computação',
-        ['Python', 'SQL', 'Airflow']
+        ['Python', 'SQL', 'Airflow'],
+        'candidato123'
     ),
     new Candidato(
         'Daniela Ramos',
@@ -43,7 +46,8 @@ export const candidatos: Candidato[] = [
         '33344455566',
         27,
         'Bacharel em Sistemas de Informação',
-        ['React', 'Node.js', 'MongoDB']
+        ['React', 'Node.js', 'MongoDB'],
+        'candidato123'
     ),
     new Candidato(
         'Eduardo Lima',
@@ -54,6 +58,7 @@ export const candidatos: Candidato[] = [
         '44455566677',
         44,
         'Pós-graduação em Gestão de TI',
-        ['Java', 'Docker', 'Kubernetes']
+        ['Java', 'Docker', 'Kubernetes'],
+        'candidato123'
     ),
 ];

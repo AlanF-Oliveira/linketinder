@@ -6,10 +6,17 @@ import org.alan.model.Vaga
 
 class VagasMenu {
     private final VagaController vagaController
+    private final String empresaCnpj
     Scanner sc = new Scanner(System.in)
 
     VagasMenu(VagaController vagaController) {
         this.vagaController = vagaController
+        this.empresaCnpj = null
+    }
+
+    VagasMenu(VagaController vagaController, String empresaCnpj) {
+        this.vagaController = vagaController
+        this.empresaCnpj = empresaCnpj
     }
 
     void menu() {
@@ -41,23 +48,41 @@ class VagasMenu {
     void listar() {
         println()
         println "Lista de Vagas: "
-        vagaController.listarVagas().each {
+        List<Vaga> vagas = empresaCnpj
+                ? vagaController.listarVagasDaEmpresa(empresaCnpj)
+                : vagaController.listarVagas()
+        vagas.each {
             println(it)
         }
         println ""
     }
 
+    void listarSomente() {
+        println()
+        println "Vagas disponíveis:"
+        List<Vaga> vagas = empresaCnpj
+                ? vagaController.listarVagasDaEmpresa(empresaCnpj)
+                : vagaController.listarVagas()
+        vagas.each { println(it) }
+        println ""
+    }
+
     void cadastrar() {
         println()
-        print "CNPJ da empresa: "
-        sc.nextLine()
         try {
-            String cnpj = sc.nextLine()
+            String cnpj = empresaCnpj
+            if (!cnpj) {
+                print "CNPJ da empresa: "
+                sc.nextLine()
+                cnpj = sc.nextLine()
+            } else {
+                sc.nextLine()
+            }
             print "Título da vaga: "
             String titulo = sc.nextLine()
             print "Descrição: "
             String descricao = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -90,7 +115,7 @@ class VagasMenu {
             String titulo = sc.nextLine()
             print "Descrição: "
             String descricao = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -105,7 +130,11 @@ class VagasMenu {
                     cidade: cidade,
                     competenciasExigidas: competencias
             )
-            vagaController.atualizarVaga(vaga)
+            if (empresaCnpj) {
+                vagaController.atualizarVagaDaEmpresa(vaga, empresaCnpj)
+            } else {
+                vagaController.atualizarVaga(vaga)
+            }
             println "Vaga atualizada com sucesso"
         } catch (Exception e) {
             println "Erro ao atualizar vaga: ${e.message}"
@@ -118,7 +147,11 @@ class VagasMenu {
         print "Id da vaga: "
         try {
             int id = sc.nextInt()
-            vagaController.deletarVaga(id)
+            if (empresaCnpj) {
+                vagaController.deletarVagaDaEmpresa(id, empresaCnpj)
+            } else {
+                vagaController.deletarVaga(id)
+            }
             println "Vaga deletada com sucesso"
         } catch (Exception e) {
             println "Erro ao deletar vaga: ${e.message}"

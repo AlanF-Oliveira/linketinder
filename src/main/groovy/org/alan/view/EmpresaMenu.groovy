@@ -1,7 +1,11 @@
 package org.alan.view
 
 import org.alan.controller.EmpresaController
+import org.alan.controller.CandidatoController
 import org.alan.model.Empresa
+import org.alan.model.Candidato
+import org.alan.service.SessaoAutenticada
+import org.alan.controller.RecrutadorController
 
 class EmpresaMenu {
 
@@ -46,6 +50,43 @@ class EmpresaMenu {
         }
     }
 
+    void menuAutenticado(
+                    SessaoAutenticada sessao,
+                    CandidatoController candidatoController,
+                    RecrutadorMenu recrutadorMenu
+            ) {
+                boolean voltar = false
+                while (!voltar) {
+                    println()
+                    println "-- Área da empresa --"
+                    println "1) Visualizar candidatos"
+                    println "2) Curtir candidato"
+                    println "3) Visualizar matches"
+                    println "4) Gerenciar recrutadores"
+                    println "5) Voltar"
+                    int opcao = sc.nextInt()
+                    switch (opcao) {
+                        case 1: listarCandidatosAnonimos(candidatoController); break
+                        case 2: matchMenu.curtirCandidatoAutenticado(sessao.usuario.id); break
+                        case 3: matchMenu.listarMatchesDaEmpresaAutenticada(sessao.usuario.id); break
+                        case 4: recrutadorMenu.menu(); break
+                        case 5: voltar = true; break
+                    }
+                }
+    }
+
+    private void listarCandidatosAnonimos(CandidatoController candidatoController) {
+                println()
+                println "Candidatos disponíveis:"
+                candidatoController.listarCandidatos().each { Candidato candidato ->
+                    println "Id: ${candidato.id}"
+                    println "Competências: ${candidato.competencias}"
+                    println "Descrição: ${candidato.descricao}"
+                    println "Local: ${candidato.cidade}, ${candidato.estado}, ${candidato.pais}"
+                    println()
+        }
+    }
+
     void listar() {
         println()
         println "Lista de Empresas: "
@@ -67,7 +108,7 @@ class EmpresaMenu {
             String cnpj = sc.nextLine()
             print "Pais: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -111,7 +152,7 @@ class EmpresaMenu {
             String email = sc.nextLine()
             print "Pais: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()

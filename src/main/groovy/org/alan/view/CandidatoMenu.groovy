@@ -1,7 +1,9 @@
 package org.alan.view
 
 import org.alan.controller.CandidatoController
+import org.alan.controller.VagaController
 import org.alan.model.Candidato
+import org.alan.service.SessaoAutenticada
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -48,6 +50,26 @@ class CandidatoMenu {
         }
     }
 
+    void menuAutenticado(SessaoAutenticada sessao, VagaController vagaController) {
+                boolean voltar = false
+                VagasMenu vagasMenu = new VagasMenu(vagaController)
+                while (!voltar) {
+                    println()
+                    println "-- Área do candidato --"
+                    println "1) Visualizar vagas"
+                    println "2) Curtir vaga"
+                    println "3) Visualizar matches"
+                    println "4) Voltar"
+                    int opcao = sc.nextInt()
+                    switch (opcao) {
+                        case 1: vagasMenu.listarSomente(); break
+                        case 2: matchMenu.curtirVagaComoCandidato(sessao.usuario.id); break
+                        case 3: matchMenu.listarMatchesDoCandidatoAutenticado(sessao.usuario.id); break
+                        case 4: voltar = true; break
+            }
+        }
+    }
+
     void listar() {
         println()
         println "Lista de Candidatos: "
@@ -76,7 +98,7 @@ class CandidatoMenu {
             String descricao = sc.nextLine()
             print "País: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()
@@ -129,7 +151,7 @@ class CandidatoMenu {
             String descricao = sc.nextLine()
             print "País: "
             String pais = sc.nextLine()
-            print "Estado: "
+            print "Estado (UF com 2 letras, ex.: CE): "
             String estado = sc.nextLine()
             print "Cidade: "
             String cidade = sc.nextLine()

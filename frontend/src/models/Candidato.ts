@@ -1,10 +1,12 @@
 import { Usuario } from './Usuario';
 
 export class Candidato extends Usuario {
+    id: number;
     cpf: string;
     idade: number;
     formacao: string;
     competencias: string[];
+    senha: string;
 
     constructor(
         nome: string,
@@ -15,14 +17,17 @@ export class Candidato extends Usuario {
         cpf: string,
         idade: number,
         formacao: string,
-        competencias: string[] = []
+        competencias: string[] = [],
+        senha: string = ''
     ) {
         super(nome, email, cep, estado, descricao);
 
+        this.id = 0;
         this.cpf = cpf;
         this.idade = idade;
         this.formacao = formacao;
         this.competencias = competencias;
+        this.senha = senha;
     }
 
     toString(): string {

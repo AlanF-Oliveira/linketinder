@@ -8,6 +8,10 @@ interface MatchRepository {
 
     List<Match> curtirCandidato(int idEmpresa, int idCandidato)
 
+    List<Match> curtirCandidatoComoRecrutador(
+            int idEmpresa, int idCandidato, int idRecrutador
+    )
+
     List<Match> listarPorCandidato(int idCandidato)
 
     List<Match> listarPorEmpresa(int idEmpresa)

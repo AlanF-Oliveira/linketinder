@@ -3,11 +3,16 @@ import { CandidatoService } from "../services/CandidatoService";
 import { EmpresaService } from "../services/EmpresaService";
 import { VagaService } from "../services/VagaService";
 import { criarAreaCandidato } from "./areaCandidato";
+import { AuthService } from "../services/AuthService";
+import { RecrutadorService } from "../services/RecrutadorService";
+import { criarLogin } from "./login";
 
 export function criarCadastroCandidato(app: HTMLElement,
     candidatoService: CandidatoService,
     empresaService: EmpresaService,
-    vagaService: VagaService) {
+    vagaService: VagaService,
+    authService?: AuthService,
+    recrutadorService?: RecrutadorService) {
     app.innerHTML = `
     <div class="container mt-4">
         <button id="btn-voltar" class="btn btn-outline-secondary mb-3">Voltar</button>
@@ -18,6 +23,7 @@ export function criarCadastroCandidato(app: HTMLElement,
         <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="email" name="email" required></div>
         <div class="mb-3"><label class="form-label">Formação</label><input type="text" class="form-control" id="formacao" name="formacao" required></div>
         <div class="mb-3"><label class="form-label">CPF</label><input type="text" class="form-control" id="cpf" name="cpf" required></div>
+        <div class="mb-3"><label class="form-label">Senha</label><input type="password" class="form-control" id="senha" name="senha" required></div>
         <div class="mb-3"><label class="form-label">CEP</label><input type="text" class="form-control" id="cep" name="cep" required></div>
         <div class="mb-3"><label class="form-label">Estado</label><input type="text" class="form-control" id="estado" name="estado" required></div>
         <div class="mb-3"><label class="form-label">Descrição</label><textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea></div>
@@ -29,7 +35,14 @@ export function criarCadastroCandidato(app: HTMLElement,
 
     const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
     btnVoltar.addEventListener('click', () => {
-        criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+        if (authService && recrutadorService) {
+            criarLogin(
+                app, authService, candidatoService, empresaService,
+                recrutadorService, vagaService
+            );
+        } else {
+            criarAreaCandidato(app, candidatoService, empresaService, vagaService);
+        }
     });
 
     const form = document.getElementById('form-candidato') as HTMLFormElement;
@@ -43,6 +56,7 @@ export function criarCadastroCandidato(app: HTMLElement,
         const estado = dadosFormulario.get('estado') as string;
         const descricao = dadosFormulario.get('descricao') as string;
         const cpf = dadosFormulario.get('cpf') as string;
+        const senha = dadosFormulario.get('senha') as string;
         const idade = Number(dadosFormulario.get('idade'));
         const formacao = dadosFormulario.get('formacao') as string;
         const competencias = (dadosFormulario.get('competencias') as string)
@@ -58,7 +72,8 @@ export function criarCadastroCandidato(app: HTMLElement,
             cpf,
             idade,
             formacao,
-            competencias
+            competencias,
+            senha
         );
         try {
             candidatoService.salvarCandidato(candidato);

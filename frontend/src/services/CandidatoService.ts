@@ -5,6 +5,9 @@ export class CandidatoService {
 
     constructor(candidatos: Candidato[]) {
         this.candidatos = candidatos;
+        this.candidatos.forEach((candidato, index) => {
+            candidato.id = index + 1;
+        });
     }
 
     salvarCandidato(candidato: Candidato): Candidato[] {
@@ -18,6 +21,10 @@ export class CandidatoService {
             );
         }
 
+        candidato.id = this.candidatos.reduce(
+            (maiorId, item) => Math.max(maiorId, item.id),
+            0
+        ) + 1;
         this.candidatos.push(candidato);
         return this.candidatos;
     }

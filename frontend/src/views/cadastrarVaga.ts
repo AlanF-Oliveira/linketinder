@@ -3,11 +3,15 @@ import { VagaService } from "../services/VagaService";
 import { EmpresaService } from "../services/EmpresaService";
 import { CandidatoService } from "../services/CandidatoService";
 import { criarAreaEmpresa } from "./areaEmpresa";
+import { RecrutadorService } from "../services/RecrutadorService";
+import { AuthService } from "../services/AuthService";
 
 export function criarCadastroVaga(app: HTMLElement,
   vagaService: VagaService,
   empresaService: EmpresaService,
-  candidatoService: CandidatoService) {
+  candidatoService: CandidatoService,
+  recrutadorService?: RecrutadorService,
+  authService?: AuthService) {
   const empresas = empresaService.listarEmpresas();
 
   const opcoesEmpresas = empresas
@@ -44,7 +48,11 @@ export function criarCadastroVaga(app: HTMLElement,
 
   const btnVoltar = document.getElementById('btn-voltar') as HTMLButtonElement;
   btnVoltar.addEventListener('click', () => {
-    criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    if (recrutadorService && authService) {
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService, recrutadorService, authService);
+    } else {
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+    }
   });
 
   const form = document.getElementById('form-vaga') as HTMLFormElement;
@@ -64,7 +72,7 @@ export function criarCadastroVaga(app: HTMLElement,
       }
       const vaga = new Vaga(titulo, descricao, competenciasExigidas, empresa);
       vagaService.criarVaga(vaga);
-      criarAreaEmpresa(app, empresaService, candidatoService, vagaService);
+      criarAreaEmpresa(app, empresaService, candidatoService, vagaService, recrutadorService, authService);
     } catch (error) {
       alert(error instanceof Error ? error.message : 'Erro ao cadastrar vaga');
     }
